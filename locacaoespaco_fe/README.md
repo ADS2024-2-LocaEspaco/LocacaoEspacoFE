@@ -35,16 +35,11 @@ A estrutura do projeto foi organizada para promover a modularidade, reutilizaç�
 
 ### Divisão por Pastas
 
-- **components/**: Contém componentes visuais reutilizáveis.
-  - **common/**: Componentes genéricos, como botões, headers e footers, utilizados em diversas partes da aplicação.
-  - **imovel/**: Componentes específicos para a tela de anúncio de imóveis, como `ImovelCard` e `ImovelDetails`.
-  - **usuario/**: Componentes específicos para a tela de usuário, como `PerfilUsuario` e `FormCadastro`.
-- **pages/**: Contém as páginas do Next.js, organizadas por funcionalidade.
-  - **imovel/[id].tsx:** Página de detalhes de um imóvel específico.
+- **components/**: Contém componentes visuais reutilizáveis e compartilhados por diferentes domínios.
+- **pages/**: Contém as páginas do Next.js, organizadas por funcionalidade. -**anuncio/exibir/page.tsx** Páginade detalhes de um imóvel específico.
   - **usuario/perfil.tsx:** Página de perfil do usuário.
-- **services/**: Contém os serviços para consumir a API do back-end.
+  - **api/**: Contém os serviços para consumir a API do back-end.
   - **imovelService.ts:** Serviços relacionados a imóveis, como buscar um imóvel por ID.
   - **usuarioService.ts:** Serviços relacionados a usuários, como criar um novo usuário.
 - **hooks/**: Contém custom hooks para lógica reutilizável.
-- **models/**: Define os modelos de dados que representam as entidades do domínio.
 - **utils/**: Contém funções utilitárias, como formatação de datas ou validação de dados.
