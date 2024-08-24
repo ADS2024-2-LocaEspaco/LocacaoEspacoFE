@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { Inter } from "next/font/google";
+import { Josefin_Sans } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Josefin_Sans({ subsets: ["latin"] });
 
 export default function Home() {
   return (
