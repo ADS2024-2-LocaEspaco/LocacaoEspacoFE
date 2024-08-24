@@ -43,3 +43,8 @@ A estrutura do projeto foi organizada para promover a modularidade, reutilizaç�
   - **usuarioService.ts:** Serviços relacionados a usuários, como criar um novo usuário.
 - **hooks/**: Contém custom hooks para lógica reutilizável.
 - **utils/**: Contém funções utilitárias, como formatação de datas ou validação de dados.
+
+
+# Dependências:
+- react-star-ratings
+- embla-carousel-react
