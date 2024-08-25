@@ -1,4 +1,7 @@
 
+import StarFill from "../../../assets/starFill.svg";
+import Star from "../../../assets/star.svg";
+import Image from "next/image";
 export default function profile() {
     return (
         
@@ -12,32 +15,41 @@ export default function profile() {
             <div className=" flex justify-center space-x-40">
 
                 {/* Card */}
-                <div className="bg-gray-100 w-96 h-80 mt-14 rounded-2xl">
-                    <header className="flex justify-center p-2">
-                        <h4>Informações básicas</h4>
-                        <hr />
+                <div className="bg-gray-100 mt-14 rounded-2xl shadow-md">
+                    <header className="flex justify-center p-1">
+                        <h4 className="text-base font-bold">Informações básicas</h4>
                     </header>
-                    <main className="flex flex-col justify-center">
 
-                        {/* <label htmlFor="">Nome de usuário</label>
-                        <input type="text" /> */}
+                    <hr className="mx-12 border-solid border-1 border-black mt-0"/>
+
+                    <main className="flex flex-col justify-center ml-20 mr-20">
+                        
+                        <label htmlFor="" className="text-base font-medium mt-4">Nome de usuário</label> 
+                        <input type="text" className="h-8 text-center border border-solid  border-black rounded-xl mt-2 bg-gray-100 placeholder:items-center" placeholder="Lucas Santos"/> 
+
+                        <label htmlFor="" className="mt-4 text-base font-medium">Média de avaliação</label>
+                        <div className="flex items-center mt-2">
+                            <Image src={StarFill} alt="Star Fill" className="size-9"/>
+                            <Image src={StarFill} alt="Star Fill" className="size-9"/>
+                            <Image src={StarFill} alt="Star Fill" className="size-9"/>
+                            <Image src={StarFill} alt="Star Fill" className="size-9"/>
+                            <Image src={Star} alt="Star" className="size-9"/>
+
+                            <p className="ml-2 text-sm">4 de 5</p>
+                        </div>
+
                     </main>
-                    <footer>
-                        {/* <button className="bg-orange-500 rounded">Editar</button> */}
+
+                    <footer className="flex justify-end">
+                        <button className="bg-orange-500 rounded text-white flex items-center rounded-2xl px-2 py-1 border-solid border border-black m-1 gap-1">
+                            Editar
+                            <div className="material-symbols-outlined">
+                                edit
+                            </div>
+                        </button>
                     </footer>
                 </div>
 
-                <div className="bg-gray-100 w-96 h-80 mt-14 rounded-2xl">
-                    <header>
-
-                    </header>
-                    <main>
-
-                    </main>
-                    <footer>
-
-                    </footer>
-                </div>
 
             </div>
         </div>
