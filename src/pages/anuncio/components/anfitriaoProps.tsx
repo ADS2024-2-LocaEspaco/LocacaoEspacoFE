@@ -15,7 +15,7 @@ export const anfitriaoData = {
 
 const AnfitriaoInfos = ({ foto, nome, descricao }: AnfitriaoProps) => {
   const [lerMais, setLerMais] = useState(false);
-  const truncatedDescription = descricao.substring(0, 350);
+  const truncatedDescription = descricao.substring(0, 300);
   const descricaoRef = useRef<HTMLParagraphElement>(null);
 
 
@@ -26,18 +26,15 @@ const AnfitriaoInfos = ({ foto, nome, descricao }: AnfitriaoProps) => {
         <h2 className="font-josefin text-xl font-medium text-[#3D3D43] truncate md:max-w-md " >{nome}</h2>
       </div>
       <div className="relative px-5">
-        <p ref={descricaoRef} className="font-opensans text-sm font-normal text-justify text-[#3D3D43] md:hidden" >
-          {descricao}
-        </p>
-        <p ref={descricaoRef} className="hidden text-sm font-normal text-justify text-[#3D3D43] md:block">
+        <p ref={descricaoRef} className="text-sm font-normal text-justify text-[#3D3D43]">
           {lerMais ? descricao : truncatedDescription + '...'}
         </p>
         {!lerMais && (
-          <div className="hidden md:block absolute bottom-6 left-0 w-full h-4 bg-gradient-to-b from-transparent via-white to-white blur-md pointer-events-none " />
+          <div className="absolute bottom-6 left-0 w-full h-4 bg-gradient-to-b from-transparent via-white to-white blur-md pointer-events-none " />
         )}
         <div className="flex pt-2 justify-center">
           {descricao.length > 350 && (
-            <button onClick={() => setLerMais(!lerMais)} className="hidden md:block text-[#051F38] text-sm items-center font-normal underline ">
+            <button onClick={() => setLerMais(!lerMais)} className="text-[#051F38] text-sm items-center font-normal underline ">
               {lerMais ? 'Ler Menos' : 'Ler Mais'}
             </button>
           )}
