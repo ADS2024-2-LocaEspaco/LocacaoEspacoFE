@@ -5,7 +5,7 @@ const Acomodacoes: React.FC = () => {
   return (
     <>
     <NavbarCadastro/>
-    <div className='main-container'>
+    <div className='mainContainer'>
       <h1>Acomodações do Imóvel</h1>
       <p>Informe as acomodações disponíveis no imóvel.</p>
     </div>

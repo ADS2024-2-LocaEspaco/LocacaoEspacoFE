@@ -5,7 +5,7 @@ const TipoEspaco: React.FC = () => {
   return (
     <>
      <NavbarCadastro />
-     <div className='main-container'>
+     <div className='mainContainer'>
         <h1>Tipo de Espaço</h1>
         <p>Defina o tipo de espaço do imóvel.</p>
       </div>

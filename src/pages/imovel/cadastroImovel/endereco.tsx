@@ -5,7 +5,7 @@ const Endereco: React.FC = () => {
   return (
     <>
     <NavbarCadastro/>
-    <div className='main-container'>
+    <div className='mainContainer'>
       <h1>Endereço do Imóvel</h1>
       <p>Insira o endereço completo do imóvel.</p>
     </div>
