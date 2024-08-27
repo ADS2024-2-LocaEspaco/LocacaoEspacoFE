@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 import { use, useEffect, useRef, useState } from "react"
-
+import AnuncioDetalhes from "./anuncioDetalhe"
 interface AnfitriaoProps {
   foto: string,
   nome: string,
@@ -67,6 +67,13 @@ const AnfitriaoInfos = ({ foto, nome, descricao, quartos, banheiros, vagas }: An
   const truncatedDescription = descricao.substring(0, 300);
   const descricaoRef = useRef<HTMLParagraphElement>(null);
   const [comodidades, setComodidades] = useState<ComodidadesProps[]>([]);
+  const [dataEscolhida, setDataEscolhida] = useState('');
+
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDataEscolhida(event.target.value);
+  };
+
+  const [lastLineClass, setLastLineClass] = useState('');
 
   const amenities = [
     { type: 'Quartos', count: quartos, icon: '/icons/bed.svg' },
@@ -78,6 +85,24 @@ const AnfitriaoInfos = ({ foto, nome, descricao, quartos, banheiros, vagas }: An
     mockFetchComodidades().then((comodidades) => setComodidades(comodidades));
   }, []);
 
+  useEffect(() => {
+    const highlightLastLine = () => {
+      if (descricaoRef.current) {
+        const range = document.createRange();
+        range.selectNodeContents(descricaoRef.current);
+
+        const lines = range.toString().split('\n');
+
+        if (lines.length > 0) {
+          setLastLineClass("highlight-last-line");
+        }
+      }
+    };
+
+    highlightLastLine();
+  }, [descricao]);
+
+
   const [verMaisComodidades, setVerMaisComodidades] = useState(false);
   const comodidadesParaExibir = verMaisComodidades ? comodidades : comodidades.slice(0, 4);
 
@@ -88,13 +113,13 @@ const AnfitriaoInfos = ({ foto, nome, descricao, quartos, banheiros, vagas }: An
         <h2 className="font-josefin text-xl font-medium text-[#3D3D43] truncate md:max-w-md " >{nome}</h2>
       </div>
       <div className="relative px-5">
-        <p ref={descricaoRef} className="text-sm font-normal text-justify text-[#3D3D43]">
+        <p ref={descricaoRef} className={`text-sm font-normal text-justify text-[#3D3D43]`}>
           {lerMais ? descricao : truncatedDescription + '...'}
         </p>
         {!lerMais && (
           <div className="absolute left-0 w-full h-2 bg-gradient-to-b from-transparent via-white to-black blur-md pointer-events-none " />
         )}
-        <div className="flex pt-2 justify-center">
+        <div className="flex pt-6 justify-center">
           {descricao.length > 350 && (
             <button onClick={() => setLerMais(!lerMais)} className="text-[#051F38] text-sm items-center font-normal underline ">
               {lerMais ? 'Ler Menos' : 'Ler Mais'}
@@ -111,7 +136,7 @@ const AnfitriaoInfos = ({ foto, nome, descricao, quartos, banheiros, vagas }: An
           ))}
         </div>
 
-        <div className="font-sans rounded-lg border-b-black border-0 shadow grid grid-cols-2 gap-4 pt-2 pb-6" style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)' }}>
+        <div className="font-sans rounded-lg border-b-black border-0 shadow grid grid-cols-2 gap-4 pt-2 pb-6 mb-5" style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)' }}>
           {comodidadesParaExibir.map((comodidade) => (
             <div key={comodidade.nome} className="flex items-center w-auto h-8 px-2 ">
               <img src={comodidade.icone} alt={comodidade.nome} className="w-6 h-6 mr-2" />
@@ -126,6 +151,7 @@ const AnfitriaoInfos = ({ foto, nome, descricao, quartos, banheiros, vagas }: An
             </div>
           )}
         </div>
+        < AnuncioDetalhes />
       </div>
     </div>
   )

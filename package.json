@@ -15,9 +15,11 @@
     "embla-carousel-react": "^8.2.0",
     "next": "14.2.6",
     "react": "^18",
+    "react-datepicker": "^7.3.0",
     "react-dom": "^18",
     "react-star-ratings": "^2.3.0",
-    "react-stars": "^2.2.5"
+    "react-stars": "^2.2.5",
+    "react-tailwindcss-datepicker": "^1.7.2"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.0",

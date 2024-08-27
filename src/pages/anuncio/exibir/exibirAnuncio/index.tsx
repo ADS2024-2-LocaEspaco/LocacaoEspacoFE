@@ -1,3 +1,4 @@
+
 import AnfitriaoInfos, { anfitriaoData } from '../../components/anfitriaoProps';
 import { TituloAnuncioProps } from '../../components/anuncioProps';
 import { useState } from 'react';
