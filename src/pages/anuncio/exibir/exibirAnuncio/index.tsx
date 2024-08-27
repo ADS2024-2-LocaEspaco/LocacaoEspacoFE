@@ -19,9 +19,9 @@ const ExibirAnuncio = () => {
     <div className='bg-[#F1F1F3] h-screen'>
 
       {/* Section 1 */}
-      <section className="flex flex-col justify-center items-center	mb-4">
-      <div className="flex justify- p-2 flex-wrap">
-        <h1 className="text-xl font-bold mb-4">{titulo}</h1>
+      <section className="flex flex-col items-center mb-4">
+      <div className="flex justify-between pt-4 flex-wrap">
+        <h1 className="text-xl font-bold mb-2">{titulo}</h1>
         <Avaliacao nota={nota} />
       </div >
       <Carrossel imagens={imagens} />
