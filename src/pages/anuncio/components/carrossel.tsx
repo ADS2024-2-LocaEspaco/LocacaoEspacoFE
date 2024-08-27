@@ -39,14 +39,14 @@ type CarrosselProps = {
         {/* botões de navegação do carrossel */}
         <button 
           onClick={scrollPrev}
-          className="absolute top-1/2 left-0 transform -translate-y-1/2 p-2 bg-black bg-opacity-50 text-white rounded-full">
-          {setaEsquerda}
+          className="absolute top-1/2 left-0 transform -translate-y-1/2 p-2 bg-opacity-0 text-white rounded-full w-[32px]">
+        {<img src={setaEsquerda} /> }
         </button>
   
         <button 
           onClick={scrollNext}
-          className="absolute top-1/2 right-0 transform -translate-y-1/2 p-2 bg-black bg-opacity-50 text-white rounded-full">
-          {setaDireita}
+          className="absolute top-1/2 right-0 transform -translate-y-1/2 p-2 bg-opacity-0 w-[32px]">
+          {<img src={setaDireita} /> }
         </button>
       </div>
     );
