@@ -7,7 +7,7 @@ const inter = Josefin_Sans({ subsets: ["latin"] });
 export default function Home() {
   return (
     <main
-      className={`flex h-screen flex-col items-center bg-white ${inter.className}`}
+      className={`flex h-screen flex-col items-center bg-white text-black ${inter.className}`}
     >
         <Navbar />
 
