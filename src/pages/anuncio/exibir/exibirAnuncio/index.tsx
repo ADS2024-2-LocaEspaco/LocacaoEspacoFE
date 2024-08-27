@@ -16,7 +16,7 @@ const ExibirAnuncio = () => {
   const [imagens] = useState([image1, image2, image3]);
 
   return (
-    <div className='bg-[#F1F1F3] h-full'>
+    <div className='bg-[#F1F1F3] h-100%'>
 
       {/* Section 1 */}
       <section className="flex flex-col items-center mb-4">
@@ -30,7 +30,7 @@ const ExibirAnuncio = () => {
 
       {/* Section 2 */}
       <section>
-        <AnfitriaoInfos quartos={3} banheiros={1} vagas={2} {...anfitriaoData} />
+        <AnfitriaoInfos quartos={3} banheiros={2} vagas={4} {...anfitriaoData} />
       </section>
 
     </div>

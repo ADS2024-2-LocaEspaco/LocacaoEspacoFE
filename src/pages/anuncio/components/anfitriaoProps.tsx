@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
-import { useRef, useState } from "react"
+import { use, useEffect, useRef, useState } from "react"
 
 interface AnfitriaoProps {
   foto: string,
@@ -18,6 +18,11 @@ interface ImovelProps {
   vagas: number,
   area: number,
   anfitriao: AnfitriaoProps
+}
+
+interface ComodidadesProps {
+  nome: string,
+  icone: string
 }
 
 export const anfitriaoData = {
@@ -38,20 +43,46 @@ export const imovelData = {
   anfitriao: anfitriaoData
 }
 
+const mockFetchComodidades = (): Promise<ComodidadesProps[]> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        { nome: 'Jardim amplo', icone: '/icons/outdoor_garden_icon.svg' },
+        { nome: 'Wi-Fi', icone: '/icons/wifi_icon.svg' },
+        { nome: 'Ar Condicionado', icone: '/icons/ice_icon.svg' },
+        { nome: 'Acessibilidade', icone: '/icons/accessibility_icon.svg' },
+        { nome: 'Piscina', icone: '/icons/pool_icon.svg' },
+        { nome: 'Cozinha', icone: '/icons/restaurant_icon.svg' },
+        { nome: 'Máquina de Lavar', icone: '/icons/laundry_icon.svg' },
+        { nome: 'Permitido animais', icone: '/icons/pets_icon.svg' },
+        { nome: 'Área para churrasco', icone: '/icons/outdoor_grill_icon.svg' },
+        { nome: 'Garagem para quatro carros', icone: '/icons/car_icon.svg' }
+      ])
+    }, 2000)
+  })
+}
+
 const AnfitriaoInfos = ({ foto, nome, descricao, quartos, banheiros, vagas }: AnfitriaoProps & { quartos: number, banheiros: number, vagas: number }) => {
   const [lerMais, setLerMais] = useState(false);
   const truncatedDescription = descricao.substring(0, 300);
   const descricaoRef = useRef<HTMLParagraphElement>(null);
+  const [comodidades, setComodidades] = useState<ComodidadesProps[]>([]);
 
   const amenities = [
-    { type: 'Quartos', count: quartos, icon: '/icons/bed_icon.svg' },
-    { type: 'Banheiros', count: banheiros, icon: '/icons/shower_icon.svg' },
+    { type: 'Quartos', count: quartos, icon: '/icons/bed.svg' },
+    { type: 'Banheiros', count: banheiros, icon: '/icons/shower.svg' },
     { type: 'Vagas', count: vagas, icon: '/icons/car_icon.svg' },
   ];
 
+  useEffect(() => {
+    mockFetchComodidades().then((comodidades) => setComodidades(comodidades));
+  }, []);
+
+  const [verMaisComodidades, setVerMaisComodidades] = useState(false);
+  const comodidadesParaExibir = verMaisComodidades ? comodidades : comodidades.slice(0, 4);
 
   return (
-    <div className="flex flex-col justify-items-center ml-0 h-screen">
+    <div className="flex flex-col justify-items-center ml-0 h-full">
       <div className="flex items-center mb-2 px-5">
         <img src={foto} alt="" className="rounded-full w-10 h-10 mr-2" />
         <h2 className="font-josefin text-xl font-medium text-[#3D3D43] truncate md:max-w-md " >{nome}</h2>
@@ -61,7 +92,7 @@ const AnfitriaoInfos = ({ foto, nome, descricao, quartos, banheiros, vagas }: An
           {lerMais ? descricao : truncatedDescription + '...'}
         </p>
         {!lerMais && (
-          <div className="absolute bottom-6 left-0 w-full h-4 bg-gradient-to-b from-transparent via-white to-white blur-md pointer-events-none " />
+          <div className="absolute left-0 w-full h-2 bg-gradient-to-b from-transparent via-white to-black blur-md pointer-events-none " />
         )}
         <div className="flex pt-2 justify-center">
           {descricao.length > 350 && (
@@ -78,6 +109,22 @@ const AnfitriaoInfos = ({ foto, nome, descricao, quartos, banheiros, vagas }: An
               <p className="text-black text-base">{amenity.count}</p>
             </button>
           ))}
+        </div>
+
+        <div className="font-sans rounded-lg border-b-black border-0 shadow grid grid-cols-2 gap-4 pt-2 pb-6" style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)' }}>
+          {comodidadesParaExibir.map((comodidade) => (
+            <div key={comodidade.nome} className="flex items-center w-auto h-8 px-2 ">
+              <img src={comodidade.icone} alt={comodidade.nome} className="w-6 h-6 mr-2" />
+              <p className="text-[#3D3D43] text-sm sm:text-base">{comodidade.nome}</p>
+            </div>
+          ))}
+          {comodidades.length > 4 && (
+            <div className="col-span-2 flex justify-center items-center">
+              <button onClick={() => setVerMaisComodidades(!verMaisComodidades)} className="bg-[#D9D9D9] mx-1 w-20 rounded-md text-[#051F38] text-sm items-center font-normal">
+                {verMaisComodidades ? 'Ver Menos' : 'Ver Mais'}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
