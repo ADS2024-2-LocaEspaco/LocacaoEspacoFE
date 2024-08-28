@@ -23,7 +23,7 @@ const Avaliacao: React.FC<AvaliacaoProps> = ({ nota, qtd_avaliacoes }) => {
   )
 
   return (
-    <div className="mb-4 flex items-center space-x-2 md:pr-[10%] justify-center">
+    <div className="mb-2 mt-0 flex items-center space-x-1 md:pr-[10%] justify-center">
       {[...Array(estrelasCheias)].map((_, index) => (
         <img key={index} src={estrelaAtiva} alt="estrela ativa" className="w-[19px] h-[17px]" />
       ))}
