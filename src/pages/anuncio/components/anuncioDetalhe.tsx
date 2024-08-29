@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Datepicker from 'react-tailwindcss-datepicker';
+import Calendar from './calendarCompo';
 
 const NEXT_MONTH = new Date();
 NEXT_MONTH.setMonth(NEXT_MONTH.getMonth() + 1);
@@ -25,8 +26,9 @@ const AnuncioDetalhes = () => {
         <p className="text-sm text-center">Rua das Estrelas, Bairro Encantado, Cidade dos Sonhos, SP, Brasil</p>
         <hr className="w-full border-t border-[#3D3D43] my-2" />
         <label htmlFor="dataEscolha" className="text-sm font-medium text-[#3D3D43]">Escolha as datas:</label>
-        <div className="mt-2 py-2 w-[245px] border rounded text-[#3D3D43]">
-          <Datepicker
+        <div className="">
+          <Calendar />
+          {/* <Datepicker
             i18n='pt-br'
             displayFormat='DD/MM/YYYY'
             useRange={false}
@@ -50,8 +52,7 @@ const AnuncioDetalhes = () => {
                 });
               }
             }}
-
-          />
+          /> */}
         </div>
       </div>
     </div>
