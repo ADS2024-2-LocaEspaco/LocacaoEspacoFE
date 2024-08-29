@@ -24,7 +24,7 @@ const ExibirAnuncio: React.FC<AnuncioProps> = ( anuncio ) => {
     <div className="bg-[#fff7f4] h-screen font-josefin md:flex flex-col items-center" >
       {/* Section 1 */}
       <section className="flex justify-center flex-col mb-4 " >
-        <div className="bg-[#faf8f8] flex flex-row justify-between p-2 flex-wrap max-w-[1184px]">
+        <div className="bg-[#faf8f8] flex flex-row justify-between p-2 pb-0 flex-wrap max-w-[1184px]">
           <h1 className="text-tituloa text-black p-0 font-bold mb-0 mt-1 ">
             {titulo}
           </h1>
