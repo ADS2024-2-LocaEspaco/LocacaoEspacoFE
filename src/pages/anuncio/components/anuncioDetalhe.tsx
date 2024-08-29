@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Datepicker from 'react-tailwindcss-datepicker';
 import Calendar from './calendarCompo';
 
 const NEXT_MONTH = new Date();
@@ -15,6 +14,10 @@ const AnuncioDetalhes = () => {
   const diasSelecionados = (value.endDate.getTime() - value.startDate.getTime()) / (1000 * 60 * 60 * 24) + 1;
   const valorTotal = valorDiaria * diasSelecionados;
 
+  const handleDateChange = (startDate: Date, endDate: Date) => {
+    setValue({ startDate, endDate });
+  }
+
   return (
     <div className="font-josefin rounded-lg border-b-black border-0 shadow pt-2 pb-6 h-svh" style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)' }}>
       <div className="flex flex-col items-center w-auto h-auto px-2 text-[#3D3D43]">
@@ -27,32 +30,7 @@ const AnuncioDetalhes = () => {
         <hr className="w-full border-t border-[#3D3D43] my-2" />
         <label htmlFor="dataEscolha" className="text-sm font-medium text-[#3D3D43]">Escolha as datas:</label>
         <div className="">
-          <Calendar />
-          {/* <Datepicker
-            i18n='pt-br'
-            displayFormat='DD/MM/YYYY'
-            useRange={false}
-            primaryColor={"sky"}
-            disabledDates={[
-              {
-                startDate: new Date("2024-09-02"),
-                endDate: new Date("2024-09-05")
-              },
-              {
-                startDate: new Date("2024-02-11"),
-                endDate: new Date("2024-02-12")
-              }
-            ]}
-            value={value}
-            onChange={newValue => {
-              if (newValue && newValue.startDate && newValue.endDate) {
-                setValue({
-                  startDate: new Date(newValue.startDate),
-                  endDate: new Date(newValue.endDate)
-                });
-              }
-            }}
-          /> */}
+          <Calendar onDateChange={handleDateChange} />
         </div>
       </div>
     </div>

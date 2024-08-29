@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
-export default function Calendar() {
+interface CalendarProps {
+  onDateChange: (startDate: Date, endDate: Date) => void;
+}
+
+
+export default function Calendar({ onDateChange }: CalendarProps) {
   const [selectedMonth, setSelectedMonth] = useState(6); // July
   const [selectedYear, setSelectedYear] = useState(2024);
   const [startDate, setStartDate] = useState<number | null>(null);
@@ -25,6 +30,11 @@ export default function Calendar() {
         setStartDate(day);
       } else {
         setEndDate(day);
+      }
+      if (startDate !== null && endDate !== null) {
+        const start = new Date(selectedYear, selectedMonth, startDate);
+        const end = new Date(selectedYear, selectedMonth, endDate);
+        onDateChange(start, end);
       }
     }
   };
