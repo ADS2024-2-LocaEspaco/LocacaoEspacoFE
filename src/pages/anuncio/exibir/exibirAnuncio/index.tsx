@@ -1,3 +1,4 @@
+
 import AnfitriaoInfos, { anfitriaoData } from '../../components/anfitriaoProps';
 import { TituloAnuncioProps } from '../../components/anuncioProps';
 import { useState } from 'react';
@@ -16,21 +17,21 @@ const ExibirAnuncio = () => {
   const [imagens] = useState([image1, image2, image3]);
 
   return (
-    <div className='bg-[#F1F1F3] h-screen'>
+    <div className='bg-[#F1F1F3] h-100%'>
 
       {/* Section 1 */}
       <section className="flex flex-col items-center mb-4">
-      <div className="flex justify-between pt-4 flex-wrap">
-        <h1 className="text-xl font-bold mb-2">{titulo}</h1>
-        <Avaliacao nota={nota} />
-      </div >
-      <Carrossel imagens={imagens} />
-    </section>
+        <div className="flex justify-between pt-4 flex-wrap">
+          <h1 className="text-xl font-bold mb-2 text-[#3D3D43]">{titulo}</h1>
+          <Avaliacao nota={nota} />
+        </div >
+        <Carrossel imagens={imagens} />
+      </section>
 
 
       {/* Section 2 */}
       <section>
-        <AnfitriaoInfos {...anfitriaoData} />
+        <AnfitriaoInfos quartos={3} banheiros={2} vagas={4} {...anfitriaoData} />
       </section>
 
     </div>
