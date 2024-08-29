@@ -21,11 +21,11 @@ const ExibirAnuncio: React.FC<AnuncioProps> = ( anuncio ) => {
  
 
   return (
-    <div className="bg-[#fff7f4] h-screen font-josefin">
+    <div className="bg-[#fff7f4] h-screen font-josefin md:flex flex-col items-center" >
       {/* Section 1 */}
-      <section className="flex flex-col mb-4">
-        <div className="bg-[#faf8f8] flex flex-row justify-between pt-4 flex-wrap mr-[10%] ml-[10%] sm:mr-2 sm:ml-2">
-          <h1 className="text-tituloa text-black p-0 font-bold mb-0 mt-2 md:pl-[10%]">
+      <section className="flex justify-center flex-col mb-4 " >
+        <div className="bg-[#faf8f8] flex flex-row justify-between p-2 flex-wrap max-w-[1184px]">
+          <h1 className="text-tituloa text-black p-0 font-bold mb-0 mt-1 ">
             {titulo}
           </h1>
           <Avaliacao nota={nota} qtd_avaliacoes={20} />

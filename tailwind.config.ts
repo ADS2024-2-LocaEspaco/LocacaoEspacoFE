@@ -29,7 +29,7 @@ const config: Config = {
         base: ['16px', '24px'],
         lg: ['20px', '28px'],
         xl: ['24px', '32px'],
-        tituloa: ['20px', '40px'],
+        tituloa: ['24px', '40px'],
         avaliacao: ['15px', '29px'],
       },
     },

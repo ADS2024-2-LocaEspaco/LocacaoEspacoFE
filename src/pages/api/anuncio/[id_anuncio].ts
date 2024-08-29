@@ -14,6 +14,8 @@ const fetchAnuncioFromDB = async (id_anuncio: string) => {
       '/images/image1.webp',
       '/images/image2.webp',
       '/images/image3.webp',
+      '/images/image4.webp',
+      '/images/image5.webp',
     ],
   };
 };
