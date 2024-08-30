@@ -30,16 +30,13 @@ const ExibirAnuncio = () => {
 
 
       {/* Section 2 */}
-      <section>
+      <section className=' flex justify-center items-center max-w-screen-xl'>
         <AnfitriaoInfos quartos={3} banheiros={2} vagas={4} {...anfitriaoData} />
       </section>
 
     </div>
 
-  );
-
-
-
-};
+  )
+}
 
 export default ExibirAnuncio;
