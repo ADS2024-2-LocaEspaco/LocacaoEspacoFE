@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+/* eslint-disable @next/next/no-img-element */
+import React, { useEffect, useState } from 'react';
 
 interface CalendarProps {
   onDateChange: (startDate: Date, endDate: Date) => void;
+  valorDiaria: number;
 }
 
 
-export default function Calendar({ onDateChange }: CalendarProps) {
-  const [selectedMonth, setSelectedMonth] = useState(6); // July
-  const [selectedYear, setSelectedYear] = useState(2024);
+export default function Calendar({ onDateChange, valorDiaria }: CalendarProps) {
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [startDate, setStartDate] = useState<number | null>(null);
   const [endDate, setEndDate] = useState<number | null>(null);
+  const [totalValue, setTotalValue] = useState(0);
 
   const months = [
     'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
@@ -19,6 +22,16 @@ export default function Calendar({ onDateChange }: CalendarProps) {
 
   const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
   const firstDayOfMonth = new Date(selectedYear, selectedMonth, 1).getDay();
+
+  useEffect(() => {
+    if (startDate !== null && endDate !== null) {
+      const start = new Date(selectedYear, selectedMonth, startDate);
+      const end = new Date(selectedYear, selectedMonth, endDate);
+      const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+      setTotalValue(days * valorDiaria);
+      onDateChange(start, end);
+    }
+  }, [startDate, endDate, selectedYear, selectedMonth, valorDiaria, onDateChange]);
 
   const handleDayClick = (day: number) => {
     if (startDate === null || (startDate !== null && endDate !== null)) {
@@ -30,11 +43,6 @@ export default function Calendar({ onDateChange }: CalendarProps) {
         setStartDate(day);
       } else {
         setEndDate(day);
-      }
-      if (startDate !== null && endDate !== null) {
-        const start = new Date(selectedYear, selectedMonth, startDate);
-        const end = new Date(selectedYear, selectedMonth, endDate);
-        onDateChange(start, end);
       }
     }
   };
@@ -70,10 +78,10 @@ export default function Calendar({ onDateChange }: CalendarProps) {
   const weekDays = ['Dom.', 'Seg.', 'Ter.', 'Qua.', 'Qui.', 'Sex.', 'Sab.'];
 
   return (
-    <div className="p-4 bg-white dark:bg-[#3D3D43]">
+    <div className="p-4 bg-white dark:bg-[#3D3D43] overflow-auto h-full">
       <div className="flex items-center justify-between mb-4">
         <button type="button" className="p-2 text-white" onClick={() => handleMonthChange(-1)}>
-          &lt;
+          <img src="/icons/arrow_back_icon-w.svg" alt="seta-voltar" className='w-5 h-5' />
         </button>
         <div className="flex items-center gap-2">
           <select
@@ -100,12 +108,12 @@ export default function Calendar({ onDateChange }: CalendarProps) {
           </select>
         </div>
         <button type="button" className="p-2 text-white" onClick={() => handleMonthChange(1)}>
-          &gt;
+          <img src="/icons/arrow_forward_icon-w.svg" alt="seta-voltar" className='w-5 h-5' />
         </button>
       </div>
 
       {/* Weeks */}
-      <div className="grid grid-cols-7 gap-px bg-[#3D3D43]">
+      <div className="grid grid-cols-7 gap-2 bg-[#3D3D43]">
         {weekDays.map((day, index) => (
           <div
             key={day}
@@ -143,16 +151,17 @@ export default function Calendar({ onDateChange }: CalendarProps) {
           </div>
         ))}
       </div>
-
-      {/* Button Group */}
-      <div className="py-3 px-4 flex items-center justify-end gap-x-2 border-t border-gray-200 dark:border-neutral-700">
-        <button
-          type="button"
-          className="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-xs font-medium rounded-lg border border-transparent bg-blue-600 text-white shadow-sm hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-blue-700"
-        >
-          Apply
-        </button>
-      </div>
+      {/* Valor Total e diárias*/}
+      {totalValue > 0 && (
+        <div className="mt-4 text-center">
+          <p className="text-lg font-bold text-[#FF6F00]">
+            Total: R$ {totalValue.toFixed(2)}
+          </p>
+          <p className="text-sm text-[#FF6F00]">
+            {startDate && endDate ? `${endDate - startDate + 1} diárias` : ''}
+          </p>
+        </div>
+      )}
     </div>
-  );
+  )
 }
