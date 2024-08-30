@@ -4,6 +4,8 @@ import { FaHouseChimney, FaTreeCity, FaTent   } from "react-icons/fa6";
 import { MdOutlineHouseSiding } from "react-icons/md";
 import { PiShippingContainerFill, PiFarm } from "react-icons/pi";
 import { GiEcology } from "react-icons/gi";
+import styles from '@/styles/LayoutCadImovel.module.css'
+import NavbarCadastro from '@/components/navbarCadastro';
 
 interface Categoria {
   name: string;
@@ -25,6 +27,8 @@ const categorias: Categoria[] = [
 const TipoImovel: React.FC = () => {
   return (
     // Left Side
+  <>
+    <NavbarCadastro />
     <div className="flex h-screen">
       <div className="w-1/2">
         <img
@@ -37,7 +41,7 @@ const TipoImovel: React.FC = () => {
       {/* Right Side */}
       <div className="w-1/2 flex flex-col justify-center items-center p-4">
         <h1 className="mb-4 text-xl font-semibold">Tipo de imóvel</h1>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4 border-black rounded-md">
           {categorias.map((categoria, index) => (
             <div
               key={index}
@@ -50,6 +54,7 @@ const TipoImovel: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
