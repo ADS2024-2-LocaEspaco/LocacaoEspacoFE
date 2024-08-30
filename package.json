@@ -2,6 +2,7 @@
   "name": "locacaoespaco_fe",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,29 +11,34 @@
     "test": "jest"
   },
   "dependencies": {
-    "@types/react-stars": "^2.2.4",
+    "@types/next": "^9.0.0",
     "embla-carousel": "^8.2.0",
     "embla-carousel-react": "^8.2.0",
-    "next": "14.2.6",
-    "react": "^18",
-    "react-dom": "^18"
+    "next": "^14.2.7",
+    "node-mocks-http": "^1.15.1",
+    "react": "^18.3.1",
+    "react-datepicker": "^7.3.0",
+    "react-dom": "^18.3.1",
+    "react-modal": "^3.16.1",
+    "react-tailwindcss-datepicker": "^1.7.2"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.5.0",
-    "@testing-library/react": "^16.0.0",
-    "@types/jest": "^29.5.12",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@testing-library/react": "^16.0.1",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^22.5.1",
+    "@types/react": "^18.3.4",
+    "@types/react-dom": "^18.3.0",
     "@types/react-modal": "^3.16.3",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.6",
+    "aria-query": "^5.3.0",
+    "eslint": "8.57.0",
+    "eslint-config-next": "14.2.7",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "postcss": "^8",
+    "postcss": "^8.4.41",
     "tailwindcss": "^3.4.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5"
+    "typescript": "^5.5.4"
   }
 }
