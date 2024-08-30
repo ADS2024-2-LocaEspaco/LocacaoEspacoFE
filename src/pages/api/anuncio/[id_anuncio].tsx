@@ -2,10 +2,11 @@
 
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const fetchAnuncioFromDB = async (id_anuncio: string) => {
+export const fetchAnuncioFromDB = async (id_anuncio: string) => {
   return {
     id: '1',
     titulo: 'Lindo Apartamento no Centro',
+    nota: 3.5,
     qtd_hospedes: 5,
     qtd_camas: 2,
     qtd_banheiros: 1,

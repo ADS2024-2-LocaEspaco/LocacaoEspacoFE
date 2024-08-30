@@ -29,6 +29,7 @@ interface ComodidadesProps {
 }
 
 export const anfitriaoData = {
+  id:'123',
   foto: 'https://marketplace.canva.com/EAE_5IzADKE/1/0/1600w/canva-OwKgqn8V-m8.jpg',
   nome: 'Usuário Anfitrião',
   descricao: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet consectetur adipisicing elit.Quo repellendus aut assumenda laborum labore, quaerat tenetur voluptates porro sed id, reiciendis at ea totam vitae inventore temporibus facilis deleniti nisi? Lorem ipsum dolor sit amet consectetur adipisicing elit.Odio voluptatum iure iste rerum a asperiores eveniet velit dolores! Ratione sunt voluptatem labore quaerat repellendus pariatur nulla vitae perferendis consequatur exercitationem.Lorem ipsum dolor, sit amet consectetur adipisicing elit.Est id, distinctio non consequuntur similique laborum culpa ad laboriosam suscipit odio perspiciatis iusto fugit molestias ullam reprehenderit.Voluptate esse fuga iure. '

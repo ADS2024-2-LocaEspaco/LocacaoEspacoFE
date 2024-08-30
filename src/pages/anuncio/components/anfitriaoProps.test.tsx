@@ -5,7 +5,7 @@ import { describe } from 'node:test';
 
 describe('AnfitriaoInfos Component', () => {
   it('renders the component with the provided data', () => {
-    render(<AnfitriaoInfos {...anfitriaoData} />);
+    render(<AnfitriaoInfos quartos={2} banheiros={1} vagas={4} {...anfitriaoData} />);
 
     // Verifica se o nome do anfitrião foi renderizado
     expect(screen.getByText(anfitriaoData.nome)).toBeInTheDocument();
@@ -16,7 +16,7 @@ describe('AnfitriaoInfos Component', () => {
   });
 
   it('displays truncated description and "Ler Mais" button initially on larger screens', () => {
-    render(<AnfitriaoInfos {...anfitriaoData} />);
+    render(<AnfitriaoInfos quartos={2} banheiros={1} vagas={4} {...anfitriaoData} />);
 
     // Verifica se a descrição truncada é exibida
     const truncatedText = anfitriaoData.descricao.substring(0, 350) + '...';
@@ -27,7 +27,7 @@ describe('AnfitriaoInfos Component', () => {
   });
 
   it('expands the description when "Ler Mais" button is clicked', () => {
-    render(<AnfitriaoInfos {...anfitriaoData} />);
+    render(<AnfitriaoInfos quartos={2} banheiros={1} vagas={4} {...anfitriaoData} />);
 
     // Simula o clique no botão "Ler Mais"
     fireEvent.click(screen.getByText('Ler Mais'));
@@ -43,7 +43,7 @@ describe('AnfitriaoInfos Component', () => {
     const shortDescription = 'This is a short description';
     const shortAnfitriaoData = { ...anfitriaoData, descricao: shortDescription };
 
-    render(<AnfitriaoInfos {...shortAnfitriaoData} />);
+    render(<AnfitriaoInfos quartos={2} banheiros={1} vagas={4} {...shortAnfitriaoData} />);
 
     // Verifica se a descrição curta é exibida
     expect(screen.getByText(shortDescription)).toBeInTheDocument();
