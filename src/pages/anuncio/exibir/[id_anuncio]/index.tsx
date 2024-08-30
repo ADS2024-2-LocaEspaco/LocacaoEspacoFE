@@ -47,6 +47,7 @@ const ExibirAnuncio: React.FC<AnuncioProps> = (anuncio) => {
       </section>
       <hr className="w-full border-t border-[#3D3D43] my-2" />
       {/* Section 3 */}
+
       <section>
         <FeedBacksAnte />
       </section>

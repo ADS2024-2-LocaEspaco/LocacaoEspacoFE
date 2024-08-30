@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
-import { use, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import ReservaAnuncio from "./reservaAnuncio"
 
 import useWindowWidth from "@/hooks/useWindowWidth"
