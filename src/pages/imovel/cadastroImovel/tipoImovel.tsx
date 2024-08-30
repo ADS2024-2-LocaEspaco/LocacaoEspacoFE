@@ -24,13 +24,34 @@ const categorias: Categoria[] = [
 
 const TipoImovel: React.FC = () => {
   return (
-    <div className="flex flex-end">
-      <h1>Tipo de Imóvel</h1>
-      {categorias.map(( categoria ) => (
-        <p>{categoria.icon}</p>
-      ))}
+    // Left Side
+    <div className="flex h-screen">
+      <div className="w-1/2">
+        <img
+          src="https://via.placeholder.com/800x600"
+          alt="Imagem de imóvel"
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      {/* Right Side */}
+      <div className="w-1/2 flex flex-col justify-center items-center p-4">
+        <h1 className="mb-4 text-xl font-semibold">Tipo de imóvel</h1>
+        <div className="grid grid-cols-3 gap-4">
+          {categorias.map((categoria, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-center justify-center bg-gray-100 p-4 rounded-lg shadow-md"
+            >
+              <p className="text-gray-600">{categoria.icon}</p>
+              <p className="mt-2 text-center font-semibold">{categoria.name}</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
+
 
 export default TipoImovel;
