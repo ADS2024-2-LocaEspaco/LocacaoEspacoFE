@@ -23,7 +23,7 @@ const ExibirAnuncio = () => {
       <section className="flex flex-col items-center mb-4">
         <div className="flex justify-between pt-4 flex-wrap">
           <h1 className="text-xl font-bold mb-2 text-[#3D3D43]">{titulo}</h1>
-          <Avaliacao nota={nota} />
+          <Avaliacao nota={nota} qtd_avaliacoes={0} />
         </div >
         <Carrossel imagens={imagens} />
       </section>

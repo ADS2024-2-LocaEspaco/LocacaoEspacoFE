@@ -36,7 +36,8 @@ A estrutura do projeto foi organizada para promover a modularidade, reutilizaç�
 ### Divisão por Pastas
 
 - **components/**: Contém componentes visuais reutilizáveis e compartilhados por diferentes domínios.
-- **pages/**: Contém as páginas do Next.js, organizadas por funcionalidade. -**anuncio/exibir/page.tsx** Páginade detalhes de um imóvel específico.
+- **pages/**: Contém as páginas do Next.js, organizadas por funcionalidade. 
+- **anuncio/exibir/page.tsx** Páginade detalhes de um imóvel específico.
   - **usuario/perfil.tsx:** Página de perfil do usuário.
   - **api/**: Contém os serviços para consumir a API do back-end.
   - **imovelService.ts:** Serviços relacionados a imóveis, como buscar um imóvel por ID.
@@ -46,5 +47,6 @@ A estrutura do projeto foi organizada para promover a modularidade, reutilizaç�
 
 
 # Dependências:
-- react-star-ratings
+- embla-carousel
 - embla-carousel-react
+- react-modal
