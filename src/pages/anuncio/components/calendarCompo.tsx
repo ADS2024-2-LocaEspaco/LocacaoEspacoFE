@@ -85,6 +85,7 @@ export default function Calendar({ onDateChange, valorDiaria }: CalendarProps) {
         </button>
         <div className="flex items-center gap-2">
           <select
+            title="mes"
             value={selectedMonth}
             onChange={(e) => setSelectedMonth(Number(e.target.value))}
             className="bg-white dark:bg-[#3D3D43] text-gray-800 dark:text-neutral-200 border border-gray-300 dark:border-neutral-600 rounded-md"
@@ -96,6 +97,7 @@ export default function Calendar({ onDateChange, valorDiaria }: CalendarProps) {
             ))}
           </select>
           <select
+          title='year'
             value={selectedYear}
             onChange={(e) => setSelectedYear(Number(e.target.value))}
             className="bg-white dark:bg-[#3D3D43] text-gray-800 dark:text-neutral-200 border border-gray-300 dark:border-neutral-600 rounded-md"

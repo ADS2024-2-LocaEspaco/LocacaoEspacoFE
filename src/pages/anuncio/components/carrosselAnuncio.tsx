@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useCallback, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Modal from "react-modal";
@@ -137,7 +138,7 @@ const Carrossel: React.FC<CarrosselProps> = ({ imagens }) => {
         className="fixed inset-0 z-50 flex items-center justify-center"
         shouldCloseOnOverlayClick={true}
         overlayClassName="fixed inset-0 bg-black bg-opacity-50"
-        ariaHideApp={false} // Para evitar warning de acessibilidade em teste
+        /* ariaHideApp={true} */ 
       >
         <div className="relative flex items-center justify-center w-full h-full">
           <div className="overflow-hidden max-h-[80vh] w-full" ref={emblaRef}>
