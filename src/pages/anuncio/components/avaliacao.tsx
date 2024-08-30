@@ -1,6 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 
-const estrelaAtiva = "/icons/avaliacao_estrela_ativa.svg"; 
+const estrelaAtiva = "/icons/avaliacao_estrela_ativa.svg";
 const estrelaInativa = "/icons/avaliacao_estrela_inativa.svg";
 
 
@@ -12,14 +13,14 @@ type AvaliacaoProps = {
 
 const Avaliacao: React.FC<AvaliacaoProps> = ({ nota, qtd_avaliacoes }) => {
   const estrelasTotais = 5;
-  const estrelasCheias = Math.floor(nota); 
-  const ehMeiaEstrela = nota % 1 !== 0; 
+  const estrelasCheias = Math.floor(nota);
+  const ehMeiaEstrela = nota % 1 !== 0;
   const estrelasVazias = estrelasTotais - estrelasCheias - (ehMeiaEstrela ? 1 : 0);
 
   const meiaEstrela = (<div className="relative">
-    <img src={estrelaAtiva} alt="meia estrela" className="absolute w-[19px] h-[17px] -[50]%" style={{ clipPath: 'inset(0 50% 0 0)' }}/>
-    <img src={estrelaInativa} alt="estrela inativa" className=" w-[19px] h-[17px] t-[50]%" style={{ clipPath: 'inset(0 0 0 50% )' }}/> 
-    </div>
+    <img src={estrelaAtiva} alt="meia estrela" className="absolute w-[19px] h-[17px] -[50]%" style={{ clipPath: 'inset(0 50% 0 0)' }} />
+    <img src={estrelaInativa} alt="estrela inativa" className=" w-[19px] h-[17px] t-[50]%" style={{ clipPath: 'inset(0 0 0 50% )' }} />
+  </div>
   )
 
   return (

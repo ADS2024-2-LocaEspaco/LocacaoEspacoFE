@@ -65,7 +65,6 @@ const ReservaAnuncio = () => {
             Reservar
           </button>
         </div>
-        <hr className="w-full border-t border-[#3D3D43] my-2" />
       </div>
     </div>
   )

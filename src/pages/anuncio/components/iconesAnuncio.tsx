@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 
 const banheiros = "/icons/shower_icon.svg";
@@ -18,7 +19,7 @@ const estiloIcone =
 
 const estiloTexto = 'text-[#333333] font-opensans text-[14px] p-0 pl-1 ';
 
-  const IconesAnuncio: React.FC<IconesProps> = ({qtd_hospedes , qtd_camas, qtd_banheiros}) => {
+const IconesAnuncio: React.FC<IconesProps> = ({ qtd_hospedes, qtd_camas, qtd_banheiros }) => {
   return (
     <div className="flex flew-row justify-between h-4 mt-2 w-[95%] md:w-full">
       {/* Ícones de comodidades */}
@@ -37,25 +38,25 @@ const estiloTexto = 'text-[#333333] font-opensans text-[14px] p-0 pl-1 ';
         </div>
       </div>
 
-<div className='flex justify-between md:justify-end w-full'>
-      {/* Ícone mapa*/}
-      <div className='flex md:justify-end  p-0 m-0'>
-        <button className={`${estiloIcone}  w-[150px] h-[32px] text-[14px] bg-[#17A1FA]`}>
-          <img src={mapa} alt="ícone mostrar mapa" />{" "}
-          <p className={estiloTexto}>Veja o mapa</p>
-        </button>
-        50{" "}
-      </div>
+      <div className='flex justify-between md:justify-end w-full'>
+        {/* Ícone mapa*/}
+        <div className='flex md:justify-end  p-0 m-0'>
+          <button className={`${estiloIcone}  w-[150px] h-[32px] text-[14px] bg-[#17A1FA]`}>
+            <img src={mapa} alt="ícone mostrar mapa" />{" "}
+            <p className={estiloTexto}>Veja o mapa</p>
+          </button>
+          50{" "}
+        </div>
 
-      {/* Ícones de compartilhar e favoritar */}
-      <div className="flex flew-row gap-2 justify-end  p-0 m-0">
-        <button className={`${estiloIcone} w-[32px] h-[32px] bg-transparent border border-[#333333]	`}>
-          <img src={compartilhar} alt="icone compartilhar" className="" />
-        </button>
-        <button className={`${estiloIcone} w-[32px] h-[32px] rounded-full bg-transparent border border-[#333333]	 `}>
-          <img src={favoritar} alt="icone favoritar" className="" />{" "}
-        </button>
-      </div>
+        {/* Ícones de compartilhar e favoritar */}
+        <div className="flex flew-row gap-2 justify-end  p-0 m-0">
+          <button className={`${estiloIcone} w-[32px] h-[32px] bg-transparent border border-[#333333]	`}>
+            <img src={compartilhar} alt="icone compartilhar" className="" />
+          </button>
+          <button className={`${estiloIcone} w-[32px] h-[32px] rounded-full bg-transparent border border-[#333333]	 `}>
+            <img src={favoritar} alt="icone favoritar" className="" />{" "}
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -13,10 +13,12 @@
     "@types/react-stars": "^2.2.4",
     "embla-carousel": "^8.2.0",
     "embla-carousel-react": "^8.2.0",
+    "lucide-react": "^0.436.0",
     "next": "14.2.6",
     "react": "^18",
     "react-datepicker": "^7.3.0",
     "react-dom": "^18",
+    "react-modal": "^3.16.1",
     "react-tailwindcss-datepicker": "^1.7.2"
   },
   "devDependencies": {
