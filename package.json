@@ -14,13 +14,9 @@
     "@types/next": "^9.0.0",
     "embla-carousel": "^8.2.0",
     "embla-carousel-react": "^8.2.0",
-    "next": "^14.2.7",
-    "node-mocks-http": "^1.15.1",
+    "next": "14.2.7",
     "react": "^18.3.1",
-    "react-datepicker": "^7.3.0",
-    "react-dom": "^18.3.1",
-    "react-modal": "^3.16.1",
-    "react-tailwindcss-datepicker": "^1.7.2"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.0",
