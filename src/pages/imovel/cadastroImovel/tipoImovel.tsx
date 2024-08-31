@@ -46,17 +46,17 @@ const TipoImovel: React.FC = () => {
 
       {/* Right Side */}
       <div className="w-1/2 flex flex-col justify-center items-center p-4 bg-white">
-      <h1 className="mb-4 text-[42px] font-semibold leading-[42px] text-center font-josefin text-black">
+      <h1 className="mb-4 text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
         Tipo de imóvel
       </h1>
         <div className="grid grid-cols-3 gap-10 rounded-md mt-20">
           {categorias.map((categoria, index) => (
             <div
               key={index}
-              className="flex flex-col items-center border border-black justify-center bg-white p-4 rounded-lg shadow-md"
+              className="flex flex-col items-center border border-gray-400 justify-center bg-white p-4 h-40 rounded-lg"
             >
-              <p className="text-gray-600">{categoria.icon}</p>
-              <p className="mt-2 text-center font-semibold text-black">{categoria.name}</p>
+              <p className="text-gray-700">{categoria.icon}</p>
+              <p className="mt-2 text-center font-josefin text-gray-700">{categoria.name}</p>
             </div>
           ))}
         </div>
