@@ -1,9 +1,4 @@
 import React from 'react';
-import { FaRegBuilding, FaHouseUser } from 'react-icons/fa';
-import { FaHouseChimney, FaTreeCity, FaTent   } from "react-icons/fa6";
-import { MdOutlineHouseSiding } from "react-icons/md";
-import { PiShippingContainerFill, PiFarm } from "react-icons/pi";
-import { GiEcology } from "react-icons/gi";
 import styles from '@/styles/LayoutCadImovel.module.css'
 import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
