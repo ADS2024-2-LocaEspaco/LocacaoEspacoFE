@@ -9,6 +9,7 @@ import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useRouter } from 'next/router';
 import useNavigation from '@/hooks/CadImovel';
+import '@fontsource/josefin-sans'; 
 
 interface Categoria {
   name: string;
@@ -44,16 +45,18 @@ const TipoImovel: React.FC = () => {
       </div>
 
       {/* Right Side */}
-      <div className="w-1/2 flex flex-col justify-center items-center p-4 bg-white ">
-        <h1 className="mb-4 text-xl font-semibold">Tipo de imóvel</h1>
-        <div className="grid grid-cols-3 gap-4 border-black rounded-md">
+      <div className="w-1/2 flex flex-col justify-center items-center p-4 bg-white">
+      <h1 className="mb-4 text-[42px] font-semibold leading-[42px] text-center font-josefin text-black">
+        Tipo de imóvel
+      </h1>
+        <div className="grid grid-cols-3 gap-10 rounded-md mt-20">
           {categorias.map((categoria, index) => (
             <div
               key={index}
-              className="flex flex-col items-center justify-center bg-gray-100 p-4 rounded-lg shadow-md"
+              className="flex flex-col items-center border border-black justify-center bg-white p-4 rounded-lg shadow-md"
             >
               <p className="text-gray-600">{categoria.icon}</p>
-              <p className="mt-2 text-center font-semibold">{categoria.name}</p>
+              <p className="mt-2 text-center font-semibold text-black">{categoria.name}</p>
             </div>
           ))}
         </div>
