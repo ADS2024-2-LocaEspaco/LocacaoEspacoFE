@@ -1,10 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
 import NavbarCadastro from '@/components/navbarCadastro';
 import useNavigation from '@/hooks/CadImovel';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import axios from 'axios';
 
 const Endereco: React.FC = () => {
   const { goToPreviousPage, goToNextPage } = useNavigation();
+
+  const [cep, setCep] = useState('');
+  const [rua, setRua] = useState('');
+  const [bairro, setBairro] = useState('');
+  const [cidade, setCidade] = useState('');
+  const [uf, setUf] = useState('');
+  const [numero, setNumero] = useState('');
+  const [complemento, setComplemento] = useState('');
+
+  const handleCepChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCep(e.target.value);
+  };
+
+  const handleRuaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRua(e.target.value);
+  };
+
+  const handleBairroChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBairro(e.target.value);
+  };
+
+  const handleCidadeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCidade(e.target.value);
+  };
+
+  const handleUfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUf(e.target.value);
+  };
+
+  const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (cep.length === 8) {
+        try {
+          const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+          const data = await response.json();
+
+          if (!data.erro) {
+            setRua(data.logradouro);
+            setBairro(data.bairro);
+            setCidade(data.localidade);
+            setUf(data.uf);
+          } else {
+            alert('CEP não encontrado');
+          }
+        } catch (error) {
+          console.error('Erro ao buscar o CEP:', error);
+        }
+      } else {
+        alert('CEP inválido');
+      }
+    }
+  };
 
   return (
     <>
@@ -28,11 +82,14 @@ const Endereco: React.FC = () => {
                 <label htmlFor="CEP" className="block text-gray-700 text-black font-bold mb-2">
                   CEP
                   <span className="text-red-500 ml-1">*</span>
-                  </label>
+                </label>
                 <input
                   type="text"
-                  id="CEP"
+                  id="cep"
                   name="CEP"
+                  value={cep}
+                  onChange={handleCepChange}
+                  onKeyPress={handleKeyPress}
                   className="w-full px-4 py-2 border border-gray-300 rounded-xl text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -40,18 +97,22 @@ const Endereco: React.FC = () => {
                 <label htmlFor="Rua" className="block text-gray-700 text-black font-bold mb-2">Rua</label>
                 <input
                   type="text"
-                  id="Rua"
+                  id="rua"
                   name="Rua"
+                  value={rua}
+                  onChange={handleRuaChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-xl bg-gray-200 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4 mb-4"> {/* Grid para "Bairro" e "Cidade" */}
+              <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
                   <label htmlFor="Bairro" className="block text-gray-700 text-black font-bold mb-2">Bairro</label>
                   <input
                     type="text"
-                    id="Bairro"
+                    id="bairro"
                     name="Bairro"
+                    value={bairro}
+                    onChange={handleBairroChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-xl bg-gray-200 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -59,19 +120,23 @@ const Endereco: React.FC = () => {
                   <label htmlFor="Cidade" className="block text-gray-700 text-black font-bold mb-2">Cidade</label>
                   <input
                     type="text"
-                    id="Cidade"
+                    id="cidade"
                     name="Cidade"
+                    value={cidade}
+                    onChange={handleCidadeChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-xl bg-gray-200 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-4 gap-4 mb-4"> {/* Grid para "UF", "Número" e "Complemento" */}
+              <div className="grid grid-cols-4 gap-4 mb-4">
                 <div className="col-span-1">
                   <label htmlFor="UF" className="block text-gray-700 text-black font-bold mb-2">UF</label>
                   <input
                     type="text"
-                    id="UF"
+                    id="uf"
                     name="UF"
+                    value={uf}
+                    onChange={handleUfChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-xl bg-gray-200 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -79,8 +144,10 @@ const Endereco: React.FC = () => {
                   <label htmlFor="Número" className="block text-gray-700 text-black font-bold mb-2">Número</label>
                   <input
                     type="text"
-                    id="Número"
+                    id="numero"
                     name="Número"
+                    value={numero}
+                    onChange={(e) => setNumero(e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-xl bg-white-200 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -88,8 +155,10 @@ const Endereco: React.FC = () => {
                   <label htmlFor="Complemento" className="block text-gray-700 text-black font-bold mb-2">Complemento</label>
                   <input
                     type="text"
-                    id="Complemento"
+                    id="complemento"
                     name="Complemento"
+                    value={complemento}
+                    onChange={(e) => setComplemento(e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-xl bg-white-200 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -97,9 +166,9 @@ const Endereco: React.FC = () => {
             </form>
           </div>
           <div className="flex justify-between items-center w-full mt-4">
-          <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage}/>
-          <IoIosArrowForward className="text-6xl cursor-pointer text-black" onClick={goToNextPage}/>
-        </div>
+            <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage} />
+            <IoIosArrowForward className="text-6xl cursor-pointer text-black" onClick={goToNextPage} />
+          </div>
         </div>
       </div>
     </>
