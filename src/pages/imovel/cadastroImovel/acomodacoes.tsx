@@ -40,9 +40,9 @@ const Acomodacoes: React.FC = () => {
 
       {/* Right Side */}
       <div className="w-1/2 flex flex-col justify-center items-center p-4 bg-white">
-      <h1 className="mb-4 text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
-        Acomodações e Hóspedes
-      </h1>
+        <h1 className="mb-4 text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
+          Acomodações e Hóspedes
+        </h1>
         <div className="grid grid-cols-2 gap-10 rounded-md mt-20">
           {acomodacoes.map((acomodacao, index) => (
             <div
@@ -51,6 +51,14 @@ const Acomodacoes: React.FC = () => {
             >
               <p className="text-gray-700">{acomodacao.icon}</p>
               <p className="mt-2 text-center font-josefin text-gray-700">{acomodacao.name}</p>
+              <div className="">
+                <input
+                    type="number"
+                    min="0"
+                    className="mt-2 ml-2 w-full text-center p-1 text-black font-josefin"
+                    placeholder={`0`}
+                  />
+              </div>
             </div>
           ))}
         </div>
