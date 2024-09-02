@@ -45,9 +45,9 @@ const ExibirAnuncio: React.FC<AnuncioProps> = (anuncio) => {
       <section className=' flex justify-center items-center max-w-screen-xl'>
         <AnfitriaoInfos quartos={3} banheiros={2} vagas={4} {...anfitriaoData} />
       </section>
-      <hr className="w-full border-t border-[#3D3D43] my-2" />
-      {/* Section 3 */}
+      <hr className="w-full border-t border-[#3D3D43] my-2 lg:not-sr-only" />
 
+      {/* Section 3 */}
       <section>
         <FeedBacksAnte />
       </section>

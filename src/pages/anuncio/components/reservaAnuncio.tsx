@@ -47,21 +47,21 @@ const ReservaAnuncio = () => {
   }
 
   return (
-    <div className="flex justify-center items-center font-josefin rounded-lg border-b-black border-0 shadow pt-2 pb-6 h-full max-w-[357px] max-h-[585px]" style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)' }}>
+    <div className="flex justify-center items-center font-josefin rounded-lg border-b-black border-0 shadow pt-2 pb-6 max-w-[357px]" style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)' }}>
       <div className="flex flex-col justify-center items-center w-auto h-full px-2 text-[#3D3D43]">
         <div className="flex items-baseline">
           <p className="flex text-2xl font-bold text-[#FF6F00]">R$ {valorDiaria}</p>
           <p className="text-sm text-[#FF6F00] ml-1">/ diária</p>
         </div>
-        <hr className="w-full border-t border-[#3D3D43] my-2" />
-        <p className="text-sm text-center">Rua das Estrelas, Bairro Encantado, Cidade dos Sonhos, SP, Brasil</p>
-        <hr className="w-full border-t border-[#3D3D43] my-2" />
+        <hr className="w-full border-t border-[#3D3D43] my-2 lg:not-sr-only" />
+        <p className="text-sm text-center lg:text-left">Rua das Estrelas, Bairro Encantado, Cidade dos Sonhos, SP, Brasil</p>
+        <hr className="w-full border-t border-[#3D3D43] my-2 lg:not-sr-only" />
         <div className="">
           <Calendario onDateChange={handleDateChange} valorDiaria={valorDiaria} />
         </div>
-        <div className="flex mt-4 w-full h-auto items-center justify-center">
+        <div className="flex mt-4 mb-2 w-full h-auto items-center justify-center">
           <button onClick={handleRervarclick}
-            className="flex text-2xl w-[196px] h-[46px] justify-center items-center bg-[#196FFB] text-white py-2 rounded-md hover:bg-[#3B82F6] transition-colors">
+            className="flex text-2xl w-[196px] h-[46px] justify-center items-center bg-[#196FFB] text-white py-2 rounded-3xl hover:bg-[#3B82F6] transition-colors">
             Reservar
           </button>
         </div>

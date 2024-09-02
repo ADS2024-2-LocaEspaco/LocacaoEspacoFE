@@ -78,7 +78,7 @@ export default function Calendar({ onDateChange, valorDiaria }: CalendarProps) {
   const weekDays = ['Dom.', 'Seg.', 'Ter.', 'Qua.', 'Qui.', 'Sex.', 'Sab.'];
 
   return (
-    <div className="p-4 bg-white dark:bg-[#3D3D43] overflow-auto h-full">
+    <div className="mt-4 px-4 py-4 bg-white dark:bg-[#3D3D43] overflow-auto h-full rounded-[10px]">
       <div className="flex items-center justify-between mb-4">
         <button type="button" className="p-2 text-white" onClick={() => handleMonthChange(-1)}>
           <img src="/icons/arrow_back_icon-w.svg" alt="seta-voltar" className='w-5 h-5' />
