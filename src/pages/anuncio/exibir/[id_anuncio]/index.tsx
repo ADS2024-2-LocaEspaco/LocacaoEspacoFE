@@ -29,7 +29,7 @@ const ExibirAnuncio: React.FC<AnuncioProps> = ({ titulo, qtd_hospedes, qtd_camas
 
 
   return (
-    <div className="bg-[#fff7f4] h-screen font-josefin md:flex flex-col items-center" >
+    <div className="bg-[#fff7f4] h-full font-josefin md:flex flex-col items-center" >
       {/* Section 1 */}
       <section className="flex justify-center flex-col mb-4">
         <div className="bg-[#faf8f8] flex flex-row justify-between p-2 pb-0 flex-wrap max-w-[1184px]">
@@ -55,7 +55,7 @@ const ExibirAnuncio: React.FC<AnuncioProps> = ({ titulo, qtd_hospedes, qtd_camas
       />
 
       {/* Section 2 */}
-      <section className=' flex justify-center items-center max-w-screen-xl'>
+      <section className='flex justify-center items-center max-w-screen-xl'>
         <AnfitriaoInfos quartos={3} banheiros={2} vagas={4} {...anfitriaoData} />
       </section>
       <hr className="w-full border-t border-[#3D3D43] my-2 lg:not-sr-only" />
