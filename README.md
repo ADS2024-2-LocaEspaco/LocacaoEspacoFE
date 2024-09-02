@@ -50,3 +50,6 @@ A estrutura do projeto foi organizada para promover a modularidade, reutiliza√ß√
 - embla-carousel
 - embla-carousel-react
 - react-modal
+- jest
+- tailwind
+
