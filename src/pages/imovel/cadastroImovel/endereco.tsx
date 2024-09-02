@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NavbarCadastro from '@/components/navbarCadastro';
 import useNavigation from '@/hooks/CadImovel';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
@@ -14,6 +14,60 @@ const Endereco: React.FC = () => {
   const [uf, setUf] = useState('');
   const [numero, setNumero] = useState('');
   const [complemento, setComplemento] = useState('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setCep(localStorage.getItem('cep') || '');
+      setRua(localStorage.getItem('rua') || '');
+      setBairro(localStorage.getItem('bairro') || '');
+      setCidade(localStorage.getItem('cidade') || '');
+      setUf(localStorage.getItem('uf') || '');
+      setNumero(localStorage.getItem('numero') || '');
+      setComplemento(localStorage.getItem('complemento') || '');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('cep', cep);
+    }
+  }, [cep]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('rua', rua);
+    }
+  }, [rua]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('bairro', bairro);
+    }
+  }, [bairro]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('cidade', cidade);
+    }
+  }, [cidade]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('uf', uf);
+    }
+  }, [uf]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('numero', numero);
+    }
+  }, [numero]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('complemento', complemento);
+    }
+  }, [complemento]);
 
   const handleCepChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCep(e.target.value);
@@ -35,14 +89,14 @@ const Endereco: React.FC = () => {
     setUf(e.target.value);
   };
 
-  const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       if (cep.length === 8) {
         try {
           const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
           const data = await response.json();
-
+  
           if (!data.erro) {
             setRua(data.logradouro);
             setBairro(data.bairro);
@@ -58,14 +112,15 @@ const Endereco: React.FC = () => {
         alert('CEP inválido');
       }
     }
-  };
+  };  
 
   return (
     <>
       <NavbarCadastro />
-      {/* Left Side */}
-      <div className="flex h-screen">
-        <div className="w-1/2">
+      {/* Main Container */}
+      <div className="flex flex-col md:flex-row h-screen">
+        {/* Left Side */}
+        <div className="w-full md:w-1/2">
           <img
             src="https://via.placeholder.com/800x600"
             alt="Imagem de imóvel"
@@ -74,7 +129,7 @@ const Endereco: React.FC = () => {
         </div>
 
         {/* Right Side */}
-        <div className="w-1/2 flex flex-col justify-start items-center p-4 bg-white">
+        <div className="w-full md:w-1/2 flex flex-col justify-start items-center p-4 bg-white">
           <h1 className="mb-4 text-3xl text-black font-semibold">Endereço</h1>
           <div className="w-full px-8">
             <form className="bg-white p-6 rounded-lg w-full">
@@ -89,7 +144,7 @@ const Endereco: React.FC = () => {
                   name="CEP"
                   value={cep}
                   onChange={handleCepChange}
-                  onKeyPress={handleKeyPress}
+                  onKeyDown={handleKeyDown}
                   className="w-full px-4 py-2 border border-gray-300 rounded-xl text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -148,7 +203,7 @@ const Endereco: React.FC = () => {
                     name="Número"
                     value={numero}
                     onChange={(e) => setNumero(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-xl bg-white-200 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-xl text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <div className="col-span-2">
@@ -159,7 +214,7 @@ const Endereco: React.FC = () => {
                     name="Complemento"
                     value={complemento}
                     onChange={(e) => setComplemento(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-xl bg-white-200 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-xl text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               </div>
