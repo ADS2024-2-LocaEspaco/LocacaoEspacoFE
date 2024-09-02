@@ -6,10 +6,15 @@ const estrelaInativa = "/icons/avaliacao_estrela_inativa.svg";
 // Componente de Avaliação
 type AvaliacaoProps = {
   nota: number;
-  qtd_avaliacoes: number;
+  qtd_avaliacoes?: number; 
+  exibirNotaMedia?: boolean; // Determina se mostra a nota média ou quantidade de avaliações
 };
 
-const Avaliacao: React.FC<AvaliacaoProps> = ({ nota, qtd_avaliacoes }) => {
+const Avaliacao: React.FC<AvaliacaoProps> = ({
+  nota,
+  qtd_avaliacoes = 0,
+  exibirNotaMedia = false,
+}) => {
   const estrelasTotais = 5;
   const estrelasCheias = Math.floor(nota);
   const ehMeiaEstrela = nota % 1 >= 0.5;
@@ -56,12 +61,15 @@ const Avaliacao: React.FC<AvaliacaoProps> = ({ nota, qtd_avaliacoes }) => {
         />
       ))}
 
-      <p
-        className="text-[#F37216] text-avaliacaol pt-1"
-        data-testid="qtd-avaliacoes"
-      >
-        ({qtd_avaliacoes})
-      </p>
+      {exibirNotaMedia ? (
+        <p className="text-[#F37216] text-avaliacaol pt-1" data-testid="nota-media">
+          Nota: {nota.toFixed(1)}
+        </p>
+      ) : (
+        <p className="text-[#F37216] text-avaliacaol pt-1" data-testid="qtd-avaliacoes">
+          ({qtd_avaliacoes})
+        </p>
+      )}
     </div>
   );
 };
