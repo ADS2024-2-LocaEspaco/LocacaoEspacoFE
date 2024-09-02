@@ -28,7 +28,7 @@ function MobileMenu({ openMobileMenu, handleBackToHomePage }: MobileMenuProps) {
         <nav className='flex relative w-full h-24 px-6 justify-between items-center md:hidden'>
             <Image
                 src={MenuHamburgerIcon}
-                alt='Ícone do menu'
+                alt='Botão do menu'
                 onClick={openMobileMenu}
                 height={24}
                 width={36}
@@ -37,7 +37,7 @@ function MobileMenu({ openMobileMenu, handleBackToHomePage }: MobileMenuProps) {
 
             <Image
                 src={Logo}
-                alt='Logo'
+                alt='Logo Mobile'
                 onClick={handleBackToHomePage}
                 height={60}
                 width={60}
@@ -66,7 +66,7 @@ function MobileMenuNavbar({ closeMobileMenu }: MobileMenuNavbarProps) {
                 <div className='flex h-24 items-center px-6 border-b border-[#797986]'>
                     <Image
                         src={user ? Logo : AccountIcon}
-                        alt='Logo'
+                        alt='Imagem do perfil do usuário'
                         height={60}
                         width={60}
                         className='rounded-full'
@@ -107,6 +107,7 @@ function Menu({ handleBackToHomePage, handleSearch, setSearchInput }: MenuProps)
                 height={80}
                 width={80}
                 className='cursor-pointer'
+                data-testid='logo-icon'
             />
 
             <form onSubmit={handleSearch} className="flex gap-3 max-w-[640px] w-full h-12 px-4 justify-between items-center border-[0.5px] border-[#797986] rounded-2xl">
@@ -118,11 +119,12 @@ function Menu({ handleBackToHomePage, handleSearch, setSearchInput }: MenuProps)
 
                 <Image
                     src={SearchIcon}
-                    alt='Logo'
+                    alt='Botão de pesquisa'
                     onClick={handleSearch}
                     height={20}
                     width={20}
                     className='cursor-pointer'
+                    data-testid='search-icon'
                 />
             </form>
 
