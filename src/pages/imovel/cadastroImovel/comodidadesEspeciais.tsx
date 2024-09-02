@@ -1,8 +1,9 @@
 import React from 'react';
-import { FaUserFriends, FaBed, FaShower  } from 'react-icons/fa'
-import { MdOutlineBedroomChild  } from "react-icons/md";
-import { PiShippingContainerFill, PiFarm } from "react-icons/pi";
-import { GiEcology } from "react-icons/gi";
+import { FaWifi, FaTv, FaSwimmingPool, FaUmbrellaBeach } from 'react-icons/fa';
+import { TbAirConditioning  } from "react-icons/tb";
+import { MdKitchen, MdLocalLaundryService, MdOutdoorGrill } from "react-icons/md";
+import { RiBilliardsFill } from "react-icons/ri";
+import { PiFanFill } from "react-icons/pi";
 import styles from '@/styles/LayoutCadImovel.module.css'
 import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -10,19 +11,19 @@ import { useRouter } from 'next/router';
 import useNavigation from '@/hooks/CadImovel';
 import '@fontsource/josefin-sans'; 
 
-interface Acomodacao {
+interface ComodidadeEspecial {
   name: string;
   icon: React.ReactNode;
 }
 
-const acomodacoes: Acomodacao[] = [
-  { name: 'Quartos', icon: <MdOutlineBedroomChild size={32} /> },
-  { name: 'Camas', icon: <FaBed size={32} /> },
-  { name: 'Banheiros', icon: <FaShower size={32} /> },
-  { name: 'Hóspedes', icon: <FaUserFriends size={32} /> },
+const comodidadesEspeciais: ComodidadeEspecial[] = [
+  { name: 'Piscina', icon: <FaSwimmingPool size={32} /> },
+  { name: 'Churrasqueira', icon: <MdOutdoorGrill size={32} /> },
+  { name: 'Acesso à Praia', icon: <FaUmbrellaBeach size={32} /> },
+  { name: 'Mesa de bilhar', icon: <RiBilliardsFill size={32} /> },
 ];
 
-const Acomodacoes: React.FC = () => {
+const ComodidadeEspecial: React.FC = () => {
 
   const { goToPreviousPage, goToNextPage } = useNavigation();
   return (
@@ -40,25 +41,17 @@ const Acomodacoes: React.FC = () => {
 
       {/* Right Side */}
       <div className="w-1/2 flex flex-col justify-center items-center p-4 bg-white">
-        <h1 className="mb-4 text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
-          Acomodações e Hóspedes
-        </h1>
+      <h1 className="mb-4 text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
+        Comodidades Especiais
+      </h1>
         <div className="grid grid-cols-2 gap-10 rounded-md mt-20">
-          {acomodacoes.map((acomodacao, index) => (
+          {comodidadesEspeciais.map((comodidadeEspecial, index) => (
             <div
               key={index}
               className="flex flex-col items-center border border-gray-400 justify-center bg-white p-4 h-40 w-40 rounded-lg"
             >
-              <p className="text-gray-700">{acomodacao.icon}</p>
-              <p className="mt-2 text-center font-josefin text-gray-700">{acomodacao.name}</p>
-              <div className="">
-                <input
-                    type="number"
-                    min="0"
-                    className="mt-2 ml-2 w-full text-center p-1 text-black font-josefin"
-                    placeholder={`0`}
-                  />
-              </div>
+              <p className="text-gray-700">{comodidadeEspecial.icon}</p>
+              <p className="mt-2 text-center font-josefin text-gray-700">{comodidadeEspecial.name}</p>
             </div>
           ))}
         </div>
@@ -72,4 +65,4 @@ const Acomodacoes: React.FC = () => {
   );
 };
 
-export default Acomodacoes;
+export default ComodidadeEspecial;
