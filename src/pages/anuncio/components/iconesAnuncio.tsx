@@ -11,6 +11,7 @@ type IconesProps = {
   qtd_hospedes: number;
   qtd_camas: number;
   qtd_banheiros: number;
+  onOpenMapModal: () => void;
 };
 
 const estiloIcone =
@@ -18,7 +19,7 @@ const estiloIcone =
 
 const estiloTexto = 'text-[#333333] font-opensans text-[14px] p-0 pl-1 ';
 
-  const IconesAnuncio: React.FC<IconesProps> = ({qtd_hospedes , qtd_camas, qtd_banheiros}) => {
+  const IconesAnuncio: React.FC<IconesProps> = ({qtd_hospedes , qtd_camas, qtd_banheiros, onOpenMapModal }) => {
   return (
     <div className="flex flew-row justify-between h-4 mt-2 w-[95%] md:w-full">
       {/* Ícones de comodidades */}
@@ -40,7 +41,7 @@ const estiloTexto = 'text-[#333333] font-opensans text-[14px] p-0 pl-1 ';
 <div className='flex justify-between md:justify-end w-full ' >
       {/* Ícone mapa*/}
       <div className='flex md:justify-end  p-0 m-0' >
-        <button className={`${estiloIcone}  w-[150px] h-[32px] text-[14px] bg-[#17A1FA]`} data-testid="icone-mapa">
+        <button className={`${estiloIcone}  w-[150px] h-[32px] text-[14px] bg-[#17A1FA]`} data-testid="icone-mapa" onClick={onOpenMapModal}>
           <img src={mapa} alt="ícone mostrar mapa" />{" "}
           <p className={estiloTexto}>Veja o mapa</p>
         </button>
