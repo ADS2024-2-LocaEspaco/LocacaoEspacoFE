@@ -7,6 +7,7 @@ import AnfitriaoInfos, { anfitriaoData } from '../../components/anfitriaoProps';
 import Avaliacao from "../../components/avaliacao";
 import Carrossel from "../../components/carrosselAnuncio";
 import IconesAnuncio from "../../components/iconesAnuncio";
+import FavoritosModal from "../../components/favoritosModal";
 const MapaModal = dynamic(() => import("../../components/mapaModal"), { ssr: false });
 
 type AnuncioProps = {
@@ -28,12 +29,28 @@ type AnuncioProps = {
   };
 };
 
+const listaFavoritos = [
+  { id: '1', name: 'Casas para o verão', icon: '/icons/image_placeholder_bg.svg', userId: '123' },
+  { id: '2', name: 'Férias nas montanhas', icon: '/icons/image_placeholder_bg.svg', userId: '123' },
+  { id: '3', name: 'Visitando os amigos', icon: '/icons/image_placeholder_bg.svg', userId: '123' },
+  { id: '4', name: 'Casas para o verão', icon: '/icons/image_placeholder_bg.svg', userId: '123' },
+  { id: '5', name: 'Férias nas montanhas', icon: '/icons/image_placeholder_bg.svg', userId: '123' },
+  { id: '6', name: 'Visitando os amigos', icon: '/icons/image_placeholder_bg.svg', userId: '123' },
+  { id: '7', name: 'Casas para o verão', icon: '/icons/image_placeholder_bg.svg', userId: '123' },
+  { id: '8', name: 'Férias nas montanhas', icon: '/icons/image_placeholder_bg.svg', userId: '123' },
+  { id: '9', name: 'Visitando os amigos', icon: '/icons/image_placeholder_bg.svg', userId: '123' },
+];
+
 const ExibirAnuncio: React.FC<AnuncioProps> = ({ titulo, qtd_hospedes, qtd_camas, qtd_banheiros, imagens, nota, qtd_avaliacoes, endereco }) => {
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
+  const [isFavModalOpen, setIsFavModalOpen] = useState(false);
   const [mapCenter, setMapCenter] = useState<LatLngExpression>({ lat: -23.6250, lng: -45.4000 });
 
   const openMapModal = () => setIsMapModalOpen(true);
   const closeMapModal = () => setIsMapModalOpen(false);
+
+  const openFavoritosModal = () => setIsFavModalOpen(true);
+  const closeFavoritosModal = () => setIsFavModalOpen(false);
 
   return (
     <div className="bg-[#fff7f4] h-full font-josefin md:flex flex-col items-center">
@@ -52,6 +69,7 @@ const ExibirAnuncio: React.FC<AnuncioProps> = ({ titulo, qtd_hospedes, qtd_camas
             qtd_banheiros={qtd_banheiros}
             qtd_camas={qtd_camas}
             onOpenMapModal={openMapModal}
+            onOpenFavoritosModal={openFavoritosModal}
           />
         </div>
       </section>
@@ -61,6 +79,8 @@ const ExibirAnuncio: React.FC<AnuncioProps> = ({ titulo, qtd_hospedes, qtd_camas
         latLng={mapCenter}
         endereco={endereco}
       />
+      <FavoritosModal isOpen={isFavModalOpen} onClose={closeFavoritosModal} favoritos={listaFavoritos} />
+
 
       {/* Section 2 */}
       <section>
