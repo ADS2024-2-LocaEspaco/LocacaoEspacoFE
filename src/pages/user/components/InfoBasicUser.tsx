@@ -6,7 +6,7 @@ import Image from "next/image";
 export default function InfoBasicUser() {
 
     return (
-        <div className="relative bg-gray-100 mt-14 rounded-2xl shadow-md">
+        <div className="  mt-14 rounded-2xl shadow-md">
             <header className="flex justify-center p-1">
                 <h4 className="text-base font-bold">Informações básicas</h4>
             </header>
@@ -31,7 +31,7 @@ export default function InfoBasicUser() {
 
             </main>
 
-            <footer className="flex justify-end absolute bottom-0 right-0">
+            <footer className="flex justify-end">
                 <button className="mt-auto bg-orange-500 rounded text-white flex items-center rounded-2xl px-2 py-1 border-solid border border-black m-1 gap-1">
                     Editar
                     <div className="material-symbols-outlined">

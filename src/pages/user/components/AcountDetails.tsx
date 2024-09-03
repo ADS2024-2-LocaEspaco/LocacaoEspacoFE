@@ -1,7 +1,7 @@
 
 export default function AcountDetails() {
     return(
-        <div className="relative bg-gray-100 mt-14 rounded-2xl shadow-md">
+        <div className="flex flex-col  mt-14 rounded-2xl shadow-md">
             <header className="flex justify-center p-1">
                 <h4 className="text-base font-bold">Dados da conta</h4>
             </header>
@@ -21,7 +21,7 @@ export default function AcountDetails() {
 
             </main>
 
-            <footer className="flex justify-end absolute bottom-0 right-0">
+            <footer className="flex justify-end ">
                 <button className="bg-orange-500 rounded text-white flex items-center rounded-2xl px-2 py-1 border-solid border border-black m-1 gap-1">
                     Editar
                     <div className="material-symbols-outlined">

@@ -5,7 +5,7 @@ import User from "../../../assets/user.png"
 
 export default function ImageUser() {
     return (
-        <div className="relative bg-gray-100 mt-14 rounded-2xl shadow-md">
+        <div className="relative  mt-14 rounded-2xl shadow-md">
             <header className="flex justify-center p-1">
                 <h4 className="text-base font-bold">Imagem de perfil</h4>
             </header>
