@@ -1,10 +1,6 @@
-import React from "react";
-import { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Modal from "react-modal";
-
-const setaEsquerda = "/images/seta_esquerda.png";
-const setaDireita = "/images/seta_direita.png";
 
 type CarrosselProps = {
   imagens: string[];
@@ -12,18 +8,19 @@ type CarrosselProps = {
 
 const Carrossel: React.FC<CarrosselProps> = ({ imagens }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+  const [emblaRefModal, emblaApiModal] = useEmblaCarousel({ loop: true });
+
   const [isDesktop, setIsDesktop] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
-  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
-
   useEffect(() => {
     if (emblaApi) {
-      emblaApi.reInit();
+      emblaApi.on("select", () => {
+        setSelectedIndex(emblaApi.selectedScrollSnap());
+      });
     }
-  }, [imagens, emblaApi]);
+  }, [emblaApi]);
 
   useEffect(() => {
     const updateMedia = () => {
@@ -37,14 +34,20 @@ const Carrossel: React.FC<CarrosselProps> = ({ imagens }) => {
   const openModal = (index: number) => {
     setSelectedIndex(index);
     setModalIsOpen(true);
-    setTimeout(() => {
-      if (emblaApi) emblaApi.scrollTo(index);
-    }, 0);
   };
 
   const closeModal = () => {
     setModalIsOpen(false);
   };
+
+  useEffect(() => {
+    if (modalIsOpen && emblaApiModal) {
+      emblaApiModal.scrollTo(selectedIndex);
+      emblaApiModal.on("select", () => {
+        setSelectedIndex(emblaApiModal.selectedScrollSnap());
+      });
+    }
+  }, [modalIsOpen, selectedIndex, emblaApiModal]);
 
   return (
     <div className="relative flex items-center justify-center min-w-[250px] border border-gray-400 pb-[16px] max-w-[95%] md:max-w-[1184px] md:h-[416px] rounded-lg shadow-[0_4px_24px_-1px_rgba(0,0,0,0.25)]">
@@ -95,7 +98,11 @@ const Carrossel: React.FC<CarrosselProps> = ({ imagens }) => {
           </div>
         </div>
       ) : (
-        <div className="overflow-hidden max-h-[80vh]" ref={emblaRef} style={{ aspectRatio: "16/9" }}>
+        <div
+          className="overflow-hidden max-h-[80vh]"
+          ref={emblaRef}
+          style={{ aspectRatio: "16/9" }}
+        >
           {/* Carrossel para mobile */}
           <div className="flex justify-stretch items-stretch">
             {imagens.map((imagem, index) => (
@@ -104,7 +111,6 @@ const Carrossel: React.FC<CarrosselProps> = ({ imagens }) => {
                   src={imagem}
                   alt={`Imagem ${index + 1}`}
                   className="w-full h-full object-cover rounded-lg pl-[32px] pr-[32px] pt-[16px] min-w-[331px]"
-                  onClick={() => openModal(index)} // Corrigido para passar o índice correto
                 />
               </div>
             ))}
@@ -112,23 +118,30 @@ const Carrossel: React.FC<CarrosselProps> = ({ imagens }) => {
         </div>
       )}
 
-      {/* botões de navegação do carrossel */}
+      {/* Indicadores de navegação do carrossel (dots) */}
       {!isDesktop && (
-        <>
-          <button
-            onClick={scrollPrev}
-            className="absolute top-1/2 left-0 transform -translate-y-1/2 p-2 bg-opacity-0 text-white rounded-full w-[32px]"
-          >
-            <img src={setaEsquerda} alt="botão de navegação do carrossel, esquerda" />
-          </button>
+        <div className="absolute bottom-[22px] left-0 right-0 flex justify-center items-center space-x-2">
+          {imagens.map((_, index) => (
+            <button
+              title="Dot"
+              key={index}
+              className={`w-2 h-2 rounded-full ${
+                selectedIndex === index ? "bg-blue-300" : "bg-gray-400"
+              }`}
+              onClick={() => {
+                setSelectedIndex(index);
+                emblaApi?.scrollTo(index);
+              }}
+            />
+          ))}
+        </div>
+      )}
 
-          <button
-            onClick={scrollNext}
-            className="absolute top-1/2 right-0 transform -translate-y-1/2 p-2 bg-opacity-0 w-[32px]"
-          >
-            <img src={setaDireita} alt="botão de navegação do carrossel, direita" />
-          </button>
-        </>
+      {/* Exibição do índice atual e total de imagens */}
+      {!isDesktop && (
+        <div className="absolute bottom-[16px] right-[32px] text-white text-sm bg-black-100 bg-opacity-[.7] px-1 py-[2px] rounded">
+          {`${selectedIndex + 1}/${imagens.length}`}
+        </div>
       )}
 
       {/* Modal com o carrossel */}
@@ -138,13 +151,17 @@ const Carrossel: React.FC<CarrosselProps> = ({ imagens }) => {
         className="fixed inset-0 z-50 flex items-center justify-center"
         shouldCloseOnOverlayClick={true}
         overlayClassName="fixed inset-0 bg-black bg-opacity-50"
-        ariaHideApp={true} 
+        ariaHideApp={true}
       >
         <div className="relative flex items-center justify-center w-full h-full">
-          <div className="overflow-hidden max-h-[80vh] w-full" ref={emblaRef}>
+          <div
+            className="overflow-hidden max-h-[80vh] w-full"
+            ref={emblaRefModal}
+            style={{ aspectRatio: "16/9" }}
+          >
             <div className="flex">
               {imagens.map((imagem, index) => (
-                <div key={index} className="flex-[0_0_100%]">
+                <div key={index} className="z-10 flex-[0_0_100%]">
                   <img
                     src={imagem}
                     alt={`Imagem ${index + 1}`}
@@ -154,26 +171,37 @@ const Carrossel: React.FC<CarrosselProps> = ({ imagens }) => {
               ))}
             </div>
           </div>
-          <button
-            onClick={scrollPrev}
-            className="absolute top-1/2 left-6 md:left-12 transform -translate-y-1/2 p-2 bg-opacity-[.2] bg-white rounded-full w-[32px]"
-          >
-            <img src={setaEsquerda} alt="botão de navegação do carrossel, esquerda" />
-          </button>
+
+          {/* Indicadores de navegação do modal (dots) */}
+          <div className="absolute bottom-[16%] left-0 right-0 flex justify-center items-center space-x-2">
+            {imagens.map((_, index) => (
+              <button
+                title="Dot"
+                key={index}
+                className={`w-2 h-2 rounded-full ${
+                  selectedIndex === index ? "bg-blue-300" : "bg-gray-400"
+                }`}
+                onClick={() => {
+                  setSelectedIndex(index);
+                  emblaApiModal?.scrollTo(index);
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Exibição do índice atual e total de imagens */}
+          <div className="z-50 absolute bottom-[15%] right-[8%] text-white bg-black-100 bg-opacity-[.7] px-2 py-1 rounded">
+            {`${selectedIndex + 1}/${imagens.length}`}
+          </div>
 
           <button
-            onClick={scrollNext}
-            className="absolute top-1/2 right-6 md:right-12 transform -translate-y-1/2 p-2 bg-opacity-[.2] bg-white rounded-full w-[32px]"
+            onClick={closeModal}
+            className=" absolute top-12 md:top-[42px] right-4 p-2 text-black-300"
           >
-            <img src={setaDireita} alt="botão de navegação do carrossel, direita" />
-          </button>
-
-          <button onClick={closeModal} className="absolute top-12 md:top-[42px] right-4 p-2 text-black">
             Fechar
           </button>
         </div>
       </Modal>
-
     </div>
   );
 };

@@ -18,11 +18,19 @@ type AnuncioProps = {
   imagens: string[];
   nota: number;
   qtd_avaliacoes: number;
+  endereco: {
+    latLng: LatLngExpression;
+    pais: string;
+    cidade: string;
+    uf: string;
+    bairro: string;
+    rua: string;
+  };
 };
 
-const ExibirAnuncio: React.FC<AnuncioProps> = ({ titulo, qtd_hospedes, qtd_camas, qtd_banheiros, imagens, nota, qtd_avaliacoes }) => {
+const ExibirAnuncio: React.FC<AnuncioProps> = ({ titulo, qtd_hospedes, qtd_camas, qtd_banheiros, imagens, nota, qtd_avaliacoes, endereco }) => {
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
-  const [mapCenter, setMapCenter] = useState<LatLngExpression>({ lat: -23.5505, lng: -46.6333 });
+  const [mapCenter, setMapCenter] = useState<LatLngExpression>({ lat: -23.6250, lng: -45.4000 });
 
   const openMapModal = () => setIsMapModalOpen(true);
   const closeMapModal = () => setIsMapModalOpen(false);
@@ -32,7 +40,7 @@ const ExibirAnuncio: React.FC<AnuncioProps> = ({ titulo, qtd_hospedes, qtd_camas
       {/* Section 1 */}
       <section className="flex justify-center flex-col mb-4">
         <div className="bg-[#faf8f8] flex flex-row justify-between p-2 pb-0 flex-wrap max-w-[1184px]">
-          <h1 className="text-tituloa text-black p-0 font-bold mb-0 mt-1">
+          <h1 className="text-tituloa text-black-300 p-0 font-bold mb-0 mt-1">
             {titulo}
           </h1>
           <Avaliacao nota={nota || 0} qtd_avaliacoes={qtd_avaliacoes} exibirNotaMedia={true}/>
@@ -51,6 +59,7 @@ const ExibirAnuncio: React.FC<AnuncioProps> = ({ titulo, qtd_hospedes, qtd_camas
         isOpen={isMapModalOpen}
         onClose={closeMapModal}
         latLng={mapCenter}
+        endereco={endereco}
       />
 
       {/* Section 2 */}

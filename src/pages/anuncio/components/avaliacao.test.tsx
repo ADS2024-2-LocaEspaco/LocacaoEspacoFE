@@ -47,4 +47,10 @@ describe("Componente Avaliacao", () => {
     expect(screen.getAllByTestId("estrela-inativa")).toHaveLength(3);
     expect(screen.getByTestId("qtd-avaliacoes")).toHaveTextContent("(1700)");
   });
+
+  it("Renderiza a nota média corretamente quando exibirNotaMedia é true", () => {
+    render(<Avaliacao nota={4.2} qtd_avaliacoes={1700} exibirNotaMedia={true} />);
+
+    expect(screen.getByTestId("nota-media")).toHaveTextContent("Nota: 4.2");
+  });
 });

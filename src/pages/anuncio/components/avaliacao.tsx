@@ -63,7 +63,7 @@ const Avaliacao: React.FC<AvaliacaoProps> = ({
 
       {exibirNotaMedia ? (
         <p className="text-[#F37216] text-avaliacaol pt-1" data-testid="nota-media">
-          Nota: {nota.toFixed(1)}
+          {nota.toFixed(1)}
         </p>
       ) : (
         <p className="text-[#F37216] text-avaliacaol pt-1" data-testid="qtd-avaliacoes">
