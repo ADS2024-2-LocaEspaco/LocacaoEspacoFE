@@ -47,7 +47,7 @@ const ReservaAnuncio = () => {
   }
 
   return (
-    <div className="flex justify-center items-center font-josefin rounded-lg border-b-black border-0 shadow pt-2 pb-6 max-w-[357px]" style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)' }}>
+    <div className="flex justify-center items-center font-josefin rounded-lg border-b-black border-0 shadow pt-2 pb-6 max-w-[375px]" style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)' }}>
       <div className="flex flex-col justify-center items-center w-auto h-full px-2 text-[#3D3D43]">
         <div className="flex items-baseline">
           <p className="flex text-2xl font-bold text-[#FF6F00]">R$ {valorDiaria}</p>

@@ -72,8 +72,8 @@ export default function ReviewsSection() {
 
   return (
     <section className="mx-auto p-6 text-[#3D3D43]">
-      <h2 className="block md:hidden text-3xl font-bold text-center mb-6">Avaliações</h2>
-      <h2 className="hidden md:block text-3xl font-bold text-start mb-6">Avaliações dos hóspedes</h2>
+      <h2 className="block md:hidden text-3xl font-bold font-josefin text-center mb-6">Avaliações</h2>
+      <h2 className="hidden md:block text-3xl font-bold text-start mb-6 font-josefin">Avaliações dos hóspedes</h2>
       <div className="flex flex-col md:flex-row items-start justify-between">
         <div className="w-full md:w-2/3 mb-8 md:mb-0">
           <div className="flex items-center justify-center md:justify-start w-full mb-4">
@@ -105,18 +105,19 @@ export default function ReviewsSection() {
             ))}
           </div>
         </div>
-        <div className="w-full md:w-1/3 md:pl-8">
-          <div className="hidden md:block rounded-lg shadow p-6 mt-4" style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)' }}>
-            <div className="flex items-center justify-center w-48 h-12  mb-4 lg:mb-8">
-              <span className="text-4xl font-bold mr-2 text-[#FF6F00]">{averageRating}</span>
-              <div className="flex">
+        <div className="md:w-1/3 pl-9 lg:w-[38%] ">
+          <div className="hidden md:block rounded-lg shadow py-4 px-2 mt-4 min-w-[230px] lg:min-[322px]: max-w-3xl" style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)' }}>
+            <div className="flex items-center justify-start max-w-7xl h-12 mb-4 lg:mb-8">
+              <div className="flex justify-start lg:max-w-lg">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className={`w-5 h-5 ${i < Math.floor(Number(averageRating)) ? 'text-[#FF6F00] fill-current' : 'text-gray-300'}`}
+                    className={`md:w-6 md:h-6 lg:w-10 lg:h-10 ${i < Math.floor(Number(averageRating)) ? 'text-[#FF6F00] fill-current' : 'text-gray-300'}`}
                   />
                 ))}
               </div>
+              <span className='flex md:block whitespace-nowrap ml-2 text-black-300 text-base font-opensans'> {averageRating} de 5
+              </span>
             </div>
             <h3 className="text-xl font-semibold mb-4">Classificação</h3>
             {[5, 4, 3, 2, 1].map((rating) => (
@@ -140,7 +141,7 @@ export default function ReviewsSection() {
             key={index}
             className={`w-2 h-2 mx-1 rounded-full ${index === currentReviewIndex ? 'bg-[#FF6F00]' : 'bg-gray-300'}`}
             onClick={() => setCurrentReviewIndex(index)}
-            aria-label={`Go to review ${index + 1}`}
+            aria-label={`Go to review ${index - 1}`}
           />
         ))}
       </div>
@@ -159,7 +160,7 @@ interface Review {
 
 function ReviewCard({ review, className = '' }: { review: Review; className?: string }) {
   return (
-    <div className={`max-w-2xl p-6 rounded-lg shadow  md:shadow-none ${className}`} style={{ boxShadow: '2px 4px 10px rgba(0, 0, 0, 0.3)' }}>
+    <div className={`max-w-[672px] p-6 rounded-lg shadow md:shadow-none ${className}`} style={{ boxShadow: '2px 4px 10px rgba(0, 0, 0, 0.3)' }}>
       <div className="flex items-center mb-4">
         <div className="w-12 h-12 rounded-full flex items-center justify-center mr-4">
           <span className="text-2xl bg-none">
