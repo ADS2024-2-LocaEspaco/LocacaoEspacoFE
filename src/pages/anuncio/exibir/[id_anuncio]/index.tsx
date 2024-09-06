@@ -8,7 +8,7 @@ import Avaliacao from "../../components/avaliacao";
 import Carrossel from "../../components/carrosselAnuncio";
 import IconesAnuncio from "../../components/iconesAnuncio";
 const MapaModal = dynamic(() => import("../../components/mapaModal"), { ssr: false });
-import FeedBacksAnte from "../../components/feedbackAnte";
+import FeedBacksAnte from "../../components/feedback";
 
 type AnuncioProps = {
   titulo: string;

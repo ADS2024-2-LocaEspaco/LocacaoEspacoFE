@@ -5,7 +5,6 @@ interface Reserva {
   endDate: Date | null;
   valorTotal: number;
 }
-
 interface ReservaContextData {
   reserva: Reserva;
   setReserva: (reserva: Reserva) => void;

@@ -1,46 +1,78 @@
-import axios from 'axios';
 import { User, Anuncio, TipoImovel, TipoEspaco, Feedback } from '@/types/types';
 
-const api = axios.create({
-  baseURL: '/api', // Assuming your API routes are under /api
-});
-
-export const fetchUsers = async (): Promise<User[]> => {
-  const response = await api.get<User[]>('/users');
-  return response.data;
+// Fetch Users
+export const fetchUsers = async (): Promise<User[] | undefined> => {
+  try {
+    const response = await fetch('/api/users');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    handleApiError(error);
+  }
 };
 
-export const createUser = async (userData: Omit<User, 'id'>): Promise<User> => {
-  const response = await api.post<User>('/users', userData);
-  return response.data;
+// Fetch Anuncios
+export const fetchAnuncios = async (): Promise<Anuncio[] | undefined> => {
+  try {
+    const response = await fetch('/api/anuncios');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    handleApiError(error);
+  }
 };
 
-export const fetchAnuncios = async (): Promise<Anuncio[]> => {
-  const response = await api.get<Anuncio[]>('/anuncios');
-  return response.data;
+
+// Fetch TipoImoveis
+export const fetchTipoImoveis = async (): Promise<TipoImovel[] | undefined> => {
+  try {
+    const response = await fetch('/api/tipo-imoveis');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    handleApiError(error);
+  }
 };
 
-export const createAnuncio = async (anuncioData: Omit<Anuncio, 'id'>): Promise<Anuncio> => {
-  const response = await api.post<Anuncio>('/anuncios', anuncioData);
-  return response.data;
+// Fetch TipoEspacos
+export const fetchTipoEspacos = async (): Promise<TipoEspaco[] | undefined> => {
+  try {
+    const response = await fetch('/api/tipo-espacos');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    handleApiError(error);
+  }
 };
 
-export const fetchTipoImoveis = async (): Promise<TipoImovel[]> => {
-  const response = await api.get<TipoImovel[]>('/tipo-imoveis');
-  return response.data;
+// Fetch Feedbacks
+export const fetchFeedbacks = async (): Promise<Feedback[] | undefined> => {
+  try {
+    const response = await fetch('/api/feedbacks');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    handleApiError(error);
+  }
 };
 
-export const fetchTipoEspacos = async (): Promise<TipoEspaco[]> => {
-  const response = await api.get<TipoEspaco[]>('/tipo-espacos');
-  return response.data;
+// Create Feedback
+export const createFeedback = async (feedbackData: Omit<Feedback, 'id'>): Promise<Feedback | undefined> => {
+  try {
+    const response = await fetch('/api/feedbacks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(feedbackData),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    handleApiError(error);
+  }
 };
+function handleApiError(error: unknown) {
+  throw new Error('Function not implemented.');
+}
 
-export const fetchFeedbacks = async (): Promise<Feedback[]> => {
-  const response = await api.get<Feedback[]>('/feedbacks');
-  return response.data;
-};
-
-export const createFeedback = async (feedbackData: Omit<Feedback, 'id'>): Promise<Feedback> => {
-  const response = await api.post<Feedback>('/feedbacks', feedbackData);
-  return response.data;
-};

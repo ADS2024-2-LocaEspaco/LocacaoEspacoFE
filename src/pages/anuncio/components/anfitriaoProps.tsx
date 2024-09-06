@@ -2,29 +2,7 @@
 import { useEffect, useRef, useState } from "react"
 import ReservaAnuncio from "./reservaAnuncio"
 import useWindowWidth from "@/hooks/useWindowWidth"
-
-interface AnfitriaoProps {
-  foto: string,
-  nome: string,
-  descricao: string
-}
-
-interface ImovelProps {
-  nome: string,
-  descricao: string,
-  endereco: string,
-  preco: number,
-  quartos: number,
-  banheiros: number,
-  vagas: number,
-  area: number,
-  anfitriao: AnfitriaoProps
-}
-
-interface ComodidadesProps {
-  nome: string,
-  icone: string
-}
+import { ComodidadesProps, AnfitriaoProps } from '@/types/types';
 
 export const anfitriaoData = {
   id: '123',
@@ -75,8 +53,6 @@ const AnfitriaoInfos = ({ foto, nome, descricao, quartos, banheiros, vagas }: An
     setDataEscolhida(event.target.value);
   };
 
-  const [lastLineClass, setLastLineClass] = useState('');
-
   const amenities = [
     { type: 'Quartos', count: quartos, icon: '/icons/bed.svg' },
     { type: 'Banheiros', count: banheiros, icon: '/icons/shower.svg' },
@@ -99,14 +75,14 @@ const AnfitriaoInfos = ({ foto, nome, descricao, quartos, banheiros, vagas }: An
           <h2 className="font-josefin text-xl font-medium text-[#3D3D43] truncate lg:max-w-md " >{nome}</h2>
         </div>
         {/* Descrição */}
-        <div className="relative px-5 max-w-[672px]">
-          <p ref={descricaoRef} className={`text-sm font-normal text-justify text-[#3D3D43]`}>
+        <div className="relative px-5 max-w-[672px] font-opensans">
+          <p ref={descricaoRef} className={`text-sm font-normal text-justify text-[#3D3D43] font-opensans`}>
             {lerMais ? descricao : truncatedDescription + '...'}
           </p>
           {!lerMais && (
             <div className="absolute left-0 w-full h-2 bg-gradient-to-b from-transparent via-white to-black blur-md pointer-events-none " />
           )}
-          <div className="flex pt-6 justify-center md:pb-6 ">
+          <div className="flex pt-6 justify-center md:pb-6 font-opensans">
             {descricao.length > 350 && (
               <button onClick={() => setLerMais(!lerMais)} className="text-[#051F38] text-sm items-center font-normal underline ">
                 {lerMais ? 'Ler Menos' : 'Ler Mais'}
@@ -114,7 +90,7 @@ const AnfitriaoInfos = ({ foto, nome, descricao, quartos, banheiros, vagas }: An
             )}
           </div>
 
-          <div className="pt-5 pb-10 flex justify-center space-x-4 md:hidden">
+          <div className="pt-5 pb-10 flex justify-center space-x-4 md:hidden font-opensans">
             {amenities.map((amenity) => (
               <button key={amenity.type} className="flex bg-[#FFD7B8] w-[60px] h-8 rounded-2xl justify-around items-center">
                 <img src={amenity.icon} alt={amenity.type} />
@@ -123,16 +99,16 @@ const AnfitriaoInfos = ({ foto, nome, descricao, quartos, banheiros, vagas }: An
             ))}
           </div>
 
-          <div className="font-sans rounded-lg border-b-black border-0 shadow grid grid-cols-2 gap-4 pt-2 pb-6 mb-5" style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)' }}>
+          <div className="font-opensans rounded-lg border-b-black border-0 shadow grid grid-cols-2 gap-4 pt-2 pb-6 mb-5" style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)' }}>
             {comodidadesParaExibir.map((comodidade) => (
               <div key={comodidade.nome} className="flex items-center w-auto h-8 px-2 ">
                 <img src={comodidade.icone} alt={comodidade.nome} className="w-4 h-4 mr-2" />
-                <p className="text-[#3D3D43] text-sm sm:text-base">{comodidade.nome}</p>
+                <p className="text-[#3D3D43] text-sm sm:text-base font-opensans">{comodidade.nome}</p>
               </div>
             ))}
             {comodidades.length > 4 && (
               <div className="col-span-2 flex justify-center items-center">
-                <button onClick={() => setVerMaisComodidades(!verMaisComodidades)} className="bg-[#D9D9D9] mx-1 w-20 rounded-md text-[#051F38] text-sm items-center font-normal">
+                <button onClick={() => setVerMaisComodidades(!verMaisComodidades)} className="bg-[#D9D9D9] mx-1 w-20 rounded-md text-[#051F38] text-sm items-center font-normal font-opensans">
                   {verMaisComodidades ? 'Ver Menos' : 'Ver Mais'}
                 </button>
               </div>

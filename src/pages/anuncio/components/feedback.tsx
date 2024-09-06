@@ -3,50 +3,60 @@ import { useState, useMemo } from 'react'
 import { Star } from 'lucide-react'
 import { useSwipeable } from 'react-swipeable'
 
-const reviews = [
+import { Feedback } from '@/types/types';
+
+const reviews: Feedback[] = [
   {
-    id: 1,
-    name: 'Cliente',
-    type: 'Cliente antigo',
-    rating: 4,
+    id: '1',
+    nome: 'Cliente',
+    tipo: 'Cliente antigo',
+    nota: 4,
     date: 'Setembro 2020',
-    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+    descricao: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    anuncioId: '',
+    userId: ''
   },
   {
-    id: 2,
-    name: 'Outro Cliente',
-    type: 'Novo cliente',
-    rating: 5,
+    id: '2',
+    nome: 'Outro Cliente',
+    tipo: 'Novo cliente',
+    nota: 5,
     date: 'Outubro 2021',
-    comment: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+    descricao: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    anuncioId: '',
+    userId: '',
   },
   {
-    id: 3,
-    name: 'Mais um Cliente',
-    type: 'Cliente frequente',
-    rating: 2.7,
+    id: '3',
+    nome: 'Mais um Cliente',
+    tipo: 'Cliente frequente',
+    nota: 2.7,
     date: 'Novembro 2022',
-    comment: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.'
+    descricao: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
+    anuncioId: '',
+    userId: ''
   },
   {
-    id: 4,
-    name: 'Mais um Cliente',
-    type: 'Cliente frequente',
-    rating: 5.0,
+    id: '4',
+    nome: 'Mais um Cliente',
+    tipo: 'Cliente frequente',
+    nota: 5.0,
     date: 'Novembro 2023',
-    comment: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.'
+    descricao: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
+    anuncioId: '',
+    userId: ''
   },
 ]
 
 export default function ReviewsSection() {
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0)
   const averageRating = useMemo(() => {
-    const sum = reviews.reduce((acc, review) => acc + review.rating, 0)
+    const sum = reviews.reduce((acc, review) => acc + review.nota, 0)
     return (sum / reviews.length).toFixed(1)
   }, [])
   const ratingCounts = useMemo(() => {
     return reviews.reduce((acc, review) => {
-      const rating = Math.floor(review.rating)
+      const rating = Math.floor(review.nota)
       acc[rating] = (acc[rating] || 0) + 1
       return acc
     }, {} as Record<number, number>)
@@ -105,7 +115,7 @@ export default function ReviewsSection() {
             ))}
           </div>
         </div>
-        <div className="md:w-1/3 pl-9 lg:w-[38%] ">
+        <div className="md:w-1/3 pl-9 lg:w-[38%]">
           <div className="hidden md:block rounded-lg shadow py-4 px-2 mt-4 min-w-[230px] lg:min-[322px]: max-w-3xl" style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)' }}>
             <div className="flex items-center justify-start max-w-7xl h-12 mb-4 lg:mb-8">
               <div className="flex justify-start lg:max-w-lg">
@@ -116,8 +126,7 @@ export default function ReviewsSection() {
                   />
                 ))}
               </div>
-              <span className='flex md:block whitespace-nowrap ml-2 text-black-300 text-base font-opensans'> {averageRating} de 5
-              </span>
+              <span className='flex md:block whitespace-nowrap ml-2 text-black-300 text-base font-opensans'>{averageRating} de 5</span>
             </div>
             <h3 className="text-xl font-semibold mb-4">Classificação</h3>
             {[5, 4, 3, 2, 1].map((rating) => (
@@ -141,7 +150,7 @@ export default function ReviewsSection() {
             key={index}
             className={`w-2 h-2 mx-1 rounded-full ${index === currentReviewIndex ? 'bg-[#FF6F00]' : 'bg-gray-300'}`}
             onClick={() => setCurrentReviewIndex(index)}
-            aria-label={`Go to review ${index - 1}`}
+            aria-label={`Ir para a avaliação ${index + 1}`}
           />
         ))}
       </div>
@@ -149,16 +158,7 @@ export default function ReviewsSection() {
   )
 }
 
-interface Review {
-  id: number;
-  name: string;
-  type: string;
-  rating: number;
-  date: string;
-  comment: string;
-}
-
-function ReviewCard({ review, className = '' }: { review: Review; className?: string }) {
+function ReviewCard({ review, className = '' }: { review: Feedback; className?: string }) {
   return (
     <div className={`max-w-[672px] p-6 rounded-lg shadow md:shadow-none ${className}`} style={{ boxShadow: '2px 4px 10px rgba(0, 0, 0, 0.3)' }}>
       <div className="flex items-center mb-4">
@@ -168,20 +168,20 @@ function ReviewCard({ review, className = '' }: { review: Review; className?: st
           </span>
         </div>
         <div>
-          <h3 className="font-bold">{review.name}</h3>
-          <p className="text-sm text-gray-600">{review.type}</p>
+          <h3 className="font-bold">{review.nome}</h3>
+          <p className="text-sm text-gray-600">{review.nome}</p>
         </div>
       </div>
       <div className="flex mb-2">
         {[...Array(5)].map((_, i) => (
           <Star
             key={i}
-            className={`w-5 h-5 ${i < review.rating ? 'text-[#FF6F00] fill-current' : 'text-gray-300'}`}
+            className={`w-5 h-5 ${i < Math.floor(review.nota) ? 'text-[#FF6F00] fill-current' : 'text-gray-300'}`}
           />
         ))}
       </div>
       <p className="text-sm text-gray-600 mb-2">{review.date}</p>
-      <p className="text-gray-800">{review.comment}</p>
+      <p className="text-gray-800">{review.descricao}</p>
     </div>
   )
 }
