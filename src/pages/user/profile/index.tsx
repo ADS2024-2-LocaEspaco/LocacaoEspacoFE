@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 
 import AcountDetails from "../components/AcountDetails";
 import ContactInfo from "../components/ContactInfo";
@@ -5,7 +6,23 @@ import ImageUser from "../components/ImageUser";
 import InfoBank from "../components/InfoBank";
 import InfoBasicUser from "../components/InfoBasicUser"
 
+import DeleteAcount from '../components/deleteAccountModal';
+
+
 export default function profile() {
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleDeleteAccount = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+
+
     return (
         
         <div className="w-screen h-full bg-white">
@@ -36,12 +53,24 @@ export default function profile() {
                 <InfoBank />
             </div>
         </div>
-    
+
+
         <div className="flex justify-center mt-24 mb-12">
-            <button className="bg-orange-600 px-4 py-2 text-white font-bold rounded-3xl drop-shadow-2xl">
-                Excluir conta
-            </button>
-        </div>
+                <button 
+                    className="bg-orange-600 px-4 py-2 text-white font-bold rounded-3xl drop-shadow-2xl"
+                    onClick={handleDeleteAccount}  // Exibe o modal
+                >
+                    Excluir conta
+                </button>
+            </div>
+
+            {isModalOpen && (
+                <DeleteAcount 
+                    title="Confirmação Necessária "
+                    message="Para excluir sua conta digite o Email vinculado no campo abaixo."
+                    onClose={closeModal}
+                />
+            )}
     </div>
     );
 }
