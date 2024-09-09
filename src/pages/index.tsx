@@ -3,7 +3,7 @@
 export default function Home() {
   return (
     <main
-      className={`flex flex-col min-h-screen bg-white`}
+      className={`flex flex-col min-h-screen `}
     >
       <h1 className="font-title text-5xl font-bold">Teste</h1>
       <div className="font-body">
