@@ -16,11 +16,13 @@ const config: Config = {
 	
 		blue: {
 			200: '#1E88EB',
+			500: '#0C8CE9',
 		},
 	
 		orange: {
 			100: '#FFD7B8',
-			200: '#FF6F00'
+			200: '#FF6F00',
+			500: '#F37216'
 		}
     },
   },
