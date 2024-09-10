@@ -1,16 +1,8 @@
 import { useEffect, useState } from "react";
-import Image from "next/image";
-
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from "swiper/modules";
-import 'swiper/css';
-import 'swiper/css/navigation'
 
 import AdImage from '../../assets/card.png'
-import CardAd, { CardAdProps } from "./components/cardAd";
-
-import ArrowBackIcon from '../../../public/icons/arrow_back_icon.svg'
-import ArrowForwardIcon from '../../../public/icons/arrow_forward_icon.svg'
+import { CardAdProps } from "./components/cardAd";
+import SliderCarousel from "./components/sliderCarousel";
 
 export default function Homepage() {
     const [dataSectionMostReserved, setDataSectionMostReserved] = useState<CardAdProps[]>([])
@@ -18,7 +10,8 @@ export default function Homepage() {
 
     useEffect(() => {
         setDataSectionMostReserved([
-            {
+            {   
+                id: 1,
                 title: 'Mansão Oasis',
                 city: 'Varginha',
                 country: 'Brasil',
@@ -27,6 +20,7 @@ export default function Homepage() {
                 value: 1000
             },
             {
+                id: 2,
                 title: 'Mansão Oasis',
                 city: 'Varginha',
                 country: 'Brasil',
@@ -35,6 +29,7 @@ export default function Homepage() {
                 value: 1000
             },
             {
+                id: 1,
                 title: 'Mansão Oasis',
                 city: 'Varginha',
                 country: 'Brasil',
@@ -43,6 +38,25 @@ export default function Homepage() {
                 value: 1000
             },
             {
+                id: 1,
+                title: 'Mansão Oasis',
+                city: 'Varginha',
+                country: 'Brasil',
+                image: AdImage,
+                rating: 5,
+                value: 1000
+            },
+            {
+                id: 1,
+                title: 'Mansão Oasis',
+                city: 'Varginha',
+                country: 'Brasil',
+                image: AdImage,
+                rating: 5,
+                value: 1000
+            },
+            {
+                id: 1,
                 title: 'Mansão Oasis',
                 city: 'Varginha',
                 country: 'Brasil',
@@ -55,11 +69,11 @@ export default function Homepage() {
 
     useEffect(() => {
         const calculateVisibleCards = () => {
-            const cardWidth = 292
-            const screenWidth = window.innerWidth
+            const cardWidth = 300
+            const screenWidth = window.innerWidth - 256
             const cards = Math.floor(screenWidth / cardWidth)
             setTotalCardsToAppearInScreen(cards)
-        };
+        }
 
         calculateVisibleCards()
 
@@ -69,42 +83,18 @@ export default function Homepage() {
     }, [])
 
     return (
-        <main className="min-h-screen">
-            <Swiper
-                modules={[Navigation]}
-                navigation={{
-                    prevEl: '.arrow-back-icon',
-                    nextEl: '.arrow-next-icon'
-                }}
-                spaceBetween={120}
-                slidesPerView={totalCardsToAppearInScreen}
-                onSlideChange={() => console.log('slide change')}
-                onSwiper={(swiper) => console.log(swiper)}
-                className="w-full h-96 px-10"
-            >
-                <button className="arrow-back-icon z-10 absolute left-0 top-1/2 transform -translate-y-1/2 bg-blue-500 p-2 rounded-full">
-                    <Image src={ArrowBackIcon} alt="Icone de voltar" />
-                </button>
+        <main className="min-h-screen space-y-20 px-32 py-[68px] ">
+            <section className="space-y-9">
+                <h1 className="font-title text-4xl font-bold text-black-100">Mais reservados</h1>
 
-                <button className="arrow-next-icon z-10 absolute right-0 top-1/2 transform -translate-y-1/2 bg-blue-500 p-2 rounded-full">
-                    <Image src={ArrowForwardIcon} alt="Icone de próximo" />
-                </button>
+                <SliderCarousel totalCardsToAppearInScreen={totalCardsToAppearInScreen} dataSectionMostReserved={dataSectionMostReserved}/>
+            </section>
 
-                {
-                    dataSectionMostReserved.map((ad, index) => (
-                        <SwiperSlide key={index}>
-                            <CardAd
-                                title={ad.title}
-                                city={ad.city}
-                                country={ad.country}
-                                image={ad.image}
-                                rating={ad.rating}
-                                value={ad.value}
-                            />
-                        </SwiperSlide>
-                    ))
-                }
-            </Swiper>
+            <section className="space-y-9">
+                <h1 className="font-title text-4xl font-bold text-black-100">Escolhas para você</h1>
+
+                <SliderCarousel totalCardsToAppearInScreen={totalCardsToAppearInScreen} dataSectionMostReserved={dataSectionMostReserved}/>
+            </section>
         </main>
     )
 }
