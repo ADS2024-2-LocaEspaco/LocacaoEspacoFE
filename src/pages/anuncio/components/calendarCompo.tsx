@@ -126,10 +126,10 @@ export default function Calendar({ onDateChange, valorDiaria }: CalendarProps) {
                   type="button"
                   className={`
                     m-px size-10 flex justify-center items-center border border-transparent text-sm rounded-full 
-                    hover:border-blue-600 hover:text-white disabled:opacity-50 disabled:pointer-events-none 
-                    focus:outline-none focus:border-blue-600 focus:text-white
+                    hover:border-orange-700 hover:text-white disabled:opacity-50 disabled:pointer-events-none 
+                    focus:outline-none focus:border-orange-700 focus:text-white
                     ${isSelected(currentDate)
-                      ? 'bg-blue-600 text-white'
+                      ? 'bg-[#FF6F00] text-white'
                       : isWeekend(currentDate)
                         ? 'text-[#1270B0]'
                         : 'text-gray-800 dark:text-neutral-200'

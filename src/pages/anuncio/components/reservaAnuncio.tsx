@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Calendario from './calendarCompo';
 import { useReserva } from '@/hooks/ReservaContext';
 import { useRouter } from 'next/router';
-import { fetchAnuncios } from '@/utils/api'; // Importa o fetchAnuncios existente
+import { fetchAnuncioById } from '@/utils/api';
 import { Anuncio } from '@/types/types';
 
 const NEXT_MONTH = new Date();
@@ -31,25 +31,22 @@ const ReservaAnuncio = () => {
 
   useEffect(() => {
     const loadAnuncio = async () => {
-      try {
-        setLoading(true);
-        const anuncios = await fetchAnuncios(); // Reutiliza o fetchAnuncios existente
+      if (typeof id_anuncio === 'string') {
+        try {
+          setLoading(true);
+          const anuncio = await fetchAnuncioById(id_anuncio);
 
-        if (anuncios) {
-          const anuncioEncontrado = anuncios.find(anuncio => anuncio.id === id_anuncio);
-          if (anuncioEncontrado) {
-            setAnuncio(anuncioEncontrado);
+          if (anuncio) {
+            setAnuncio(anuncio);
           } else {
             setError('Anúncio não encontrado.');
           }
-        } else {
-          setError('Erro ao carregar os anúncios.');
-        }
 
-        setLoading(false);
-      } catch (error) {
-        setError('Erro ao carregar o anúncio.');
-        setLoading(false);
+          setLoading(false);
+        } catch (error) {
+          setError('Erro ao carregar o anúncio.');
+          setLoading(false);
+        }
       }
     };
 
@@ -96,9 +93,6 @@ const ReservaAnuncio = () => {
         <div>
           <Calendario onDateChange={handleDateChange} valorDiaria={anuncio?.valorDiaria ?? 0} />
         </div>
-        <button onClick={handleReservarClick} className="mt-4 bg-[#FF6F00] text-white px-4 py-2 rounded">
-          Reservar
-        </button>
       </div>
     </div>
   );

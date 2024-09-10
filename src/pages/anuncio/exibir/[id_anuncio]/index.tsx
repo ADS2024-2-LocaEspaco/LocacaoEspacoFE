@@ -56,7 +56,7 @@ const ExibirAnuncio: React.FC<AnuncioProps> = ({ titulo, qtd_hospedes, qtd_camas
 
       {/* Section 2 */}
       <section className='flex justify-center flex-col mb-4'>
-        <AnfitriaoInfos quartos={3} banheiros={2} vagas={4} {...anfitriaoData} />
+        <AnfitriaoInfos quartos={qtd_avaliacoes} banheiros={qtd_banheiros} vagas={4} {...anfitriaoData} />
       </section>
       <hr className="w-full border-t border-[#3D3D43] my-2 lg:not-sr-only" />
 
