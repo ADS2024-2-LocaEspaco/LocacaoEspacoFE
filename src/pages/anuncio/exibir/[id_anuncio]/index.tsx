@@ -7,7 +7,8 @@ import AnfitriaoInfos, { anfitriaoData } from '../../components/anfitriaoProps';
 import Avaliacao from "../../components/avaliacao";
 import Carrossel from "../../components/carrosselAnuncio";
 import IconesAnuncio from "../../components/iconesAnuncio";
-import FavoritosModal from "../../components/favoritosModal";
+import FavoritosModal from "../../components/favoritosModal";  // Modal de favoritos adicionado
+import CompartilharModal from "../../components/compartilharModal";
 const MapaModal = dynamic(() => import("../../components/mapaModal"), { ssr: false });
 
 type AnuncioProps = {
@@ -29,28 +30,23 @@ type AnuncioProps = {
   };
 };
 
-const listaFavoritos = [
-  { id: '1', name: 'Casas para o verão', icon: '/icons/image_placeholder_bg.svg', userId: '123' },
-  { id: '2', name: 'Férias nas montanhas', icon: '/icons/image_placeholder_bg.svg', userId: '123' },
-  { id: '3', name: 'Visitando os amigos', icon: '/icons/image_placeholder_bg.svg', userId: '123' },
-  { id: '4', name: 'Casas para o verão', icon: '/icons/image_placeholder_bg.svg', userId: '123' },
-  { id: '5', name: 'Férias nas montanhas', icon: '/icons/image_placeholder_bg.svg', userId: '123' },
-  { id: '6', name: 'Visitando os amigos', icon: '/icons/image_placeholder_bg.svg', userId: '123' },
-  { id: '7', name: 'Casas para o verão', icon: '/icons/image_placeholder_bg.svg', userId: '123' },
-  { id: '8', name: 'Férias nas montanhas', icon: '/icons/image_placeholder_bg.svg', userId: '123' },
-  { id: '9', name: 'Visitando os amigos', icon: '/icons/image_placeholder_bg.svg', userId: '123' },
-];
 
 const ExibirAnuncio: React.FC<AnuncioProps> = ({ titulo, qtd_hospedes, qtd_camas, qtd_banheiros, imagens, nota, qtd_avaliacoes, endereco }) => {
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
   const [isFavModalOpen, setIsFavModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);  // Estado para modal de compartilhar
+
   const [mapCenter, setMapCenter] = useState<LatLngExpression>({ lat: -23.6250, lng: -45.4000 });
 
+  // Funções para abrir e fechar as modais
   const openMapModal = () => setIsMapModalOpen(true);
   const closeMapModal = () => setIsMapModalOpen(false);
 
-  const openFavoritosModal = () => setIsFavModalOpen(true);
-  const closeFavoritosModal = () => setIsFavModalOpen(false);
+  const openFavoritosModal = () => setIsFavModalOpen(true);  // Função para abrir modal de favoritos
+  const closeFavoritosModal = () => setIsFavModalOpen(false);  // Função para fechar modal de favoritos
+
+  const openShareModal = () => setIsShareModalOpen(true);  // Função para abrir modal de compartilhar
+  const closeShareModal = () => setIsShareModalOpen(false);  // Função para fechar modal de compartilhar
 
   return (
     <div className="bg-[#fff7f4] h-full font-josefin md:flex flex-col items-center">
@@ -68,19 +64,36 @@ const ExibirAnuncio: React.FC<AnuncioProps> = ({ titulo, qtd_hospedes, qtd_camas
             qtd_hospedes={qtd_hospedes}
             qtd_banheiros={qtd_banheiros}
             qtd_camas={qtd_camas}
-            onOpenMapModal={openMapModal}
-            onOpenFavoritosModal={openFavoritosModal}
+            onOpenMapModal={openMapModal} 
+            onOpenFavoritosModal={openFavoritosModal} 
+            onOpenShareModal={openShareModal}
           />
         </div>
       </section>
+
+      {/* Modal de mapa */}
       <MapaModal
         isOpen={isMapModalOpen}
         onClose={closeMapModal}
         latLng={mapCenter}
         endereco={endereco}
       />
-      <FavoritosModal isOpen={isFavModalOpen} onClose={closeFavoritosModal} favoritos={listaFavoritos} />
 
+      {/* Modal de favoritos */}
+      <FavoritosModal 
+        isOpen={isFavModalOpen} 
+        onClose={closeFavoritosModal} 
+        currentFavorite={{ id: '1', name: titulo, icon: imagens[0] }}  // Favorito atual
+        userId="123"  // ID do usuário
+      />
+
+
+      {/* Modal de compartilhar */}
+      <CompartilharModal 
+        isOpen={isShareModalOpen} 
+        onClose={closeShareModal} 
+        titulo={titulo}  
+      />
 
       {/* Section 2 */}
       <section>

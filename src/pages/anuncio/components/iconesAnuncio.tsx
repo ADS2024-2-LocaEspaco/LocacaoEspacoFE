@@ -13,12 +13,13 @@ type IconesProps = {
   qtd_banheiros: number;
   onOpenMapModal: () => void;
   onOpenFavoritosModal: () => void;
+  onOpenShareModal: () => void;
 };
 
 const estiloIcone = "flex justify-center items-center rounded-full";
 const estiloTexto = 'text-[#333333] font-opensans text-[14px] p-0 pl-1 ';
 
-const IconesAnuncio: React.FC<IconesProps> = ({ qtd_hospedes, qtd_camas, qtd_banheiros, onOpenMapModal, onOpenFavoritosModal }) => {
+const IconesAnuncio: React.FC<IconesProps> = ({ qtd_hospedes, qtd_camas, qtd_banheiros, onOpenMapModal, onOpenFavoritosModal, onOpenShareModal }) => {
   return (
     <div className="flex flew-row justify-between h-4 mt-2 w-[95%] md:w-full">
       {/* Ícones de comodidades */}
@@ -48,7 +49,7 @@ const IconesAnuncio: React.FC<IconesProps> = ({ qtd_hospedes, qtd_camas, qtd_ban
 
         {/* Ícones de compartilhar e favoritar */}
         <div className="flex flew-row gap-2 justify-end p-0 m-0" data-testid="icones-favshare">
-          <button className={`${estiloIcone} w-[32px] h-[32px] bg-transparent border border-[#333333]`}>
+          <button onClick={onOpenShareModal} className={`${estiloIcone} w-[32px] h-[32px] bg-transparent border border-[#333333]`}>
             <img src={compartilhar} alt="ícone compartilhar" />
           </button>
           <button onClick={onOpenFavoritosModal} className={`${estiloIcone} w-[32px] h-[32px] rounded-full bg-transparent border border-[#333333]`}>
