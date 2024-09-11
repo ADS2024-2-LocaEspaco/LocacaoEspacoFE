@@ -1,5 +1,6 @@
  // pages/api/anuncio/[id_anuncio].ts
 
+import { LatLng } from 'leaflet';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 // Função para buscar um anúncio específico
@@ -18,7 +19,63 @@ export const fetchAnuncioFromDB = async (id_anuncio: string) => {
       '/images/image4.webp',
       '/images/image5.webp',
     ],
+    endereco: {
+      localizacao: { lat: -23.6250, lng: -45.4000 },
+      pais: 'Brasil',
+      cidade: 'Caraguatatuba',
+      uf: 'SP',
+      bairro: 'Prainha',
+      rua: 'Rua da praia',
+    },
+    valor_diaria: 100,
+    disponibilidade: true,
+    descricao: 'Apartamento com vista para o mar',
+    id_tipo_immovel: 1,
+    id_tipo_espaco: 1,
+
+  }
+};
+
+
+type anuncio = {
+  id: string;
+  titulo: string;
+  qtd_hospedes: number;
+  qtd_camas: number;
+  qtd_banheiros: number;
+  id_anfitriao: string;
+  id_tipo_immovel: number;
+  id_tipo_espaco: number;
+  imagens: string[];
+  localização: LatLng;
+  valor_diaria: number;
+  disponibilidade: boolean;
+  descricao: string;
+  endereco: {
+    pais: string;
+    cidade: string;
+    uf: string;
+    bairro: string;
+    rua: string;
   };
+
+
+};
+
+type avaliacao_anuncio = {
+  id: string;
+  id_usuario: number;
+  id_anuncio: number;
+  nota: number;
+  comentario: string;
+};
+
+type avaliacao_usuario = {
+  id: string;
+  id_usuario: number;
+  id_anfitriao: number;
+  nota: number;
+  comentario: string;
 };
 
 // Função para buscar avaliações por ID do anúncio
