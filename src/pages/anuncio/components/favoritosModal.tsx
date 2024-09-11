@@ -11,7 +11,7 @@ type FavoritosModalProps = {
 const FavoritosModal: React.FC<FavoritosModalProps> = ({ isOpen, onClose, currentFavorite, userId }) => {
   const [isCreating, setIsCreating] = useState(false);
   const [newListName, setNewListName] = useState('');
-  const [favoriteLists, setFavoriteLists] = useState([]);
+  const [favoriteLists, setFavoriteLists] = useState<{ id: string; name: string; icon: string; userId: string; }[]>([]);
   const [selectedList, setSelectedList] = useState('');
   const [isSaved, setIsSaved] = useState(false);
 
