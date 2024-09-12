@@ -8,7 +8,7 @@ import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useRouter } from 'next/router';
 import useNavigation from '@/hooks/CadImovel';
-import '@fontsource/josefin-sans'; 
+//import '@fontsource/josefin-sans'; 
 
 interface Categoria {
   name: string;
