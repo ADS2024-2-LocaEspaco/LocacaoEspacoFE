@@ -9,15 +9,16 @@ import styles from '@/styles/LayoutCadImovel.module.css'
 import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useRouter } from 'next/router';
+import CardSelect from './components/CardSelect';
 import useNavigation from '@/hooks/CadImovel';
 import '@fontsource/josefin-sans'; 
 
-interface SegurancaItem {
+interface SafetyItem {
     name: string;
     icon: React.ReactNode;
   }
   
-  const segurancaItems: SegurancaItem[] = [
+  const safetyItems: SafetyItem[] = [
     { name: 'Detector de fumaça', icon: <FaCloud size={32} /> },
     { name: 'Extintor de incêndio', icon: <FaFireAlt size={32} /> },
     { name: 'Kit primeiros socorros', icon: <FaFirstAid size={32} /> },
@@ -25,8 +26,15 @@ interface SegurancaItem {
   ];
 
 const Seguranca: React.FC = () => {
-
   const { goToPreviousPage, goToNextPage } = useNavigation();
+  const [selectedItem, setSelectedItem] = React.useState<string | null>(null);
+
+
+
+  const handleSelect = (item: string) => {
+    setSelectedItem(item);
+  };
+
   return (
     // Left Side
   <>
@@ -46,14 +54,14 @@ const Seguranca: React.FC = () => {
         Segurança
       </h1>
         <div className="grid grid-cols-2 gap-10 rounded-md mt-20">
-          {segurancaItems.map((segurancaItem, index) => (
-            <div
+          {safetyItems.map((safetyItem, index) => (
+            <CardSelect
               key={index}
-              className="flex flex-col items-center border border-gray-400 justify-center bg-white p-4 h-40 w-40 rounded-lg"
-            >
-              <p className="text-gray-700">{segurancaItem.icon}</p>
-              <p className="mt-2 text-center font-josefin text-gray-700">{segurancaItem.name}</p>
-            </div>
+              name={safetyItem.name}
+              icon={safetyItem.icon}
+              selected={selectedItem === safetyItem.name}
+              onSelect={() => handleSelect(safetyItem.name)}
+            />
           ))}
         </div>
         <div className="flex justify-between items-center w-full mt-4">

@@ -4,21 +4,27 @@ import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useRouter } from 'next/router';
 import useNavigation from '@/hooks/CadImovel';
+import CardSelect from './components/CardSelect';
 import '@fontsource/josefin-sans'; 
 
-interface Espaco {
+interface Room {
   name: string;
 }
 
-const espacos: Espaco[] = [
+const rooms: Room[] = [
   { name: 'Espaço Inteiro' },
   { name: 'Quarto Privativo' },
   { name: 'Quarto Compartilhado'}
 ];
 
 const TipoEspaco: React.FC = () => {
-
   const { goToPreviousPage, goToNextPage } = useNavigation();
+  const [selectedItem, setSelectedItem] = React.useState<string | null>(null);
+
+  const handleSelect = (item: string) => {
+    setSelectedItem(item);
+  };
+
   return (
     // Left Side
   <>
@@ -40,13 +46,13 @@ const TipoEspaco: React.FC = () => {
         </h1>
       </div>
         <div className="grid grid-cols-3 gap-10 rounded-md mt-20 mb-40">
-          {espacos.map((espaco, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center border border-gray-400 justify-center bg-white h-40 w-40 p-4 text-xl rounded-lg"
-            >
-              <p className="mt-2 text-center font-josefin text-gray-700">{espaco.name}</p>
-            </div>
+          {rooms.map((room, index) => (
+              <CardSelect
+                key={index}
+                name={room.name}
+                selected={selectedItem === room.name}
+                onSelect={() => handleSelect(room.name)}
+              />
           ))}
         </div>
         <div className="flex justify-between items-center w-full mt-4">

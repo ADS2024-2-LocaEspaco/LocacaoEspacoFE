@@ -7,15 +7,16 @@ import styles from '@/styles/LayoutCadImovel.module.css'
 import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useRouter } from 'next/router';
+import CardSelect from './components/CardSelect';
 import useNavigation from '@/hooks/CadImovel';
 import '@fontsource/josefin-sans'; 
 
-interface Comodidade {
+interface Amenity {
   name: string;
   icon: React.ReactNode;
 }
 
-const comodidades: Comodidade[] = [
+const amenities: Amenity[] = [
   { name: 'Wi-fi', icon: <FaWifi size={32} /> },
   { name: 'TV', icon: <FaTv size={32} /> },
   { name: 'Cozinha', icon: <MdKitchen size={32} /> },
@@ -28,8 +29,13 @@ const comodidades: Comodidade[] = [
 ];
 
 const Comodidade: React.FC = () => {
-
   const { goToPreviousPage, goToNextPage } = useNavigation();
+  const [selectedItem, setSelectedItem] = React.useState<string | null>(null);
+
+  const handleSelect = (item: string) => {
+    setSelectedItem(item);
+  };
+
   return (
     // Left Side
   <>
@@ -49,14 +55,14 @@ const Comodidade: React.FC = () => {
         Comodidades
       </h1>
         <div className="grid grid-cols-3 gap-10 rounded-md mt-20">
-          {comodidades.map((comodidade, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center border border-gray-400 justify-center bg-white p-4 h-40 rounded-lg"
-            >
-              <p className="text-gray-700">{comodidade.icon}</p>
-              <p className="mt-2 text-center font-josefin text-gray-700">{comodidade.name}</p>
-            </div>
+          {amenities.map((ameneity, index) => (
+              <CardSelect
+                key={index}
+                name={ameneity.name}
+                selected={selectedItem === ameneity.name}
+                icon={ameneity.icon}
+                onSelect={() => handleSelect(ameneity.name)}
+            />
           ))}
         </div>
         <div className="flex justify-between items-center w-full mt-4">
