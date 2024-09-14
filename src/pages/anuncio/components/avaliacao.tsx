@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 
 const estrelaAtiva = "/icons/avaliacao_estrela_ativa.svg";
@@ -6,7 +7,7 @@ const estrelaInativa = "/icons/avaliacao_estrela_inativa.svg";
 // Componente de Avaliação
 type AvaliacaoProps = {
   nota: number;
-  qtd_avaliacoes?: number; 
+  qtd_avaliacoes?: number;
   exibirNotaMedia?: boolean; // Determina se mostra a nota média ou quantidade de avaliações
 };
 

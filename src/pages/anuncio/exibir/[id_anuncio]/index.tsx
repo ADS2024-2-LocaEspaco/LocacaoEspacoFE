@@ -10,6 +10,7 @@ import IconesAnuncio from "../../components/iconesAnuncio";
 import FavoritosModal from "../../components/favoritosModal";  // Modal de favoritos adicionado
 import CompartilharModal from "../../components/compartilharModal";
 const MapaModal = dynamic(() => import("../../components/mapaModal"), { ssr: false });
+import FeedBacksAnte from "../../components/feedback";
 
 type AnuncioProps = {
   titulo: string;
@@ -30,8 +31,7 @@ type AnuncioProps = {
   };
 };
 
-
-const ExibirAnuncio: React.FC<AnuncioProps> = ({ titulo, qtd_hospedes, qtd_camas, qtd_banheiros, imagens, nota, qtd_avaliacoes, endereco }) => {
+const ExibirAnuncio: React.FC<AnuncioProps> = ({ titulo, qtd_hospedes, qtd_camas, qtd_banheiros, imagens, nota, qtd_avaliacoes, endereco }, anuncio) => {
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
   const [isFavModalOpen, setIsFavModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);  // Estado para modal de compartilhar
@@ -47,16 +47,16 @@ const ExibirAnuncio: React.FC<AnuncioProps> = ({ titulo, qtd_hospedes, qtd_camas
 
   const openShareModal = () => setIsShareModalOpen(true);  // Função para abrir modal de compartilhar
   const closeShareModal = () => setIsShareModalOpen(false);  // Função para fechar modal de compartilhar
-
+  
   return (
-    <div className="bg-[#fff7f4] h-full font-josefin md:flex flex-col items-center">
+    <div className="bg-[#fff7f4] h-full font-josefin md:flex flex-col items-center" >
       {/* Section 1 */}
       <section className="flex justify-center flex-col mb-4">
         <div className="bg-[#faf8f8] flex flex-row justify-between p-2 pb-0 flex-wrap max-w-[1184px]">
           <h1 className="text-tituloa text-black-300 p-0 font-bold mb-0 mt-1">
             {titulo}
           </h1>
-          <Avaliacao nota={nota || 0} qtd_avaliacoes={qtd_avaliacoes} exibirNotaMedia={true}/>
+          <Avaliacao nota={nota || 0} qtd_avaliacoes={qtd_avaliacoes} exibirNotaMedia={true} />
         </div>
         <div className="flex flex-col items-center mb-4">
           <Carrossel imagens={imagens} />
@@ -96,8 +96,14 @@ const ExibirAnuncio: React.FC<AnuncioProps> = ({ titulo, qtd_hospedes, qtd_camas
       />
 
       {/* Section 2 */}
+      <section className='flex justify-center flex-col mb-4'>
+        <AnfitriaoInfos quartos={qtd_avaliacoes} banheiros={qtd_banheiros} vagas={4} {...anfitriaoData} />
+      </section>
+      <hr className="w-full border-t border-[#3D3D43] my-2 lg:not-sr-only" />
+
+      {/* Section 3 */}
       <section>
-        <AnfitriaoInfos quartos={3} banheiros={2} vagas={4} {...anfitriaoData} />
+        <FeedBacksAnte />
       </section>
     </div>
   );

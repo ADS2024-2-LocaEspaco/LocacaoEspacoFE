@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 
 const banheiros = "/icons/shower_icon.svg";
@@ -18,6 +19,7 @@ type IconesProps = {
 
 const estiloIcone = "flex justify-center items-center rounded-full";
 const estiloTexto = 'text-[#333333] font-opensans text-[14px] p-0 pl-1 ';
+
 
 const IconesAnuncio: React.FC<IconesProps> = ({ qtd_hospedes, qtd_camas, qtd_banheiros, onOpenMapModal, onOpenFavoritosModal, onOpenShareModal }) => {
   return (

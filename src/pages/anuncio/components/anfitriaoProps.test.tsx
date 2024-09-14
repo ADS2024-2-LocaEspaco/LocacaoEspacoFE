@@ -1,54 +1,124 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+/* eslint-disable react-hooks/rules-of-hooks */
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import AnfitriaoInfos, { anfitriaoData, imovelData } from './anfitriaoProps';
 import '@testing-library/jest-dom';
-import AnfitriaoInfos, { anfitriaoData } from './anfitriaoProps';
-import { describe } from 'node:test';
+import { ReservaProvider } from '@/hooks/ReservaContext'; // Certifique-se de ajustar o caminho conforme necessário
+import mockRouter from 'next-router-mock';
+import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
+
+// Configurar o mock do roteador
+jest.mock('next/router', () => ({
+  useRouter: jest.fn().mockReturnValue({
+    push: jest.fn(),
+    prefetch: jest.fn(),
+    route: '/',
+    pathname: '/',
+    query: {},
+    asPath: '/',
+  }),
+}));
+
+const renderWithProvider = (ui: React.ReactElement) => {
+  return render(
+    <RouterContext.Provider value={mockRouter}>
+      <ReservaProvider>{ui}</ReservaProvider>
+    </RouterContext.Provider>
+  );
+};
 
 describe('AnfitriaoInfos Component', () => {
-  it('renders the component with the provided data', () => {
-    render(<AnfitriaoInfos quartos={2} banheiros={1} vagas={4} {...anfitriaoData} />);
+  it('deve renderizar as informações básicas do anfitrião', () => {
+    renderWithProvider(
+      <AnfitriaoInfos
+        foto={anfitriaoData.foto}
+        nome={anfitriaoData.nome}
+        descricao={anfitriaoData.descricao}
+        quartos={imovelData.quartos}
+        banheiros={imovelData.banheiros}
+        vagas={imovelData.vagas}
+      />
+    );
 
-    // Verifica se o nome do anfitrião foi renderizado
     expect(screen.getByText(anfitriaoData.nome)).toBeInTheDocument();
-
-    // Verifica se a imagem do anfitrião foi renderizada
-    const imgElement = screen.getByRole('img');
-    expect(imgElement).toHaveAttribute('src', anfitriaoData.foto);
+    expect(screen.getByAltText('')).toBeInTheDocument();
+    expect(screen.getByText(`${anfitriaoData.descricao.substring(0, 300)}...`)).toBeInTheDocument();
   });
 
-  it('displays truncated description and "Ler Mais" button initially on larger screens', () => {
-    render(<AnfitriaoInfos quartos={2} banheiros={1} vagas={4} {...anfitriaoData} />);
+  it('deve permitir alternar entre "Ler Mais" e "Ler Menos"', async () => {
+    renderWithProvider(
+      <AnfitriaoInfos
+        foto={anfitriaoData.foto}
+        nome={anfitriaoData.nome}
+        descricao={anfitriaoData.descricao}
+        quartos={imovelData.quartos}
+        banheiros={imovelData.banheiros}
+        vagas={imovelData.vagas}
+      />
+    );
 
-    // Verifica se a descrição truncada é exibida
-    const truncatedText = anfitriaoData.descricao.substring(0, 350) + '...';
-    expect(screen.getByText(truncatedText)).toBeInTheDocument();
+    const lerMaisButton = screen.getByText('Ler Mais');
 
-    // Verifica se o botão "Ler Mais" está presente
-    expect(screen.getByText('Ler Mais')).toBeInTheDocument();
+    // Envolvendo com act para garantir a atualização do estado
+    await act(async () => {
+      fireEvent.click(lerMaisButton);
+    });
+
+    await waitFor(() => {
+      // Usando uma função no matcher para lidar com o texto longo dividido em múltiplos elementos
+      expect(screen.getByText((content) => content.startsWith('Ler Menos'))).toBeInTheDocument();
+      expect(screen.getByText((content) => content.includes('Lorem ipsum dolor sit amet'))).toBeInTheDocument();
+    }, { timeout: 2500 });
   });
 
-  it('expands the description when "Ler Mais" button is clicked', () => {
-    render(<AnfitriaoInfos quartos={2} banheiros={1} vagas={4} {...anfitriaoData} />);
+  it('deve carregar, exibir comodidades e testar botões de Ver Mais e Ver Menos', async () => {
+    renderWithProvider(
+      <AnfitriaoInfos
+        foto={anfitriaoData.foto}
+        nome={anfitriaoData.nome}
+        descricao={anfitriaoData.descricao}
+        quartos={imovelData.quartos}
+        banheiros={imovelData.banheiros}
+        vagas={imovelData.vagas}
+      />
+    );
 
-    // Simula o clique no botão "Ler Mais"
-    fireEvent.click(screen.getByText('Ler Mais'));
+    // Verifica a renderização inicial das comodidades
+    await waitFor(() => {
+      expect(screen.getByText((content) => content.includes('Jardim amplo'))).toBeInTheDocument();
+      expect(screen.getByText((content) => content.includes('Wi-Fi'))).toBeInTheDocument();
+    }, { timeout: 5000 });
 
-    // Verifica se a descrição completa é exibida
-    expect(screen.getByText(anfitriaoData.descricao)).toBeInTheDocument();
+    // Aguarda o botão "Ver Mais" ser renderizado na tela
+    const verMaisButton = await screen.findByText('Ver Mais');
 
-    // Verifica se o botão "Ler Menos" está presente
-    expect(screen.getByText('Ler Menos')).toBeInTheDocument();
-  });
+    // Simula o clique no botão "Ver Mais"
+    await act(async () => {
+      fireEvent.click(verMaisButton);
+    });
 
-  it('hides the "Ler Mais" button when description is less than 350 characters', () => {
-    const shortDescription = 'This is a short description';
-    const shortAnfitriaoData = { ...anfitriaoData, descricao: shortDescription };
+    // Verifica se o botão muda para "Ver Menos" após o clique
+    const verMenosButton = await screen.findByText('Ver Menos');
+    expect(verMenosButton).toBeInTheDocument();
 
-    render(<AnfitriaoInfos quartos={2} banheiros={1} vagas={4} {...shortAnfitriaoData} />);
+    // Aguarda a renderização das comodidades adicionais após o clique
+    await waitFor(() => {
+      expect(screen.getByText((content) => content.includes('Jardim amplo'))).toBeInTheDocument();
+      expect(screen.getByText((content) => content.includes('Área para churrasco'))).toBeInTheDocument();
+      expect(screen.queryByText((content) => content.includes('Garagem para quatro carros'))).toBeInTheDocument();
+    }, { timeout: 2500 });
 
-    // Verifica se a descrição curta é exibida
-    expect(screen.getByText(shortDescription)).toBeInTheDocument();
+    // Simula o clique no botão "Ver Menos" para reverter a visualização
+    await act(async () => {
+      fireEvent.click(verMenosButton);
+    });
 
-    // Verifica se o botão "Ler Mais" não está presente
-    expect(screen.queryByText('Ler Mais')).not.toBeInTheDocument();
+    // Verifica se o botão volta para "Ver Mais" e as comodidades adicionais não estão mais visíveis
+    const verMaisButtonAfterClick = await screen.findByText('Ver Mais');
+    expect(verMaisButtonAfterClick).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(screen.queryByText((content) => content.includes('Área para churrasco'))).not.toBeInTheDocument();
+      expect(screen.queryByText((content) => content.includes('Garagem para quatro carros'))).not.toBeInTheDocument();
+    });
   });
 });

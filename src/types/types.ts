@@ -13,9 +13,37 @@ export interface User {
   roleId: number;
 }
 
+export interface AnfitriaoProps {
+  foto: string,
+  nome: string,
+  descricao: string
+}
+
+export interface ImovelProps {
+  nome: string,
+  descricao: string,
+  endereco: string,
+  preco: number,
+  quartos: number,
+  banheiros: number,
+  vagas: number,
+  area: number,
+  anfitriao: AnfitriaoProps
+}
+
+export interface ComodidadesProps {
+  nome: string,
+  icone: string
+}
+
 export interface Role {
   id: number;
   descricao: string;
+}
+
+export interface Reserva {
+  startDate: string;
+  endDate: string;
 }
 
 export interface Anuncio {
@@ -23,10 +51,12 @@ export interface Anuncio {
   title: string;
   address: string;
   description: string;
+  valorDiaria: number;
   userId: string;
   tipoImovelId: string;
   tipoEspacoId: string;
   qtdMaxHospedes: number;
+  reservas: Reserva[];
 }
 
 export interface TipoImovel {
@@ -41,8 +71,11 @@ export interface TipoEspaco {
 
 export interface Feedback {
   id: string;
-  descricao: string;
+  tipo: string;
+  nome: string;
   nota: number;
+  date: string;
+  descricao: string;
   anuncioId: string;
   userId: string;
 }
