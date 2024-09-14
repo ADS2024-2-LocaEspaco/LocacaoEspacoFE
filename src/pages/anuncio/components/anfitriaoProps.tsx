@@ -114,6 +114,7 @@ const AnfitriaoInfos = ({ foto, nome, descricao, quartos, banheiros, vagas }: An
               </div>
             )}
           </div>
+
         </div>
       </div>
       <div className="flex justify-center items-center lg:w-1/3 w-full h-full">
