@@ -1,8 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { LatLng } from 'leaflet';
+
 
 // Simulando dados de um anúncio no banco de dados
 export const fetchAnuncioFromDB = async (id_anuncio: string) => {
-  // Simulando diferentes anúncios com base no ID
+    // Simulando diferentes anúncios com base no ID
   if (id_anuncio === '1') {
     return {
       id: '1',
@@ -12,7 +14,17 @@ export const fetchAnuncioFromDB = async (id_anuncio: string) => {
       qtd_banheiros: 1,
       id_anfitriao: '123',
       valorDiaria: 200,
-      address: 'Rua dos Bobos, 0 - Centro, São Paulo - SP',
+      endereco: {
+      localizacao: { lat: -23.6250, lng: -45.4000 },
+      pais: 'Brasil',
+      cidade: 'Caraguatatuba',
+      uf: 'SP',
+      bairro: 'Prainha',
+      rua: 'Rua da praia',
+    },
+      id_tipo_immovel: 1,
+      id_tipo_espaco: 1,
+      disponibilidade: true,
       imagens: [
         '/images/image1.webp',
         '/images/image2.webp',
@@ -30,7 +42,17 @@ export const fetchAnuncioFromDB = async (id_anuncio: string) => {
       qtd_banheiros: 3,
       id_anfitriao: '124',
       valorDiaria: 300,
-      address: 'Rua dos Inteligentes - Sul , São Paulo - SP',
+     endereco: {
+      localizacao: { lat: -23.6250, lng: -45.4000 },
+      pais: 'Brasil',
+      cidade: 'Caraguatatuba',
+      uf: 'SP',
+      bairro: 'Prainha',
+      rua: 'Rua da praia',
+    },
+      id_tipo_immovel: 1,
+      id_tipo_espaco: 1,
+      disponibilidade: true,
       imagens: [
         '/images/beach1.webp',
         '/images/beach2.webp',
@@ -42,7 +64,6 @@ export const fetchAnuncioFromDB = async (id_anuncio: string) => {
   }
   // Retorno padrão caso o ID não seja encontrado
   return null;
-};
 
 // Simulando avaliações para o anúncio
 export const fetchAvaliacoesByAnuncio = async (id_anuncio: string) => {

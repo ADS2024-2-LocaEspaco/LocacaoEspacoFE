@@ -9,10 +9,20 @@ interface MapModalProps {
   isOpen: boolean;
   onClose: () => void;
   latLng: LatLngExpression;
+  endereco: {
+    latLng: LatLngExpression;
+    pais: string;
+    cidade: string;
+    uf: string;
+    bairro: string;
+    rua: string;
+  };
 }
 
-const MapModal: React.FC<MapModalProps> = ({ isOpen, onClose, latLng }) => {
+const MapModal: React.FC<MapModalProps> = ({ isOpen, onClose, latLng, endereco }) => {
   if (!isOpen) return null;
+
+  const { pais, cidade, uf, rua, bairro } = endereco;
 
   const radius = 1000;
 
@@ -25,10 +35,13 @@ const MapModal: React.FC<MapModalProps> = ({ isOpen, onClose, latLng }) => {
     >
       <div className="bg-white rounded-lg shadow-lg p-6 max-w-2xl w-full m-2">
         <div className="flex flex-col gap-0  md:flex-row md:justify-between">
-          <h2 className="text-2xl text-black font-semibold mb-2">
+          <h2 className="text-xl text-black-300 font-md mb-2">
             Localização do Imóvel
-          </h2>{" "}
-          <p className="text-gray-600 mb-1">São Paulo, Sé</p>
+          </h2>
+          <div className="flex flex-col gap-0">
+          <p className="text-gray-600 m-0 text-lg">{cidade} - {uf}, {pais}</p>
+          <p className="text-gray-600 mb-1 text-sm">{bairro}, {rua}</p>
+          </div>
         </div>
         <MapContainer
           center={latLng}

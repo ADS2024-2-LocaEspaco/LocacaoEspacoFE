@@ -31,7 +31,7 @@ describe("IconesAnuncio Component", () => {
       dispatchEvent: jest.fn(),
     }));
 
-    render(<IconesAnuncio qtd_hospedes={3} qtd_camas={2} qtd_banheiros={1} />);
+    render(<IconesAnuncio qtd_hospedes={3} qtd_camas={2} qtd_banheiros={1} onOpenMapModal={()=>{}} onOpenFavoritosModal={()=>{}}  onOpenShareModal={()=>{}} />);
 
     const iconContainer = screen.getByTestId("icones-comodidades");
 
@@ -59,7 +59,7 @@ describe("IconesAnuncio Component", () => {
       dispatchEvent: jest.fn(),
     }));
 
-    render(<IconesAnuncio qtd_hospedes={3} qtd_camas={2} qtd_banheiros={1} />);
+    render(<IconesAnuncio qtd_hospedes={3} qtd_camas={2} qtd_banheiros={1} onOpenMapModal={()=>{}}  onOpenFavoritosModal={()=>{}} onOpenShareModal={()=>{}} />);
 
     expect(screen.getByTestId("icone-mapa")).toBeInTheDocument();
     expect(screen.getByTestId("icones-favshare")).toBeInTheDocument();
