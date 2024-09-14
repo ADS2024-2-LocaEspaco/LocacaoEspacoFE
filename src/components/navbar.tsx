@@ -7,182 +7,269 @@ import Logo from '../../public/icons/logo.svg';
 import MenuHamburgerIcon from '../../public/icons/menu_icon.svg';
 import AccountIcon from '../../public/icons/account_circle_icon.svg';
 import SearchIcon from '../../public/icons/search_icon.svg';
+import CalendarIcon from '../../public/icons/calendar_icon.svg'
+import DestinyIcon from '../../public/icons/destiny_icon.svg'
+import PersonIcon from '../../public/icons/person_icon.svg'
+import PlusIcon from '../../public/icons/plus_circle_icon.svg'
+import MinusIcon from '../../public/icons/dash_circle_icon.svg'
+
+import Calendar from './calendar';
 
 interface MobileMenuProps {
-  openMobileMenu: () => void;
-  handleBackToHomePage: () => void;
+	openMobileMenu: () => void;
+	handleBackToHomePage: () => void;
 }
 
 interface MobileMenuNavbarProps {
-  closeMobileMenu: () => void;
+	closeMobileMenu: () => void;
 }
 
 interface MenuProps {
-  handleBackToHomePage: () => void;
-  handleSearch: (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLImageElement>) => void;
-  setSearchInput: Dispatch<SetStateAction<string>>;
+	handleBackToHomePage: () => void;
+	handleSearch: (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLImageElement>) => void;
+	setSearchInput: Dispatch<SetStateAction<string>>;
 }
 
 function MobileMenu({ openMobileMenu, handleBackToHomePage }: MobileMenuProps) {
-  return (
-    <nav className='flex relative w-full h-24 px-6 justify-between items-center md:hidden'>
-      <Image
-        src={MenuHamburgerIcon}
-        alt='Ícone do menu'
-        onClick={openMobileMenu}
-        height={24}
-        width={36}
-        className='cursor-pointer'
-      />
+	return (
+		<nav className='flex relative w-full h-24 px-6 justify-between items-center md:hidden'>
+			<Image
+				src={MenuHamburgerIcon}
+				alt='Ícone do menu'
+				onClick={openMobileMenu}
+				height={24}
+				width={36}
+				className='cursor-pointer'
+			/>
 
-      <Image
-        src={Logo}
-        alt='Logo'
-        onClick={handleBackToHomePage}
-        height={60}
-        width={60}
-        className='cursor-pointer'
-      />
+			<Image
+				src={Logo}
+				alt='Logo'
+				onClick={handleBackToHomePage}
+				height={60}
+				width={60}
+				className='cursor-pointer'
+			/>
 
-      <Image
-        src={SearchIcon}
-        alt='Botão de pesquisa'
-        height={24}
-        width={24}
-        className='cursor-pointer'
-      />
-    </nav>
-  );
+			<Image
+				src={SearchIcon}
+				alt='Botão de pesquisa'
+				height={24}
+				width={24}
+				className='cursor-pointer'
+			/>
+		</nav>
+	);
 }
 
 function MobileMenuNavbar({ closeMobileMenu }: MobileMenuNavbarProps) {
-  const user = ''; // Aqui você pode verificar o estado de autenticação
+	const user = ''; // Aqui você pode verificar o estado de autenticação
 
-  return (
-    <div className='flex absolute h-screen w-screen md:hidden'>
-      <div className='flex-1 bg-white'>
-        <div className='flex h-24 items-center px-6 border-b border-[#797986]'>
-          <Image
-            src={user ? Logo : AccountIcon}
-            alt='Logo'
-            height={60}
-            width={60}
-            className='rounded-full'
-          />
-        </div>
+	return (
+		<div className='flex absolute h-screen w-screen md:hidden'>
+			<div className='flex-1 bg-white'>
+				<div className='flex h-24 items-center px-6 border-b border-[#797986]'>
+					<Image
+						src={user ? Logo : AccountIcon}
+						alt='Logo'
+						height={60}
+						width={60}
+						className='rounded-full'
+					/>
+				</div>
 
-        {user ? (
-          <nav className='flex flex-col'>
-            <Link href={'#'} className='pl-7 py-4 hover:opacity-80'>Ver perfil</Link>
-            <Link href={'#'} className='pl-7 py-4 hover:opacity-80'>Notificações</Link>
-            <Link href={'#'} className='pl-7 py-4 hover:opacity-80'>Editar Perfil</Link>
-            <Link href={'#'} className='pl-7 py-4 hover:opacity-80'>Viagens</Link>
-            <Link href={'#'} className='pl-7 py-4 hover:opacity-80'>Favoritos</Link>
-            <Link href={'#'} className='pl-7 py-4 hover:opacity-80 text-red-500'>Sair</Link>
-          </nav>
-        ) : (
-          <nav className='flex flex-col'>
-            <Link href={'#'} className='pl-7 py-4 hover:opacity-80'>Home</Link>
-            <Link href={'#'} className='pl-7 py-4 hover:opacity-80'>Sobre</Link>
-          </nav>
-        )}
-      </div>
+				{user ? (
+					<nav className='flex flex-col'>
+						<Link href={'#'} className='pl-7 py-4 hover:opacity-80'>Ver perfil</Link>
+						<Link href={'#'} className='pl-7 py-4 hover:opacity-80'>Notificações</Link>
+						<Link href={'#'} className='pl-7 py-4 hover:opacity-80'>Editar Perfil</Link>
+						<Link href={'#'} className='pl-7 py-4 hover:opacity-80'>Viagens</Link>
+						<Link href={'#'} className='pl-7 py-4 hover:opacity-80'>Favoritos</Link>
+						<Link href={'#'} className='pl-7 py-4 hover:opacity-80 text-red-500'>Sair</Link>
+					</nav>
+				) : (
+					<nav className='flex flex-col'>
+						<Link href={'#'} className='pl-7 py-4 hover:opacity-80'>Home</Link>
+						<Link href={'#'} className='pl-7 py-4 hover:opacity-80'>Sobre</Link>
+					</nav>
+				)}
+			</div>
 
-      <div className='w-[40%] bg-white opacity-35 cursor-pointer' onClick={closeMobileMenu} />
-    </div>
-  );
+			<div className='w-[40%] bg-white opacity-35 cursor-pointer' onClick={closeMobileMenu} />
+		</div>
+	);
 }
 
 function Menu({ handleBackToHomePage, handleSearch, setSearchInput }: MenuProps) {
-  const router = useRouter();
+	const [searchBar, setSearchBar] = useState({
+		adults: 0,
+		children: 0,
+		babies: 0,
+		pets: 0
+	})
+	const router = useRouter();
 
-  // Redirecionar para a página de anunciar
-  const handleAnunciarClick = () => {
-    router.push('/anunciar');
-  };
+	// Redirecionar para a página de anunciar
+	const handleAnunciarClick = () => {
+		router.push('/anunciar');
+	};
 
-  return (
-    <nav className="flex w-full h-28 px-20 gap-24 justify-between items-center max-md:hidden">
-      <Image
-        src={Logo}
-        alt='Logo'
-        onClick={handleBackToHomePage}
-        height={80}
-        width={80}
-        className='cursor-pointer'
-      />
+	return (
+		<nav className="flex font-body w-full px-20 py-3 gap-24 justify-between items-center max-md:hidden">
+			<Image
+				src={Logo}
+				alt='Logo'
+				onClick={handleBackToHomePage}
+				height={72}
+				width={72}
+				className='cursor-pointer'
+			/>
 
-      <form onSubmit={handleSearch} className="flex gap-3 max-w-[640px] w-full h-12 px-4 justify-between items-center border-[0.5px] border-[#797986] rounded-2xl">
-        <input 
-          type='text'
-          className="flex-1 bg-transparent focus:outline-none mt-1"
-          onChange={(e) => setSearchInput(e.target.value)}
-        />
+			<form onSubmit={handleSearch} className="flex gap-3 px-6 py-2 justify-between items-center border-[0.5px] border-gray-300 rounded-3xl">
+				<div className='flex relative'>
+					<button className='flex items-center gap-2 text-black-100 px-6 text-sm'>
+						<Image src={DestinyIcon} alt='Ícone de destino' />
 
-        <Image
-          src={SearchIcon}
-          alt='Logo'
-          onClick={handleSearch}
-          height={20}
-          width={20}
-          className='cursor-pointer'
-        />
-      </form>
+						Destino
+					</button>
 
-      <div className="flex gap-4">
-        <button
-          className="bg-white text-blue-500 border border-grey rounded-[16px] w-[148px] h-[48px]"
-          onClick={handleAnunciarClick}
-        >
-          Anunciar
-        </button>
+					<button className='flex items-center border-x border-blue-300  gap-2 text-sm text-black-100 px-6'>
+						<Image src={CalendarIcon} alt='Ícone de destino' />
 
-        <button
-          className="bg-orange-500 text-white rounded-[16px] w-[148px] h-[48px]"
-          onClick={() => router.push('/login')}
-        >
-          Entrar
-        </button>
-      </div>
-    </nav>
-  );
+						Check-in
+					</button>
+
+					<button className='flex items-center border-r border-blue-300 gap-2 text-sm text-black-100 px-6'>
+						<Image src={CalendarIcon} alt='Ícone de destino' />
+
+						Check-out
+					</button>
+
+					<button className='flex items-center gap-2 text-black-100 px-6 text-sm'>
+						<Image src={PersonIcon} alt='Ícone de destino' />
+
+						Hóspedes
+					</button>
+
+					{/* modal hospedes */}
+					<div className='absolute px-5 bg-white rounded-2xl drop-shadow'>
+						<div className='flex py-3 justify-between gap-4'>
+							Adultos
+
+							<div className='flex gap-1'>
+								<Image onClick={() => setSearchBar({...searchBar, adults: searchBar.adults - 1})} src={MinusIcon} alt='Ícone de menos' />
+								{searchBar.adults}
+								<Image onClick={() => setSearchBar({...searchBar, adults: searchBar.adults + 1})} src={PlusIcon} alt='Ícone de mais' />
+							</div>
+						</div>
+
+						<div className='flex py-3 justify-between gap-4 border-y-[0.5px] border-gray-200'>
+							Crianças
+
+							<div className='flex gap-1'>
+								<Image onClick={() => setSearchBar({...searchBar, children: searchBar.children - 1})} src={MinusIcon} alt='Ícone de menos' />
+								{searchBar.children}
+								<Image onClick={() => setSearchBar({...searchBar, children: searchBar.children + 1})} src={PlusIcon} alt='Ícone de mais' />
+							</div>
+						</div>
+
+						<div className='flex py-3 justify-between gap-4 border-b-[0.5px] border-gray-200'>
+							Bebês
+
+							<div className='flex gap-1'>
+								<Image onClick={() => setSearchBar({...searchBar, babies: searchBar.babies - 1})} src={MinusIcon} alt='Ícone de menos' />
+								{searchBar.babies}
+								<Image onClick={() => setSearchBar({...searchBar, babies: searchBar.babies + 1})} src={PlusIcon} alt='Ícone de mais' />
+							</div>
+						</div>
+
+						<div className='flex py-3 justify-between gap-4'>
+							Animais de estimação
+
+							<div className='flex gap-1'>
+								<Image onClick={() => setSearchBar({...searchBar, pets: searchBar.pets - 1})} src={MinusIcon} alt='Ícone de menos' />
+								{searchBar.pets}
+								<Image onClick={() => setSearchBar({...searchBar, pets: searchBar.pets + 1})} src={PlusIcon} alt='Ícone de mais' />
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div className='bg-blue-200 p-2 rounded-full'>
+					<Image
+						src={SearchIcon}
+						alt='Logo'
+						onClick={handleSearch}
+						height={24}
+						width={24}
+						className='cursor-pointer'
+					/>
+				</div>
+			</form>
+
+			<div className="flex gap-4">
+				<button
+					className="w-32 h-10 font-bold bg-white text-blue-300 border border-gray-100 rounded-2xl hover:text-white hover:bg-blue-300 transition duration-500"
+					onClick={handleAnunciarClick}
+				>
+					Anunciar
+				</button>
+
+				<button
+					className="w-32 h-10 font-bold bg-orange-300 text-white rounded-2xl hover:opacity-80"
+					onClick={() => router.push('/login')}
+				>
+					Entrar
+				</button>
+			</div>
+		</nav>
+	);
 }
 
 export default function Navbar() {
-  const router = useRouter();
-  const [isOpenMobileMenu, setIsOpenMobileMenu] = useState(false);
-  const [searchInput, setSearchInput] = useState<string>('');
+	const router = useRouter();
+	const [isOpenMobileMenu, setIsOpenMobileMenu] = useState(false);
+	const [searchInput, setSearchInput] = useState<string>('');
+	const [startDate, setStartDate] = useState<Date | null>(new Date());
+	const [endDate, setEndDate] = useState<Date | null>(new Date());
 
-  const handleBackToHomePage = () => {
-    router.push('/');
-  };
+	const handleDateChange = (start: Date, end: Date) => {
+		setStartDate(start);
+		setEndDate(end);
+	};
 
-  const openMobileMenu = () => {
-    setIsOpenMobileMenu(true);
-  };
+	const handleBackToHomePage = () => {
+		router.push('/');
+	};
 
-  const closeMobileMenu = () => {
-    setIsOpenMobileMenu(false);
-  };
+	const openMobileMenu = () => {
+		setIsOpenMobileMenu(true);
+	};
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLImageElement>) => {
-    e.preventDefault();
+	const closeMobileMenu = () => {
+		setIsOpenMobileMenu(false);
+	};
 
-    if (searchInput) {
-      console.log(`/search/${searchInput}`);
-      // router.push(`/search/${searchInput}`); // Descomente esta linha para fazer o redirecionamento
-    }
-  };
+	const handleSearch = (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLImageElement>) => {
+		e.preventDefault();
 
-  return (
-    <>
-      <MobileMenu openMobileMenu={openMobileMenu} handleBackToHomePage={handleBackToHomePage} />
+		if (searchInput) {
+			console.log(`/search/${searchInput}`);
+			// router.push(`/search/${searchInput}`); // Descomente esta linha para fazer o redirecionamento
+		}
+	};
 
-      <Menu handleBackToHomePage={handleBackToHomePage} handleSearch={handleSearch} setSearchInput={setSearchInput} />
+	return (
+		<>
+			<MobileMenu openMobileMenu={openMobileMenu} handleBackToHomePage={handleBackToHomePage} />
 
-      {isOpenMobileMenu && (
-        <MobileMenuNavbar closeMobileMenu={closeMobileMenu} />
-      )}
-    </>
-  );
+			<Menu handleBackToHomePage={handleBackToHomePage} handleSearch={handleSearch} setSearchInput={setSearchInput} />
+
+			{isOpenMobileMenu && (
+				<MobileMenuNavbar closeMobileMenu={closeMobileMenu} />
+			)}
+
+			{/* <Calendar onDateChange={handleDateChange} valorDiaria={100} /> */}
+		</>
+	);
 }
