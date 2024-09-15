@@ -66,7 +66,7 @@ const imagem: React.FC = () => {
 
                 {/* Right Side */}
                 <div className="w-full md:w-1/2 flex flex-col justify-start items-center p-4 bg-white">
-                    <h1 className="mb-4 text-3xl text-black font-semibold">Imagens</h1>
+                    <h1 className="mb-4 text-3xl text-gray-700 font-semibold">Imagens</h1>
                     <div className="w-full px-8">
                         <p className="block text-gray-400 text-black font-bold mb-2">Tamanho mínimo de xMB e máximo de xMB</p>
                         <div className='grid grid-cols-5 grid-rows-3 gap-6'>

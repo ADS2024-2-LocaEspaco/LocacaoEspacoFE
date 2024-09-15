@@ -130,7 +130,7 @@ const Endereco: React.FC = () => {
 
         {/* Right Side */}
         <div className="w-full md:w-1/2 flex flex-col justify-start items-center p-4 bg-white">
-          <h1 className="mb-4 text-3xl text-black font-semibold">Endereço</h1>
+          <h1 className="mb-4 text-3xl text-gray-700 font-semibold">Endereço</h1>
           <div className="w-full px-8">
             <form className="bg-white p-6 rounded-lg w-full">
               <div className="mb-4">
