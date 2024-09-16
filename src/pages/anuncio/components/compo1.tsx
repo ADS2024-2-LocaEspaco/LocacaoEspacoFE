@@ -1,19 +1,47 @@
+'use client'
 /* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from 'react';
 import CalendarModal from './calendarComponent2';
+import HospedeModal from './hospedeCompo';
 import { Anuncio } from '../../../types/types';
+import { hospedeCategory } from './hospedeCompo';
+
 
 export default function Component({ anuncioId }: { anuncioId: string }) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+
+  const [isHospModalOpen, setIsHospModalOpen] = useState(false)
+  const [hospSummary, setHospSummary] = useState('2 hóspedes')
   const [checkIn, setCheckIn] = useState<string | null>(null);
   const [checkOut, setCheckOut] = useState<string | null>(null);
   const [anuncio, setAnuncio] = useState<Anuncio | null>(null);
+
+  const handleSaveGuests = (hosp: any[]) => {
+    const totalGuests = hosp.reduce((sum, guest) => sum + guest.count, 0)
+    setHospSummary(`${totalGuests} hóspedes`)
+    setIsHospModalOpen(false)
+  }
 
   const handleSave = (checkInDate: string | null, checkOutDate: string | null) => {
     setCheckIn(checkInDate);
     setCheckOut(checkOutDate);
     setIsCalendarOpen(false);
   };
+
+  const handleOpenModal = () => {
+    setIsHospModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    console.log('Fechando modal')
+    setIsHospModalOpen(false)
+
+  }
+
+  const handleSaveHosp = (hospede: hospedeCategory[]) => {
+    console.log('Salvando hóspedes:', hospede)
+    handleCloseModal()
+  }
 
   // Função para buscar os dados do anúncio
   useEffect(() => {
@@ -62,7 +90,7 @@ export default function Component({ anuncioId }: { anuncioId: string }) {
                 isOpen={isCalendarOpen}
                 onClose={() => setIsCalendarOpen(false)}
                 onSave={handleSave}
-                unavailableDates={[]} // Passe as datas indisponíveis conforme necessário
+                unavailableDates={[]}
               />
             </div>
           </div>
@@ -72,10 +100,14 @@ export default function Component({ anuncioId }: { anuncioId: string }) {
               <img src="/icons/group_icon.svg" alt="" className="h-5 w-5 mr-2" />
               <span className="text-sm text-[#3D3D43]">2 hóspedes</span>
             </div>
-            <div className="ml-40">
+            <div onClick={handleOpenModal} className="ml-40">
               <button className="text-[#3D3D43] text-sm font-medium">
                 Editar
               </button>
+              <HospedeModal isOpen={isHospModalOpen}
+                onClose={handleCloseModal}
+                onSave={handleSaveHosp}
+              />
             </div>
           </div>
         </div>
@@ -94,12 +126,12 @@ export default function Component({ anuncioId }: { anuncioId: string }) {
           </div>
           <div className="flex justify-between text-[#3D3D43]">
             <span>Taxa da plataforma</span>
-            <span className="font-medium mr-10">R$60,00</span>
+            <span className="font-medium mr-10">R${anuncio.valorDiaria * 0.1},00</span>
           </div>
         </div>
         <div className="flex justify-between pt-4 border-t text-[#3D3D43]">
           <span className="font-semibold">Total (BRL)</span>
-          <span className="font-semibold mr-10">R${anuncio.valorDiaria * 2 + 60},00</span>
+          <span className="font-semibold mr-10">R${anuncio.valorDiaria * 2 + anuncio.valorDiaria * 0.1},00</span>
         </div>
 
         <div className="flex mt-4 mb-2 w-full h-auto items-center justify-center">
