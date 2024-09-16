@@ -1,0 +1,116 @@
+/* eslint-disable @next/next/no-img-element */
+import React, { useState, useEffect } from 'react';
+import CalendarModal from './calendarComponent2';
+import { Anuncio } from '../../../types/types';
+
+export default function Component({ anuncioId }: { anuncioId: string }) {
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [checkIn, setCheckIn] = useState<string | null>(null);
+  const [checkOut, setCheckOut] = useState<string | null>(null);
+  const [anuncio, setAnuncio] = useState<Anuncio | null>(null);
+
+  const handleSave = (checkInDate: string | null, checkOutDate: string | null) => {
+    setCheckIn(checkInDate);
+    setCheckOut(checkOutDate);
+    setIsCalendarOpen(false);
+  };
+
+  // Função para buscar os dados do anúncio
+  useEffect(() => {
+    const fetchAnuncio = async () => {
+      try {
+        const response = await fetch(`/api/anuncio/1`);
+        const data = await response.json();
+        setAnuncio(data);
+      } catch (error) {
+        console.error('Erro ao buscar anúncio:', error);
+      }
+    };
+
+    if (anuncioId) {
+      fetchAnuncio();
+    }
+  }, [anuncioId]);
+
+  if (!anuncio) {
+    return <div>Carregando...</div>;
+  }
+
+  return (
+    <div className="w-full h-full mx-auto bg-white p-6">
+      <header className="flex items-center mb-6 max-w-md">
+        <button className="mr-4">
+          <img src="/icons/arrow_back_icon.svg" alt="Seta de voltar" />
+        </button>
+        <h1 className="text-xl font-semibold text-[#3D3D43]">Solicitar Reserva</h1>
+      </header>
+
+      <div className="flex bg-white rounded-lg border-b-black border-0 shadow p-3 max-w-[546px]" style={{ boxShadow: '0 2px 10px rgba(0, 0, 0, 0.3)' }}>
+        <div className="space-y-4 mb-6 max-w-md">
+          <div className="flex justify-between items-center px-[5px]">
+            <div className="flex items-center min-w-[272px] bg-white rounded-lg border-b-black border-0 shadow px-[5px] py-[10px]">
+              <img src="/icons/calendar_icon.svg" alt="" className="h-5 w-5 mr-2" />
+              <span className="text-sm text-[#3D3D43]">
+                {checkIn && checkOut ? `${checkIn} - ${checkOut}` : 'Selecione uma data'}
+              </span>
+            </div>
+            <div className="ml-40">
+              <button onClick={() => setIsCalendarOpen(true)} className="text-[#3D3D43] text-sm font-medium">
+                Editar
+              </button>
+              <CalendarModal
+                isOpen={isCalendarOpen}
+                onClose={() => setIsCalendarOpen(false)}
+                onSave={handleSave}
+                unavailableDates={[]} // Passe as datas indisponíveis conforme necessário
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-between items-center px-[5px]">
+            <div className="flex items-center min-w-[272px] bg-white rounded-lg border-b-black border-0 shadow px-[5px] py-[10px]">
+              <img src="/icons/group_icon.svg" alt="" className="h-5 w-5 mr-2" />
+              <span className="text-sm text-[#3D3D43]">2 hóspedes</span>
+            </div>
+            <div className="ml-40">
+              <button className="text-[#3D3D43] text-sm font-medium">
+                Editar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-lg border-b-black border-0 shadow p-3 max-w-[546px] mt-10" style={{ boxShadow: '0 2px 10px rgba(0, 0, 0, 0.3)' }}>
+        <h2 className="text-lg font-semibold mb-2 text-[#3D3D43]">Informações do Anúncio</h2>
+        <p className="text-[#3D3D43] mb-2">{anuncio.endereco.rua}</p>
+        <p className="text-[#3D3D43] mb-2">
+          {`${anuncio.endereco.rua}, ${anuncio.endereco.bairro}, ${anuncio.endereco.cidade} - ${anuncio.endereco.uf}, ${anuncio.endereco.pais}`}
+        </p>
+        <div className="space-y-2 mb-2">
+          <div className="flex justify-between text-[#3D3D43]">
+            <span>2 noites, 2 adultos, 1 criança</span>
+            <span className="font-medium mr-10">R${anuncio.valorDiaria * 2},00</span>
+          </div>
+          <div className="flex justify-between text-[#3D3D43]">
+            <span>Taxa da plataforma</span>
+            <span className="font-medium mr-10">R$60,00</span>
+          </div>
+        </div>
+        <div className="flex justify-between pt-4 border-t text-[#3D3D43]">
+          <span className="font-semibold">Total (BRL)</span>
+          <span className="font-semibold mr-10">R${anuncio.valorDiaria * 2 + 60},00</span>
+        </div>
+
+        <div className="flex mt-4 mb-2 w-full h-auto items-center justify-center">
+          <button
+            onClick={() => console.log('Reservar')}
+            className="flex text-2xl w-[196px] h-[46px] justify-center items-center bg-[#196FFB] text-white py-2 rounded-3xl hover:bg-[#3B82F6] transition-colors"
+          >
+            Reservar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
