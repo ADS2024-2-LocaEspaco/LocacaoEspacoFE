@@ -1,10 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { LatLng } from 'leaflet';
-
 
 // Simulando dados de um anúncio no banco de dados
 export const fetchAnuncioFromDB = async (id_anuncio: string) => {
-    // Simulando diferentes anúncios com base no ID
+  // Simulando diferentes anúncios com base no ID
   if (id_anuncio === '1') {
     return {
       id: '1',
@@ -15,13 +13,13 @@ export const fetchAnuncioFromDB = async (id_anuncio: string) => {
       id_anfitriao: '123',
       valorDiaria: 200,
       endereco: {
-      localizacao: { lat: -23.6250, lng: -45.4000 },
-      pais: 'Brasil',
-      cidade: 'Caraguatatuba',
-      uf: 'SP',
-      bairro: 'Prainha',
-      rua: 'Rua da praia',
-    },
+        localizacao: { lat: -23.6250, lng: -45.4000 },
+        pais: 'Brasil',
+        cidade: 'Caraguatatuba',
+        uf: 'SP',
+        bairro: 'Prainha',
+        rua: 'Rua da praia',
+      },
       id_tipo_immovel: 1,
       id_tipo_espaco: 1,
       disponibilidade: true,
@@ -42,14 +40,14 @@ export const fetchAnuncioFromDB = async (id_anuncio: string) => {
       qtd_banheiros: 3,
       id_anfitriao: '124',
       valorDiaria: 300,
-     endereco: {
-      localizacao: { lat: -23.6250, lng: -45.4000 },
-      pais: 'Brasil',
-      cidade: 'Caraguatatuba',
-      uf: 'SP',
-      bairro: 'Prainha',
-      rua: 'Rua da praia',
-    },
+      endereco: {
+        localizacao: { lat: -23.6250, lng: -45.4000 },
+        pais: 'Brasil',
+        cidade: 'Caraguatatuba',
+        uf: 'SP',
+        bairro: 'Prainha',
+        rua: 'Rua da praia',
+      },
       id_tipo_immovel: 1,
       id_tipo_espaco: 1,
       disponibilidade: true,
@@ -64,6 +62,7 @@ export const fetchAnuncioFromDB = async (id_anuncio: string) => {
   }
   // Retorno padrão caso o ID não seja encontrado
   return null;
+};
 
 // Simulando avaliações para o anúncio
 export const fetchAvaliacoesByAnuncio = async (id_anuncio: string) => {
@@ -71,81 +70,6 @@ export const fetchAvaliacoesByAnuncio = async (id_anuncio: string) => {
     { id: '1', id_usuario: '121', id_anuncio, nota: 4.5, comentario: 'Excelente!' },
     { id: '2', id_usuario: '124', id_anuncio, nota: 3.5, comentario: 'Bom, mas pode melhorar.' },
     { id: '3', id_usuario: '125', id_anuncio, nota: 5, comentario: 'Adorei o local, recomendo!' },
-  ];
-};
-
-export const fetchAvaliacoesByUsuario = async (id_usuario: string) => {
-  return [
-    {
-      id: '1',
-      id_usuario: '121',
-      id_anfitriao: '123',
-      nota: 4.5,
-      comentario: 'Muito bom!',
-    },
-    {
-      id: '2',
-      id_usuario: '124',
-      id_anfitriao: '123',
-      nota: 3.5,
-      comentario: 'Bom!',
-    },
-    {
-      id: '3',
-      id_usuario: '122',
-      id_anfitriao: '123',
-      nota: 5,
-      comentario: 'Regular!',
-    },
-    {
-      id: '4',
-      id_usuario: '125',
-      id_anfitriao: '123',
-      nota: 1.5,
-      comentario: 'Marromenos',
-    },
-    {
-      id: '5',
-      id_usuario: '126',
-      id_anfitriao: '123',
-      nota: 4.5,
-      comentario: 'Daora meu!',
-    },
-    {
-      id: '6',
-      id_usuario: '127',
-      id_anfitriao: '123',
-      nota: 5,
-      comentario: 'Perfeito!',
-    },
-    {
-      id: '7',
-      id_usuario: '128',
-      id_anfitriao: '123',
-      nota: 5,
-      comentario: 'Perfeito!',
-    },
-    {
-      id: '8',
-      id_usuario: '129',
-      id_anfitriao: '123',
-      nota: 5,
-      comentario: 'Perfeito!',
-    },
-    {
-      id: '9',
-      id_usuario: '130',
-      id_anfitriao: '123',
-      nota: 5,
-      comentario: 'Perfeito!',
-    },
-    {
-      id: '10',
-      id_usuario: '120',
-      id_anfitriao: '123',
-      nota: 5,
-      comentario: 'Perfeito!',
-    },
   ];
 };
 
