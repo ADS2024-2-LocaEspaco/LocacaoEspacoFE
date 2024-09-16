@@ -46,10 +46,23 @@ export interface Reserva {
   endDate: string;
 }
 
+export interface Localizacao {
+  lat: number;
+  lng: number;
+}
+export interface Endereco {
+  localização: Localizacao,
+  pais: string,
+  cidade: string,
+  uf: string,
+  bairro: string,
+  rua: string
+}
+
 export interface Anuncio {
   id: string;
   title: string;
-  address: string;
+  endereco: Endereco;
   description: string;
   valorDiaria: number;
   userId: string;

@@ -88,7 +88,7 @@ const ReservaAnuncio = () => {
           <p className="text-sm text-[#FF6F00] ml-1">/ diária</p>
         </div>
         <hr className="w-full border-t border-[#3D3D43] my-2 lg:not-sr-only" />
-        <p className="text-sm text-center lg:text-left">{anuncio?.address}</p>
+        <p className="text-sm text-center lg:text-left text-[#3D3D43]">{`${anuncio?.endereco.rua}, ${anuncio?.endereco.bairro}, ${anuncio?.endereco.cidade} - ${anuncio?.endereco.uf}`}</p>
         <hr className="w-full border-t border-[#3D3D43] my-2 lg:not-sr-only" />
         <div>
           <Calendario onDateChange={handleDateChange} valorDiaria={anuncio?.valorDiaria ?? 0} />

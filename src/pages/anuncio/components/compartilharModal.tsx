@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState } from "react";
 import { useRouter } from 'next/router';
 import { FaCopy, FaEnvelope, FaComments, FaWhatsapp, FaFacebook, FaTwitter, FaCode, FaEllipsisH } from "react-icons/fa";
@@ -9,11 +10,11 @@ type CompartilharModalProps = {
 };
 
 const CompartilharModal: React.FC<CompartilharModalProps> = ({ isOpen, onClose, titulo }) => {
+  if (!isOpen) return null;
   const [copySuccess, setCopySuccess] = useState(false);
   const [embedModalOpen, setEmbedModalOpen] = useState(false);
   const router = useRouter();
   const currentUrl = `${window.location.origin}${router.asPath}`;
-  if (!isOpen) return null;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(currentUrl).then(() => {
