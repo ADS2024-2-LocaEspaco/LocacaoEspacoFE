@@ -101,16 +101,22 @@ function MobileMenuNavbar({ closeMobileMenu }: MobileMenuNavbarProps) {
 }
 
 function Menu({ handleBackToHomePage, handleSearch, setSearchInput }: MenuProps) {
+	const router = useRouter();
+	const [isOpenInputDestiny, setIsOpenInputDestiny] = useState(false)
+	const [isOpenModalGuests, setIsOpenModalGuests] = useState(false)
+
+	const [local, setLocal] = useState('')
+
 	const [searchBar, setSearchBar] = useState({
 		adults: 0,
 		children: 0,
 		babies: 0,
 		pets: 0
 	})
-	const router = useRouter();
+
 
 	// Redirecionar para a página de anunciar
-	const handleAnunciarClick = () => {
+	const handleAnnounceClick = () => {
 		router.push('/anunciar');
 	};
 
@@ -125,13 +131,27 @@ function Menu({ handleBackToHomePage, handleSearch, setSearchInput }: MenuProps)
 				className='cursor-pointer'
 			/>
 
-			<form onSubmit={handleSearch} className="flex gap-3 px-6 py-2 justify-between items-center border-[0.5px] border-gray-300 rounded-3xl">
+			<div className="flex gap-3 py-2 items-center border-[0.5px] border-gray-300 rounded-3xl">
 				<div className='flex relative'>
-					<button className='flex items-center gap-2 text-black-100 px-6 text-sm'>
-						<Image src={DestinyIcon} alt='Ícone de destino' />
+					{
+						isOpenInputDestiny ? (
+							<div className='flex flex-col justify-start px-6 gap-1'>
+								<button className='flex items-center gap-2 text-black-100  text-[12px]'>
+									<Image src={DestinyIcon} alt='Ícone de destino' className='size-3' />
 
-						Destino
-					</button>
+									Destino
+								</button>
+
+								<input onChange={(event) => setLocal(event.target.value)} className='flex-1 bg-transparent border-b focus:outline-none text-[12px] placeholder:text-gray-300 ' type="text" placeholder='Informe o local' />
+							</div>
+						) : (
+							<button onClick={() => setIsOpenInputDestiny(true)} className='flex items-center gap-2 text-black-100 px-6 text-sm'>
+								<Image src={DestinyIcon} alt='Ícone de destino' />
+
+								Destino
+							</button>
+						)
+					}
 
 					<button className='flex items-center border-x border-blue-300  gap-2 text-sm text-black-100 px-6'>
 						<Image src={CalendarIcon} alt='Ícone de destino' />
@@ -145,57 +165,61 @@ function Menu({ handleBackToHomePage, handleSearch, setSearchInput }: MenuProps)
 						Check-out
 					</button>
 
-					<button className='flex items-center gap-2 text-black-100 px-6 text-sm'>
+					<button onClick={() => setIsOpenModalGuests(true)} className='flex items-center gap-2 text-black-100 px-6 text-sm'>
 						<Image src={PersonIcon} alt='Ícone de destino' />
 
 						Hóspedes
 					</button>
 
 					{/* modal hospedes */}
-					<div className='absolute px-5 bg-white rounded-2xl drop-shadow'>
-						<div className='flex py-3 justify-between gap-4'>
-							Adultos
+					{
+						isOpenModalGuests && (
+							<div className='absolute px-5 bg-white rounded-2xl drop-shadow'>
+								<div className='flex py-3 justify-between gap-4'>
+									Adultos
 
-							<div className='flex gap-1'>
-								<Image onClick={() => setSearchBar({...searchBar, adults: searchBar.adults - 1})} src={MinusIcon} alt='Ícone de menos' />
-								{searchBar.adults}
-								<Image onClick={() => setSearchBar({...searchBar, adults: searchBar.adults + 1})} src={PlusIcon} alt='Ícone de mais' />
+									<div className='flex gap-1'>
+										<Image onClick={() => searchBar.adults > 0 && setSearchBar({ ...searchBar, adults: searchBar.adults - 1 })} src={MinusIcon} alt='Ícone de menos' />
+										{searchBar.adults}
+										<Image onClick={() => setSearchBar({ ...searchBar, adults: searchBar.adults + 1 })} src={PlusIcon} alt='Ícone de mais' />
+									</div>
+								</div>
+
+								<div className='flex py-3 justify-between gap-4 border-y-[0.5px] border-gray-200'>
+									Crianças
+
+									<div className='flex gap-1'>
+										<Image onClick={() => searchBar.children > 0 && setSearchBar({ ...searchBar, children: searchBar.children - 1 })} src={MinusIcon} alt='Ícone de menos' />
+										{searchBar.children}
+										<Image onClick={() => setSearchBar({ ...searchBar, children: searchBar.children + 1 })} src={PlusIcon} alt='Ícone de mais' />
+									</div>
+								</div>
+
+								<div className='flex py-3 justify-between gap-4 border-b-[0.5px] border-gray-200'>
+									Bebês
+
+									<div className='flex gap-1'>
+										<Image onClick={() => searchBar.babies > 0 && setSearchBar({ ...searchBar, babies: searchBar.babies - 1 })} src={MinusIcon} alt='Ícone de menos' />
+										{searchBar.babies}
+										<Image onClick={() => setSearchBar({ ...searchBar, babies: searchBar.babies + 1 })} src={PlusIcon} alt='Ícone de mais' />
+									</div>
+								</div>
+
+								<div className='flex py-3 justify-between gap-4'>
+									Animais de estimação
+
+									<div className='flex gap-1'>
+										<Image onClick={() => searchBar.pets > 0 && setSearchBar({ ...searchBar, pets: searchBar.pets - 1 })} src={MinusIcon} alt='Ícone de menos' />
+										{searchBar.pets}
+										<Image onClick={() => setSearchBar({ ...searchBar, pets: searchBar.pets + 1 })} src={PlusIcon} alt='Ícone de mais' />
+									</div>
+								</div>
 							</div>
-						</div>
-
-						<div className='flex py-3 justify-between gap-4 border-y-[0.5px] border-gray-200'>
-							Crianças
-
-							<div className='flex gap-1'>
-								<Image onClick={() => setSearchBar({...searchBar, children: searchBar.children - 1})} src={MinusIcon} alt='Ícone de menos' />
-								{searchBar.children}
-								<Image onClick={() => setSearchBar({...searchBar, children: searchBar.children + 1})} src={PlusIcon} alt='Ícone de mais' />
-							</div>
-						</div>
-
-						<div className='flex py-3 justify-between gap-4 border-b-[0.5px] border-gray-200'>
-							Bebês
-
-							<div className='flex gap-1'>
-								<Image onClick={() => setSearchBar({...searchBar, babies: searchBar.babies - 1})} src={MinusIcon} alt='Ícone de menos' />
-								{searchBar.babies}
-								<Image onClick={() => setSearchBar({...searchBar, babies: searchBar.babies + 1})} src={PlusIcon} alt='Ícone de mais' />
-							</div>
-						</div>
-
-						<div className='flex py-3 justify-between gap-4'>
-							Animais de estimação
-
-							<div className='flex gap-1'>
-								<Image onClick={() => setSearchBar({...searchBar, pets: searchBar.pets - 1})} src={MinusIcon} alt='Ícone de menos' />
-								{searchBar.pets}
-								<Image onClick={() => setSearchBar({...searchBar, pets: searchBar.pets + 1})} src={PlusIcon} alt='Ícone de mais' />
-							</div>
-						</div>
-					</div>
+						)
+					}
 				</div>
 
-				<div className='bg-blue-200 p-2 rounded-full'>
+				<div className='bg-blue-200 p-2 mr-6 rounded-full'>
 					<Image
 						src={SearchIcon}
 						alt='Logo'
@@ -205,12 +229,12 @@ function Menu({ handleBackToHomePage, handleSearch, setSearchInput }: MenuProps)
 						className='cursor-pointer'
 					/>
 				</div>
-			</form>
+			</div>
 
 			<div className="flex gap-4">
 				<button
 					className="w-32 h-10 font-bold bg-white text-blue-300 border border-gray-100 rounded-2xl hover:text-white hover:bg-blue-300 transition duration-500"
-					onClick={handleAnunciarClick}
+					onClick={handleAnnounceClick}
 				>
 					Anunciar
 				</button>
