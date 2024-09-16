@@ -9,11 +9,11 @@ type CompartilharModalProps = {
 };
 
 const CompartilharModal: React.FC<CompartilharModalProps> = ({ isOpen, onClose, titulo }) => {
-  if (!isOpen) return null;
   const [copySuccess, setCopySuccess] = useState(false);
   const [embedModalOpen, setEmbedModalOpen] = useState(false);
   const router = useRouter();
   const currentUrl = `${window.location.origin}${router.asPath}`;
+  if (!isOpen) return null;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(currentUrl).then(() => {
@@ -57,11 +57,11 @@ const CompartilharModal: React.FC<CompartilharModalProps> = ({ isOpen, onClose, 
   const handleEmbed = () => {
     setEmbedModalOpen(true);
   };
-/* 
-  const handleMoreOptions = () => {
-    alert('Mais opções de compartilhamento ainda não implementadas.');
-  };
- */
+  /* 
+    const handleMoreOptions = () => {
+      alert('Mais opções de compartilhamento ainda não implementadas.');
+    };
+   */
   return (
     <>
       <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -98,7 +98,7 @@ const CompartilharModal: React.FC<CompartilharModalProps> = ({ isOpen, onClose, 
               <FaCode className="mr-2" />
               Incorporar
             </button>
-       {/*      <button className="border p-2 rounded flex items-center justify-center" onClick={handleMoreOptions}>
+            {/*      <button className="border p-2 rounded flex items-center justify-center" onClick={handleMoreOptions}>
               <FaEllipsisH className="mr-2" />
               Mais opções
             </button> */}
