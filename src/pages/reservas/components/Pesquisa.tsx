@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 const Pesquisa: React.FC<{ onFilter: (filters: any) => void }> = ({ onFilter }) => {
-    const [filtros, setFiltros] = useState({
+    const [filters, setFiltros] = useState({
         data: false,
         status: false,
         imovel: false,
@@ -20,7 +20,7 @@ const Pesquisa: React.FC<{ onFilter: (filters: any) => void }> = ({ onFilter }) 
     };
 
     const handleSubmit = () => {
-        onFilter(filtros);
+        onFilter(filters);
     };
 
     return (
@@ -29,23 +29,23 @@ const Pesquisa: React.FC<{ onFilter: (filters: any) => void }> = ({ onFilter }) 
             <div className="flex flex-col p-4 mb-2">
                 <label className="block font-semibold">Filtros:</label>
                 <label>
-                    <input type="checkbox" name="data" checked={filtros.data} onChange={handleChange} />
+                    <input type="checkbox" name="data" checked={filters.data} onChange={handleChange} />
                     Data
                 </label>
                 <label>
-                    <input type="checkbox" name="status" checked={filtros.status} onChange={handleChange} />
+                    <input type="checkbox" name="status" checked={filters.status} onChange={handleChange} />
                     Status
                 </label>
                 <label>
-                    <input type="checkbox" name="imovel" checked={filtros.imovel} onChange={handleChange} />
+                    <input type="checkbox" name="imovel" checked={filters.imovel} onChange={handleChange} />
                     Imóvel
                 </label>
                 <label>
-                    <input type="checkbox" name="nome" checked={filtros.nome} onChange={handleChange} />
+                    <input type="checkbox" name="nome" checked={filters.nome} onChange={handleChange} />
                     Nome
                 </label>
                 <label>
-                    <input type="checkbox" name="periodo" checked={filtros.periodo} onChange={handleChange} />
+                    <input type="checkbox" name="periodo" checked={filters.periodo} onChange={handleChange} />
                     Período de Reserva
                 </label>
             </div>
@@ -54,7 +54,7 @@ const Pesquisa: React.FC<{ onFilter: (filters: any) => void }> = ({ onFilter }) 
                 <input
                     type="date"
                     name="periodoInicio"
-                    value={filtros.periodoInicio}
+                    value={filters.periodoInicio}
                     onChange={handleChange}
                     className="border px-2 py-1 mb-2"
                 />
@@ -62,7 +62,7 @@ const Pesquisa: React.FC<{ onFilter: (filters: any) => void }> = ({ onFilter }) 
                 <input
                     type="date"
                     name="periodoFim"
-                    value={filtros.periodoFim}
+                    value={filters.periodoFim}
                     onChange={handleChange}
                     className="border px-2 py-1 ml-2"
                 />

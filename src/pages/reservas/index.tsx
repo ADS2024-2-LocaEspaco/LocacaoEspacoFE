@@ -8,7 +8,7 @@ const ReservasPage = () => {
     const [reservas, setReservas] = useState([
         { id: 1, data: '2024-09-01', status: 'Pendente', imovel: 'Casa 1', nome: 'João', periodo: '10h-12h', aprovado: false, recusado: false },
         { id: 2, data: '2024-09-02', status: 'Confirmado', imovel: 'Casa 2', nome: 'Maria', periodo: '14h-16h', aprovado: false, recusado: false },
-        // ... outras reservas
+        
     ]);
 
     const handleFilter = (newFilters: any) => {
