@@ -7,7 +7,7 @@ const MONTHS = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'jul
 interface CalendarModalProps {
   isOpen: boolean;
   onClose: () => void;
-  unavailableDates?: string[]; // Dates from the database
+  unavailableDates?: string[]; // Dates vindo do banco
   onSave: (checkIn: string | null, checkOut: string | null) => void;
 }
 
@@ -58,7 +58,6 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
     return dates
   }
 
-
   const handleSave = () => {
     if (selectedDates.length === 2) {
       const [startDate, endDate] = selectedDates
@@ -71,7 +70,6 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
       onSave(startDate, endDate)
     }
   }
-
 
   const generateCalendar = (month: number, year: number) => {
     const firstDay = new Date(year, month, 1).getDay()
@@ -143,7 +141,7 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
           </button>
         </div>
 
-        <div className="flex space-x-4 mb-4">
+        <div className="flex space-x-4 mb-4 max-w-[100px]">
           <div className="flex-1 p-2 border rounded-lg">
             <div className="text-xs text-gray-500">Check-in</div>
             <div>{checkIn || 'Selecione'}</div>

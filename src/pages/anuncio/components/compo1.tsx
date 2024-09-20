@@ -2,16 +2,16 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from 'react';
 import CalendarModal from './calendarComponent2';
+
 import HospedeModal from './hospedeCompo';
 import { Anuncio } from '../../../types/types';
 import { hospedeCategory } from './hospedeCompo';
 
-
 export default function Component({ anuncioId }: { anuncioId: string }) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isHospModalOpen, setIsHospModalOpen] = useState(false);
 
-  const [isHospModalOpen, setIsHospModalOpen] = useState(false)
-  const [hospSummary, setHospSummary] = useState('2 hóspedes')
+  const [hospSummary, setHospSummary] = useState('2 hóspedes');
   const [checkIn, setCheckIn] = useState<string | null>(null);
   const [checkOut, setCheckOut] = useState<string | null>(null);
   const [anuncio, setAnuncio] = useState<Anuncio | null>(null);
@@ -28,26 +28,16 @@ export default function Component({ anuncioId }: { anuncioId: string }) {
     setIsCalendarOpen(false);
   };
 
-  const handleOpenModal = () => {
-    setIsHospModalOpen(true)
-  }
-
-  const handleCloseModal = () => {
-    console.log('Fechando modal')
-    setIsHospModalOpen(false)
-
-  }
-
   const handleSaveHosp = (hospede: hospedeCategory[]) => {
     console.log('Salvando hóspedes:', hospede)
-    handleCloseModal()
+    setIsHospModalOpen(false);
   }
 
   // Função para buscar os dados do anúncio
   useEffect(() => {
     const fetchAnuncio = async () => {
       try {
-        const response = await fetch(`/api/anuncio/1`);
+        const response = await fetch(`/api/anuncio/${anuncioId}`);
         const data = await response.json();
         setAnuncio(data);
       } catch (error) {
@@ -59,6 +49,19 @@ export default function Component({ anuncioId }: { anuncioId: string }) {
       fetchAnuncio();
     }
   }, [anuncioId]);
+
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return '';
+
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'short',
+      day: '2-digit',
+      month: 'short',
+    };
+
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('pt-BR', options).format(date);
+  };
 
   if (!anuncio) {
     return <div>Carregando...</div>;
@@ -100,12 +103,12 @@ export default function Component({ anuncioId }: { anuncioId: string }) {
               <img src="/icons/group_icon.svg" alt="" className="h-5 w-5 mr-2" />
               <span className="text-sm text-[#3D3D43]">2 hóspedes</span>
             </div>
-            <div onClick={handleOpenModal} className="ml-40">
-              <button className="text-[#3D3D43] text-sm font-medium">
+            <div className="ml-40">
+              <button onClick={() => setIsHospModalOpen(true)} className="text-[#3D3D43] text-sm font-medium">
                 Editar
               </button>
               <HospedeModal isOpen={isHospModalOpen}
-                onClose={handleCloseModal}
+                onClose={() => setIsHospModalOpen(false)}
                 onSave={handleSaveHosp}
               />
             </div>

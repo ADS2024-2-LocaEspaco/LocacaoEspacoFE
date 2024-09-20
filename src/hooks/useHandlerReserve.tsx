@@ -22,7 +22,8 @@ export function useHandleReserve(datasArmazenadas: Date[], valorDiaria: number) 
     const clickedDate = new Date(selectedYear, selectedMonth, day);
 
     if (isDateReserved(clickedDate)) {
-      return; // Não permite selecionar datas reservadas
+      alert('Esta data já está reservada. Por favor seleione outra data.')
+      return;
     }
 
     if (!startDate || (startDate && endDate)) {

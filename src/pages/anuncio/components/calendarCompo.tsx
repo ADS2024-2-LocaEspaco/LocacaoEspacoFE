@@ -63,7 +63,7 @@ export default function Calendar({ onDateChange, valorDiaria }: CalendarProps) {
   return (
     <div className="calendar-container">
       {/* Calendário */}
-      <div className="mt-4 px-4 py-4 bg-white dark:bg-[#3D3D43] overflow-auto h-full rounded-[10px]">
+      <div className="mt-4 px-4 py-4 bg-[#3D3D43] overflow-auto h-full rounded-[10px]">
         {/* Navegação de mês e ano */}
         <div className="flex items-center justify-between mb-4">
           <button type="button" className="p-2 text-white" onClick={() => handleMonthChange(-1)}>
@@ -74,7 +74,7 @@ export default function Calendar({ onDateChange, valorDiaria }: CalendarProps) {
               title="mes"
               value={selectedMonth}
               onChange={(e) => handleMonthChange(Number(e.target.value) - selectedMonth)}
-              className="bg-white dark:bg-[#3D3D43] text-gray-800 dark:text-neutral-200 border border-gray-300 dark:border-neutral-600 rounded-md"
+              className="bg-white dark:bg-[#3D3D43] text-[#3D3D43] dark:text-neutral-200 border border-gray-300 dark:border-neutral-600 rounded-md"
             >
               {months.map((month, index) => (
                 <option key={index} value={index}>
@@ -86,7 +86,7 @@ export default function Calendar({ onDateChange, valorDiaria }: CalendarProps) {
               title="year"
               value={selectedYear}
               onChange={(e) => handleMonthChange((Number(e.target.value) - selectedYear) * 12)}
-              className="bg-white dark:bg-[#3D3D43] text-gray-800 dark:text-neutral-200 border border-gray-300 dark:border-neutral-600 rounded-md"
+              className="bg-white dark:bg-[#3D3D43] text-[#3D3D43] dark:text-neutral-200 border border-gray-300 dark:border-neutral-600 rounded-md"
             >
               {years.map((year) => (
                 <option key={year} value={year}>
@@ -95,7 +95,7 @@ export default function Calendar({ onDateChange, valorDiaria }: CalendarProps) {
               ))}
             </select>
           </div>
-          <button type="button" className="p-2 text-white" onClick={() => handleMonthChange(1)}>
+          <button type="button" className="p-2 text-[#3D3D43]" onClick={() => handleMonthChange(1)}>
             <img src="/icons/arrow_forward_icon-w.svg" alt="seta-avançar" className='w-5 h-5' />
           </button>
         </div>
@@ -105,7 +105,7 @@ export default function Calendar({ onDateChange, valorDiaria }: CalendarProps) {
           {['Dom.', 'Seg.', 'Ter.', 'Qua.', 'Qui.', 'Sex.', 'Sab.'].map((day, index) => (
             <div
               key={day}
-              className={`text-center text-sm ${index === 0 || index === 6 ? 'text-[#1270B0]' : 'text-gray-800 dark:text-neutral-200'}`}
+              className={`text-center text-sm ${index === 0 || index === 6 ? 'text-[#1270B0]' : 'text-neutral-200'}`}
             >
               {day}
             </div>
@@ -126,13 +126,13 @@ export default function Calendar({ onDateChange, valorDiaria }: CalendarProps) {
                   type="button"
                   className={`
                     m-px size-10 flex justify-center items-center border border-transparent text-sm rounded-full 
-                    hover:border-orange-700 hover:text-white disabled:opacity-50 disabled:pointer-events-none 
+                    hover:border-orange-700 hover:text-neutral-300 disabled:opacity-50 disabled:pointer-events-none 
                     focus:outline-none focus:border-orange-700 focus:text-white
                     ${isSelected(currentDate)
                       ? 'bg-[#FF6F00] text-white'
                       : isWeekend(currentDate)
                         ? 'text-[#1270B0]'
-                        : 'text-gray-800 dark:text-neutral-200'
+                        : 'text-neutral-200'
                     }
                     ${isReserved ? 'cursor-not-allowed opacity-50' : ''}
                   `}

@@ -35,7 +35,6 @@ export default function HospedeModal({ isOpen, onClose, onSave }: HospedeModalPr
     }
   }
 
-
   if (!isOpen) return null
 
   return (
@@ -74,7 +73,7 @@ export default function HospedeModal({ isOpen, onClose, onSave }: HospedeModalPr
 
         <div className="flex justify-between mt-8">
           <button
-            onClick={() => onSave(hospede)}
+            onClick={onClose}
             className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium"
           >
             Cancelar
