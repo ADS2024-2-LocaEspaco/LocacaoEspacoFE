@@ -1,11 +1,17 @@
 import React, {useState} from "react"
 
-export default function AcountDetails() {
+interface AccountDetailsProps {
+    currentFullName: string;
+    currentEmail: string;
+    currenteCpf: string;
+}
+
+export default function AcountDetails({ currentFullName, currentEmail, currenteCpf }: AccountDetailsProps) {
 
     const [isEditing, setIsEditing] = useState(false);
-    const [fullName, setFullName] = useState("Lucas Santos Pereira Nascimento");
-    const [email, setEmail] = useState("LucasSantos@gmail.com");
-    const [cpf, setCpf] = useState("123.456.789-00");
+    const [fullName, setFullName] = useState(currentFullName);
+    const [email, setEmail] = useState(currentEmail);
+    const [cpf, setCpf] = useState(currenteCpf);
 
     const handleEditClick = () => {
         setIsEditing(true);
@@ -15,6 +21,11 @@ export default function AcountDetails() {
         setIsEditing(false);
         // apos fechar salvar as informações
     }
+
+    console.log(fullName)
+    console.log(email)
+    console.log(cpf)
+
 
     return(
         <div className="flex flex-col  mt-14 rounded-2xl shadow-md">

@@ -3,11 +3,14 @@ import React, {useState} from "react";
 import StarFill from "../../../assets/starFill.svg";
 import Star from "../../../assets/star.svg";
 import Image from "next/image";
+interface InfoBasicUserProps {
+    userName: string; 
+}
 
-export default function InfoBasicUser() {
+export default function InfoBasicUser({ userName: initialUserName }: InfoBasicUserProps) {
 
     const [isEditing, setIsEditing] = useState(false);
-    const [userName, setUserName] = useState("Lucas Santos");
+    const [userName, setUserName] = useState<string>(initialUserName);
 
     const handleEditClick = () => {
         setIsEditing(true);

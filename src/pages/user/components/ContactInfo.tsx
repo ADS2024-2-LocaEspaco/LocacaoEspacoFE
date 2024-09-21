@@ -1,14 +1,21 @@
 import React, { useState } from 'react'
+interface ContactInfoProps{
+    currentPhone: string;
+    currentState: string;
+    currentCity: string;
+    currentAddress: string;
+    currentCep: string
+}
 
 
-export default function ContactInfo() {
+export default function ContactInfo({currentPhone, currentState, currentCity, currentAddress, currentCep} : ContactInfoProps) {
 
     const [isEditing, setIsEditing] = useState(false);
-    const [phone, setPhone] = useState("(41) 98765-4321");
-    const [state, setState] = useState("Parana");
-    const [city, setCity] = useState("Curitiba");
-    const [address, setAddress] = useState("Av. das Nações Unidas, 1234");
-    const [cep , setCep] = useState("12345-678");
+    const [phone, setPhone] = useState(currentPhone);
+    const [state, setState] = useState(currentState);
+    const [city, setCity] = useState(currentCity);
+    const [address, setAddress] = useState(currentAddress);
+    const [cep , setCep] = useState(currentCep);
 
     const handleEditClick = () => {
         setIsEditing(true);

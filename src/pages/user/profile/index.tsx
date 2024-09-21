@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import AcountDetails from "../components/AcountDetails";
 import ContactInfo from "../components/ContactInfo";
+
+import Image from "next/image";
 import ImageUser from "../components/ImageUser";
+import loadingImage from '../../../assets/loading.webp';
+
 import InfoBank from "../components/InfoBank";
 import InfoBasicUser from "../components/InfoBasicUser"
-
-// import DeleteAcount from '../components/deleteAccountModal';
 import { DeleteAccountModal } from '../components/deleteAccountModal';
-
 import Notification from "../components/Notification";
 
+import axios from 'axios';
 
 export default function profile() {
 
@@ -25,7 +27,34 @@ export default function profile() {
     };
 
 
+    interface UserData {
+        username: string;
+        fullname: string;
+        email: string;
+        cpf: string;
+        phone: string;
+        state: string;
+        city: string;
+        address: string;
+        cep: string;
+    }
+    const [userData, setUserData] = useState<UserData | null>(null);
 
+    const getUserData = async () => {
+        try {
+            const response = await axios.get('http://localhost:3001/profile/1')
+            setUserData(response.data);
+        }
+        catch (error) {
+            console.log("Erro ao buscar perfil:", error.response ? error.response.data : error.message);
+        }
+    }
+
+    useEffect(() => {
+        getUserData();
+    }, [])
+
+    
     return (
         
         <div className="w-screen h-full bg-white">
@@ -36,8 +65,15 @@ export default function profile() {
             <hr className="bg-black mx-4 border-solid border-1 border-black" />
         
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 px-4 mt-4 max-w-4xl mx-auto">
+
                 <div className="flex justify-center items-center p-2">
-                    <InfoBasicUser />
+                    {userData ? (
+                        <InfoBasicUser userName={userData.username} />
+                        ) : (
+                            <div className="">
+                                <Image src={loadingImage} alt="Carregando..." className="w-16 h-16" />
+                            </div>
+                        )}
                 </div>
         
                 <div className="flex justify-center items-center p-2">
@@ -45,18 +81,41 @@ export default function profile() {
                 </div>
         
                 <div className="flex justify-center items-center p-2">
-                    <AcountDetails />
+                    {userData ? (
+                            <AcountDetails
+                                currentFullName={userData.fullname}
+                                currentEmail={userData.email}
+                                currenteCpf={userData.cpf}
+                            />
+                        ) : (
+                            <div className="">
+                                <Image src={loadingImage} alt="Carregando..." className="w-16 h-16" />
+                            </div>
+                        )
+                    }
                 </div>
         
                 <div className="flex justify-center items-center p-2">
-                    <ContactInfo />
+                    {userData ? (
+                                <ContactInfo
+                                currentPhone={userData.phone}
+                                currentState={userData.state}
+                                currentCity={userData.city}
+                                currentAddress={userData.address}
+                                currentCep={userData.cep}
+                                    />
+                            ) : (
+                                <div className="">
+                                    <Image src={loadingImage} alt="Carregando..." className="w-16 h-16" />
+                                </div>
+                            )
+                        }
                 </div>
         
                 <div className="flex justify-center items-center p-2 md:col-span-2">
                     <InfoBank />
                 </div>
             </div>
-
 
             <div className="flex justify-center mt-24 mb-12">
                     <button 
@@ -75,7 +134,7 @@ export default function profile() {
                 />
             )}
 
-            <div className="flex gap-10 justify-center">
+            {/* <div className="flex gap-10 justify-center">
                 <Notification 
                     title="Sucesso" 
                     message="Sua conta foi excluída." 
@@ -88,7 +147,7 @@ export default function profile() {
                     isSuccess={false}
                 />
 
-            </div>
+            </div> */}
             
         </div>
     );
