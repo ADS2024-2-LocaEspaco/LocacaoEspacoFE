@@ -11,7 +11,7 @@ const CardSelect: React.FC<CardSelectProps> = ({ name, icon, selected, onSelect 
   return (
     <div
       onClick={onSelect}
-      className={`flex flex-col items-center justify-center border p-4 h-40 rounded-lg cursor-pointer ${
+      className={`flex flex-col items-center justify-center border p-4 h-40 w-40 rounded-lg cursor-pointer ${
         selected ? 'border-blue-500 bg-blue-100' : 'border-gray-400 bg-white'
       }`}
     >
