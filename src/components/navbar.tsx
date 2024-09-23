@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
 
-
 import Logo from '../../public/icons/logo.svg';
 import MenuHamburgerIcon from '../../public/icons/menu_icon.svg';
 import AccountIcon from '../../public/icons/account_circle_icon.svg';
@@ -15,7 +14,7 @@ import PlusIcon from '../../public/icons/plus_circle_icon.svg'
 import MinusIcon from '../../public/icons/dash_circle_icon.svg'
 
 import Calendar from './calendar';
-import { useSession } from '@/lib/session/cookie';
+import { useSession } from '@/hooks/useSession';
 import { useUserStore } from '@/lib/store/userStore';
 
 interface MobileMenuProps {
@@ -242,7 +241,7 @@ function Menu({ handleBackToHomePage, handleSearch, setSearchInput, loginWithGoo
 				<button
 					className="w-32 h-10 font-bold bg-white text-blue-300 border border-gray-100 rounded-2xl hover:text-white hover:bg-blue-300 transition duration-500"
 					onClick={() => {
-						// session.deleteSession()
+						session.deleteSession()
 						router.push('/')
 					}}
 				>
@@ -262,7 +261,7 @@ function Menu({ handleBackToHomePage, handleSearch, setSearchInput, loginWithGoo
 
 export default function Navbar() {
 	const router = useRouter();
-	// const session = useSession()
+	const session = useSession()
 	const [isOpenMobileMenu, setIsOpenMobileMenu] = useState(false);
 	const [searchInput, setSearchInput] = useState<string>('');
 	const [startDate, setStartDate] = useState<Date | null>(new Date());
@@ -303,14 +302,14 @@ export default function Navbar() {
 			lastName: 'Silva',
 			picture: 'https://example.com/profile.jpg',
 			accessToken: 'abcd1234token',
-		  }
-	  
-		// session.createSession(user)
+		}
+
+		session.createSession(user)
 	}
 
 	return (
 		<>
-			<MobileMenu openMobileMenu={openMobileMenu} handleBackToHomePage={handleBackToHomePage}  />
+			<MobileMenu openMobileMenu={openMobileMenu} handleBackToHomePage={handleBackToHomePage} />
 
 			<Menu handleBackToHomePage={handleBackToHomePage} handleSearch={handleSearch} setSearchInput={setSearchInput} loginWithGoogle={loginWithGoogle} />
 

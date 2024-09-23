@@ -14,4 +14,4 @@ export default function Home() {
             <h2>{user?.picture}</h2>
         </>
     )
-};
+}

@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { useUserStore } from "../store/userStore";
+import { useUserStore } from "../lib/store/userStore";
 
 interface UserData {
   email: string;
@@ -10,7 +10,8 @@ interface UserData {
 }
 
 export const useSession = () => {
-  const [setUser, userExit] = useUserStore((state) => [state.setUser, state.exit])
+  const setUser = useUserStore((state) => state.setUser)
+  const userExit = useUserStore((state) => state.exit)
 
   const createSession = (user: UserData) => {
 
@@ -39,7 +40,7 @@ export const useSession = () => {
   }
 
   const deleteSession = () => {
-    Cookies.remove("user");
+    Cookies.remove("session")
     userExit()
   }
 
