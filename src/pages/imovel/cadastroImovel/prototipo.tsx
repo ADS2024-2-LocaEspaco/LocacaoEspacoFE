@@ -7,7 +7,7 @@ import '@fontsource/josefin-sans';
 
 const prototipo: React.FC = () => {
     const { goToPreviousPage, goToNextPage } = useNavigation();
-    
+
     return (
         <>
             <NavbarCadastro />
@@ -24,7 +24,7 @@ const prototipo: React.FC = () => {
 
                 {/* Right Side */}
                 <div className="w-full md:w-1/2 flex flex-col justify-start items-center p-4 bg-white">
-                    <h1 className="mb-4 text-3xl text-gray-700 font-semibold">Título e descrição</h1>
+                    <h1 className="mb-4 text-3xl text-gray-700 font-semibold">Protótipo</h1>
                     <div className="w-full px-8">
                         
                     </div>
