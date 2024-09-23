@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-interface Reserva {
+export interface Reserva {
   startDate: Date | null;
   endDate: Date | null;
   valorTotal: number;

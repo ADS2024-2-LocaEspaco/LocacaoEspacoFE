@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Reserva } from '@/hooks/ReservaContext';
 
 const DAYS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb']
 const MONTHS = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro']
@@ -7,8 +8,8 @@ const MONTHS = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'jul
 interface CalendarModalProps {
   isOpen: boolean;
   onClose: () => void;
-  unavailableDates?: string[]; // Dates from the database
-  onSave: (checkIn: string | null, checkOut: string | null) => void;
+  unavailableDates?: string[];
+  onSave: (checkIn: string | null, checkOut: string | null, datesInRange: string | null) => void;
 }
 
 export default function CalendarModal({ isOpen, onClose, unavailableDates = [], onSave }: CalendarModalProps) {
@@ -17,7 +18,7 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
   const [currentMonth, setCurrentMonth] = useState(8) // September
   const [currentYear, setCurrentYear] = useState(2024)
   const [selectedDates, setSelectedDates] = useState<string[]>([])
-  const [savedDates, setSavedDates] = useState<string[]>(unavailableDates)
+  const [savedDates, setSavedDates] = useState<Reserva>({ startDate: null, endDate: null, valorTotal: 0 })
 
   const formatDate = (day: number, month: number, year: number) => {
     return `${day.toString().padStart(2, '0')}/${(month + 1).toString().padStart(2, '0')}/${year}`
@@ -45,7 +46,7 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
     const end = new Date(endDate.split('/').reverse().join('-'))
     const dates = []
 
-    let currentDate = start
+    let currentDate = new Date(start.getTime()) // Cria uma nova instância para evitar mutação do objeto original
     while (currentDate <= end) {
       dates.push(
         `${currentDate.getDate().toString().padStart(2, '0')}/${(currentDate.getMonth() + 1)
@@ -54,21 +55,25 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
       )
       currentDate.setDate(currentDate.getDate() + 1)
     }
-
-    return dates
+    return dates;
   }
 
 
   const handleSave = () => {
     if (selectedDates.length === 2) {
-      const [startDate, endDate] = selectedDates
+      const [startDate, endDate] = selectedDates;
       const datesInRange = getDatesInRange(startDate, endDate)
 
       setCheckIn(startDate)
       setCheckOut(endDate)
-      setSavedDates([...savedDates, ...datesInRange])
+      setSavedDates({
+        startDate: new Date(startDate.split('/').reverse().join('-')),
+        endDate: new Date(endDate.split('/').reverse().join('-')),
+        valorTotal: savedDates.valorTotal // Assuming valorTotal remains unchanged
+      })
       setSelectedDates([])
-      onSave(startDate, endDate)
+      onSave(startDate, endDate, datesInRange.join(', '))
+      console.log('Datas selecionadas:', datesInRange)
     }
   }
 
@@ -110,8 +115,10 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
         {calendar.map((day, index) => {
           const date = day ? formatDate(day, month, year) : null
           const isSelected = selectedDates.includes(date || '') || (date && isDateInRange(date))
-          const isUnavailable = savedDates.includes(date || '')
-
+          const isUnavailable = date && savedDates.startDate && savedDates.endDate
+            ? new Date(date.split('/').reverse().join('-')) >= savedDates.startDate &&
+            new Date(date.split('/').reverse().join('-')) <= savedDates.endDate
+            : false;
           return (
             <div
               key={index}
@@ -188,8 +195,7 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
               setCheckIn(null);
               setCheckOut(null);
               setSelectedDates([]);
-              setSavedDates(unavailableDates);
-
+              setSavedDates({ startDate: null, endDate: null, valorTotal: 0 });
             }}
           >
             Limpar datas

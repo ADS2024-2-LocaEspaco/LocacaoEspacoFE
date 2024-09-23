@@ -115,10 +115,6 @@ export default function Component({ anuncioId }: { anuncioId: string }) {
 
       <div className="bg-white rounded-lg border-b-black border-0 shadow p-3 max-w-[546px] mt-10" style={{ boxShadow: '0 2px 10px rgba(0, 0, 0, 0.3)' }}>
         <h2 className="text-lg font-semibold mb-2 text-[#3D3D43]">Informações do Anúncio</h2>
-        <p className="text-[#3D3D43] mb-2">{anuncio.endereco.rua}</p>
-        <p className="text-[#3D3D43] mb-2">
-          {`${anuncio.endereco.rua}, ${anuncio.endereco.bairro}, ${anuncio.endereco.cidade} - ${anuncio.endereco.uf}, ${anuncio.endereco.pais}`}
-        </p>
         <div className="space-y-2 mb-2">
           <div className="flex justify-between text-[#3D3D43]">
             <span>2 noites, 2 adultos, 1 criança</span>
