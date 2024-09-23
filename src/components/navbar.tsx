@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
 
+
 import Logo from '../../public/icons/logo.svg';
 import MenuHamburgerIcon from '../../public/icons/menu_icon.svg';
 import AccountIcon from '../../public/icons/account_circle_icon.svg';
@@ -14,6 +15,8 @@ import PlusIcon from '../../public/icons/plus_circle_icon.svg'
 import MinusIcon from '../../public/icons/dash_circle_icon.svg'
 
 import Calendar from './calendar';
+import { useSession } from '@/lib/session/cookie';
+import { useUserStore } from '@/lib/store/userStore';
 
 interface MobileMenuProps {
 	openMobileMenu: () => void;
@@ -28,6 +31,7 @@ interface MenuProps {
 	handleBackToHomePage: () => void;
 	handleSearch: (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLImageElement>) => void;
 	setSearchInput: Dispatch<SetStateAction<string>>;
+	loginWithGoogle: () => void
 }
 
 function MobileMenu({ openMobileMenu, handleBackToHomePage }: MobileMenuProps) {
@@ -100,12 +104,15 @@ function MobileMenuNavbar({ closeMobileMenu }: MobileMenuNavbarProps) {
 	);
 }
 
-function Menu({ handleBackToHomePage, handleSearch, setSearchInput }: MenuProps) {
+function Menu({ handleBackToHomePage, handleSearch, setSearchInput, loginWithGoogle }: MenuProps) {
 	const router = useRouter();
+	const exit = useUserStore((state) => state.exit)
+	const session = useSession()
 	const [isOpenInputDestiny, setIsOpenInputDestiny] = useState(false)
 	const [isOpenModalGuests, setIsOpenModalGuests] = useState(false)
 
 	const [local, setLocal] = useState('')
+
 
 	const [searchBar, setSearchBar] = useState({
 		adults: 0,
@@ -234,14 +241,17 @@ function Menu({ handleBackToHomePage, handleSearch, setSearchInput }: MenuProps)
 			<div className="flex gap-4">
 				<button
 					className="w-32 h-10 font-bold bg-white text-blue-300 border border-gray-100 rounded-2xl hover:text-white hover:bg-blue-300 transition duration-500"
-					onClick={handleAnnounceClick}
+					onClick={() => {
+						// session.deleteSession()
+						router.push('/')
+					}}
 				>
 					Anunciar
 				</button>
 
 				<button
 					className="w-32 h-10 font-bold bg-orange-300 text-white rounded-2xl hover:opacity-80"
-					onClick={() => router.push('/login')}
+					onClick={loginWithGoogle}
 				>
 					Entrar
 				</button>
@@ -252,10 +262,13 @@ function Menu({ handleBackToHomePage, handleSearch, setSearchInput }: MenuProps)
 
 export default function Navbar() {
 	const router = useRouter();
+	// const session = useSession()
 	const [isOpenMobileMenu, setIsOpenMobileMenu] = useState(false);
 	const [searchInput, setSearchInput] = useState<string>('');
 	const [startDate, setStartDate] = useState<Date | null>(new Date());
 	const [endDate, setEndDate] = useState<Date | null>(new Date());
+
+	// console.log(Cookies.get('user'))
 
 	const handleDateChange = (start: Date, end: Date) => {
 		setStartDate(start);
@@ -283,11 +296,23 @@ export default function Navbar() {
 		}
 	};
 
+	const loginWithGoogle = () => {
+		const user = {
+			email: 'user@example.com',
+			firstName: 'Lucas',
+			lastName: 'Silva',
+			picture: 'https://example.com/profile.jpg',
+			accessToken: 'abcd1234token',
+		  }
+	  
+		// session.createSession(user)
+	}
+
 	return (
 		<>
-			<MobileMenu openMobileMenu={openMobileMenu} handleBackToHomePage={handleBackToHomePage} />
+			<MobileMenu openMobileMenu={openMobileMenu} handleBackToHomePage={handleBackToHomePage}  />
 
-			<Menu handleBackToHomePage={handleBackToHomePage} handleSearch={handleSearch} setSearchInput={setSearchInput} />
+			<Menu handleBackToHomePage={handleBackToHomePage} handleSearch={handleSearch} setSearchInput={setSearchInput} loginWithGoogle={loginWithGoogle} />
 
 			{isOpenMobileMenu && (
 				<MobileMenuNavbar closeMobileMenu={closeMobileMenu} />
