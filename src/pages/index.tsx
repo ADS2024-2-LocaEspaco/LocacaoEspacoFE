@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Josefin_Sans } from "next/font/google";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/Navbar";
 
 const inter = Josefin_Sans({ subsets: ["latin"] });
 
