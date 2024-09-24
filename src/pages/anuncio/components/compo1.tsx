@@ -1,7 +1,12 @@
-'use client'
 /* eslint-disable @next/next/no-img-element */
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import CalendarModal from './calendarComponent2';
+import { setDefaultOptions } from 'date-fns';
+
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
+
 
 import HospedeModal from './hospedeCompo';
 import { Anuncio } from '../../../types/types';
@@ -50,18 +55,22 @@ export default function Component({ anuncioId }: { anuncioId: string }) {
     }
   }, [anuncioId]);
 
+
+
+
+  setDefaultOptions({ locale: ptBR });
   const formatDate = (dateString: string | null) => {
     if (!dateString) return '';
 
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: 'short',
-      day: '2-digit',
-      month: 'short',
-    };
+    const [day, month, year] = dateString.split('/').map(Number);
+    const date = new Date(year, month - 1, day);
 
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('pt-BR', options).format(date);
+    const result = format(date, "eee, dd 'de' MMM");
   };
+
+
+  const formattedCheckIn = checkIn ? formatDate(checkIn) : ''
+  const formattedCheckOut = checkOut ? formatDate(checkOut) : ''
 
   if (!anuncio) {
     return <div>Carregando...</div>;
@@ -82,7 +91,7 @@ export default function Component({ anuncioId }: { anuncioId: string }) {
             <div className="flex items-center min-w-[272px] bg-white rounded-lg border-b-black border-0 shadow px-[5px] py-[10px]">
               <img src="/icons/calendar_icon.svg" alt="" className="h-5 w-5 mr-2" />
               <span className="text-sm text-[#3D3D43]">
-                {checkIn && checkOut ? `${checkIn} - ${checkOut}` : 'Selecione uma data'}
+                {checkIn && checkOut ? `${formattedCheckIn} - ${formattedCheckOut}` : 'Selecione uma data'}
               </span>
             </div>
             <div className="ml-40">
