@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState, useEffect } from 'react';
 import CalendarModal from './calendarComponent2';
-import { setDefaultOptions } from 'date-fns';
+import { getDefaultOptions } from 'date-fns';
 
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -57,15 +57,17 @@ export default function Component({ anuncioId }: { anuncioId: string }) {
 
 
 
+  const defaultOptions = {
+    locale: ptBR,
+  }
 
-  setDefaultOptions({ locale: ptBR });
   const formatDate = (dateString: string | null) => {
     if (!dateString) return '';
 
     const [day, month, year] = dateString.split('/').map(Number);
     const date = new Date(year, month - 1, day);
 
-    const result = format(date, "eee, dd 'de' MMM");
+    return format(date, "eee, dd 'de' MMM");
   };
 
 
