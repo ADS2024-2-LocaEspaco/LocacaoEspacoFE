@@ -54,15 +54,15 @@ export default function profile() {
         getUserData();
     }, [])
 
-    
+
     return (
         
-        <div className="w-screen h-full bg-white">
+        <div className="w-screen h-full bg-white  dark:bg-custom-gray">
             <div className="flex justify-center font-bold p-4">
-                <h1 className="text-4xl">PERFIL DO USUÁRIO</h1>
+                <h1 className="text-4xl  dark:text-white">PERFIL DO USUÁRIO</h1>
             </div>
         
-            <hr className="bg-black mx-4 border-solid border-1 border-black" />
+            <hr className="bg-black mx-4 border-solid border-1 border-black dark:border-white" />
         
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 px-4 mt-4 max-w-4xl mx-auto">
 

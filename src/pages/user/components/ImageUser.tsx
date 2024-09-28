@@ -29,12 +29,12 @@ export default function ImageUser() {
         }
     }
     return (
-        <div className="relative  mt-14 rounded-2xl shadow-md">
+        <div className="relative mt-14 rounded-2xl shadow-md dark:bg-custom-2">
             <header className="flex justify-center p-1">
-                <h4 className="text-base font-bold">Imagem de perfil</h4>
+                <h4 className="text-base font-bold dark:text-white">Imagem de perfil</h4>
             </header>
 
-            <hr className="mx-12 border-solid border-1 border-black mt-0" />
+            <hr className="mx-12 border-solid border-1 border-black mt-0 dark:border-white" />
             
             <main>
                 {isEditing ? (
@@ -43,9 +43,9 @@ export default function ImageUser() {
                             <span className="text-sm text-black font-bold">
                                 Selecionar imagem
                             </span>
-                            <div className="material-symbols-outlined">
-                            file_open
-                        </div>
+                            <div className="material-symbols-outlined ">
+                                file_open
+                            </div>
                         </div>
                     </label>
                 ) : (
@@ -85,7 +85,7 @@ export default function ImageUser() {
                     (
 
                     <button onClick={handleEditClick}>
-                        <Image src={iconCamera} alt="Star Fill" className="size-9"/>
+                        <Image src={iconCamera} alt="Star Fill" className="size-9 "/>
                     </button>
                 )}
 

@@ -24,27 +24,26 @@ export default function InfoBasicUser({ userName: initialUserName }: InfoBasicUs
     }
 
     return (
-        <div className="  mt-14 rounded-2xl shadow-md">
+        <div className="mt-14 rounded-2xl shadow-md dark:bg-custom-gray-2">
             <header className="flex justify-center p-1">
-                <h4 className="text-base font-bold">Informações básicas</h4>
+                <h4 className="text-base font-bold dark:text-white ">Informações básicas</h4>
             </header>
 
-            <hr className="mx-12 border-solid border-1 border-black mt-0"/>
+            <hr className="mx-12 border-solid border-1 border-black mt-0 dark:border-white"/>
 
             <main className="flex flex-col justify-center ml-20 mr-20">
                 
-                <label htmlFor="userName" className="text-base font-medium mt-4">Nome de usuário</label> 
+                <label htmlFor="userName" className="text-base font-medium mt-4 dark:text-white">Nome de usuário</label> 
                 <input
                     type="text"
                     id="userName"
-                    value={userName}
+                    value={userName}    
                     onChange={(e) => setUserName(e.target.value)}
                     readOnly={!isEditing}
-
-                    className="h-8 text-center border border-solid  border-black rounded-xl mt-2 bg-gray-100 placeholder:items-center"
+                    className="h-8 text-center border border-solid  border-black rounded-xl mt-2  placeholder:items-center bg-gray-100 dark:border-white dark:bg-custom-gray-2 dark:text-white"
                 /> 
 
-                <label htmlFor="" className="mt-4 text-base font-medium">Média de avaliação</label>
+                <label htmlFor="" className="mt-4 text-base font-medium dark:text-white">Média de avaliação</label>
                 <div className="flex items-center mt-2">
                     <Image src={StarFill} alt="Star Fill" className="size-9"/>
                     <Image src={StarFill} alt="Star Fill" className="size-9"/>
@@ -52,7 +51,7 @@ export default function InfoBasicUser({ userName: initialUserName }: InfoBasicUs
                     <Image src={StarFill} alt="Star Fill" className="size-9"/>
                     <Image src={Star} alt="Star" className="size-9"/>
 
-                    <p className="ml-2 text-sm">4 de 5</p>
+                    <p className="ml-2 text-sm dark:text-white ">4 de 5</p>
                 </div>
 
             </main>
