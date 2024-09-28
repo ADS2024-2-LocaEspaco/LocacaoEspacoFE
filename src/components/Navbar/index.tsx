@@ -27,7 +27,7 @@ export default function Navbar() {
 		<>
 			<MobileMenu/>
 
-			<DesktopMenu handleSearch={handleSearch} setSearchInput={setSearchInput} />
+			<DesktopMenu handleSearch={handleSearch} />
 		</>
 	);
 }

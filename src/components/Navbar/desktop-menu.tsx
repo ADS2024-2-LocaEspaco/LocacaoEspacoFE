@@ -9,25 +9,26 @@ import DestinyIcon from '../../../public/icons/destiny_icon.svg'
 import PersonIcon from '../../../public/icons/person_icon.svg'
 import PlusIcon from '../../../public/icons/plus_circle_icon.svg'
 import MinusIcon from '../../../public/icons/dash_circle_icon.svg'
+import Calendar from "../calendar";
 
 interface DesktopMenuProps {
 	handleSearch: (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLImageElement>) => void;
-	setSearchInput: Dispatch<SetStateAction<string>>;
 }
 
-export default function DesktopMenu({ handleSearch, setSearchInput }: DesktopMenuProps) {
+export default function DesktopMenu({ handleSearch }: DesktopMenuProps) {
 	const user = ''
 	const router = useRouter();
 
-	const modalRef = useRef(null);
-	const inputRef = useRef(null);
+	const modalGuestsRef = useRef<HTMLElement | null>(null);
+	const inputRef = useRef<HTMLElement | null>(null);
+	const modalCheckInRef = useRef<HTMLElement | null>(null);
+	const modalCheckOutRef = useRef<HTMLElement | null>(null);
 
-	const [local, setLocal] = useState(null)
+	const [local, setLocal] = useState('')
 	const [isOpenInputDestiny, setIsOpenInputDestiny] = useState(false)
 	const [isOpenCheckInCalendar, setIsOpenCheckInCalendar] = useState(false)
 	const [isOpenCheckOutCalendar, setIsOpenCheckOutCalendar] = useState(false)
 	const [isOpenModalGuests, setIsOpenModalGuests] = useState(false)
-
 
 	const [searchBar, setSearchBar] = useState({
 		adults: 0,
@@ -36,7 +37,6 @@ export default function DesktopMenu({ handleSearch, setSearchInput }: DesktopMen
 		pets: 0
 	})
 
-	// Redirecionar para a página de anunciar
 	const handleAnnounceClick = () => {
 		router.push('/anunciar');
 	};
@@ -45,32 +45,46 @@ export default function DesktopMenu({ handleSearch, setSearchInput }: DesktopMen
 		router.push('/');
 	}
 
-
 	useEffect(() => {
 
-		// Função que verifica se o clique foi fora do modal
 		const handleClickOutside = (event: MouseEvent) => {
-			if (modalRef.current && !modalRef.current.contains(event.target)) {
-				setIsOpenModalGuests(false); // Fecha o modal
+			if (modalGuestsRef.current && event.target instanceof Node && !modalGuestsRef.current.contains(event.target)) {
+				setIsOpenModalGuests(false);
 			}
 		};
 
 		const handleClickOutsideInput = (event: MouseEvent) => {
-			if (inputRef.current && !inputRef.current.contains(event.target)) {
+			if (inputRef.current && event.target instanceof Node && !inputRef.current.contains(event.target) && local) {
 				setIsOpenInputDestiny(false)
+			}
+		}
+
+		const handleClickOutsideModalCheckIn = (event: MouseEvent) => {
+			if (modalCheckInRef.current && event.target instanceof Node && !modalCheckInRef.current.contains(event.target)) {
+				setIsOpenCheckInCalendar(false)
+			}
+		}
+
+		const handleClickOutsideModalCheckOut = (event: MouseEvent) => {
+			if (modalCheckOutRef.current && event.target instanceof Node && !modalCheckOutRef.current.contains(event.target)) {
+				setIsOpenCheckOutCalendar(false)
 			}
 		}
 
 		// Adiciona o event listener ao documento
 		document.addEventListener('mousedown', handleClickOutside)
 		document.addEventListener('mousedown', handleClickOutsideInput)
+		document.addEventListener('mousedown', handleClickOutsideModalCheckIn)
+		document.addEventListener('mousedown', handleClickOutsideModalCheckOut)
 
 		// Limpa o event listener quando o componente desmontar
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside)
 			document.removeEventListener('mousedown', handleClickOutsideInput)
+			document.removeEventListener('mousedown', handleClickOutsideModalCheckIn)
+			document.removeEventListener('mousedown', handleClickOutsideModalCheckOut)
 		};
-	}, [])
+	})
 
 	return (
 		<nav className="flex font-body w-full px-16 py-3 gap-2	4 justify-between items-center max-md:hidden">
@@ -94,7 +108,7 @@ export default function DesktopMenu({ handleSearch, setSearchInput }: DesktopMen
 									Destino
 								</button>
 
-								<input onChange={(event) => setLocal(event.target.value)} className='flex-1 bg-transparent border-b focus:outline-none text-[12px] placeholder:text-gray-300 ' type="text" placeholder='Informe o local' />
+								<input value={local} onChange={(event) => setLocal(event.target.value)} className='flex-1 bg-transparent border-b focus:outline-none text-[12px] placeholder:text-gray-300 ' type="text" placeholder='Informe o local' />
 							</div>
 						) : (
 							<button onClick={() => setIsOpenInputDestiny(true)} className='flex items-center gap-2 text-black-100 px-6 text-sm'>
@@ -105,28 +119,43 @@ export default function DesktopMenu({ handleSearch, setSearchInput }: DesktopMen
 						)
 					}
 
-					<button className='flex items-center border-x border-blue-300  gap-2 text-sm text-black-100 px-6'>
+					<button onClick={() => setIsOpenCheckInCalendar(!isOpenCheckInCalendar)} className='flex items-center border-x border-blue-300  gap-2 text-sm text-black-100 px-6'>
 						<Image src={CalendarIcon} alt='Ícone de destino' />
 
 						Check-in
 					</button>
 
-					<button className='flex items-center border-r border-blue-300 gap-2 text-sm text-black-100 px-6'>
+					<button onClick={() => setIsOpenCheckOutCalendar(!isOpenCheckOutCalendar)} className='flex items-center border-r border-blue-300 gap-2 text-sm text-black-100 px-6'>
 						<Image src={CalendarIcon} alt='Ícone de destino' />
 
 						Check-out
 					</button>
 
-					<button onClick={() => setIsOpenModalGuests(true)} className='flex items-center gap-2 text-black-100 px-6 text-sm'>
+					<button onClick={() => setIsOpenModalGuests(!isOpenModalGuests)} className='flex items-center gap-2 text-black-100 px-6 text-sm'>
 						<Image src={PersonIcon} alt='Ícone de destino' />
 
 						Hóspedes
 					</button>
 
-					{/* modal hospedes */}
+					{
+						isOpenCheckInCalendar && (
+							<div ref={modalCheckInRef} className='absolute top-11 right-[35%] bg-white rounded-2xl drop-shadow'>
+								<Calendar selectedDate={new Date()} />
+							</div>
+						)
+					}
+
+					{
+						isOpenCheckOutCalendar && (
+							<div ref={modalCheckOutRef} className='absolute top-11 right-[10%] bg-white rounded-2xl drop-shadow'>
+								<Calendar selectedDate={new Date()} />
+							</div>
+						)
+					}
+
 					{
 						isOpenModalGuests && (
-							<div ref={modalRef} className='absolute top-11 right-[-15%] px-5 bg-white rounded-2xl drop-shadow'>
+							<div ref={modalGuestsRef} className='absolute top-11 right-[-15%] px-5 bg-white rounded-2xl drop-shadow'>
 								<div className='flex py-3 justify-between gap-4'>
 									Adultos
 
