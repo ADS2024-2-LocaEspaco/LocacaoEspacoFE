@@ -1,7 +1,7 @@
 
 import Image from "next/image";
-import iconCamera from "../../../assets/iconCamera.svg"
-import User from "../../../assets/user.png"
+import iconCamera from "../../../../assets/iconCamera.svg"
+import User from "../../../../assets/user.png"
 import { useState } from "react";
 
 

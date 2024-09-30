@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 
-import StarFill from "../../../assets/starFill.svg";
-import Star from "../../../assets/star.svg";
+import StarFill from "../../../../assets/starFill.svg";
+import Star from "../../../../assets/star.svg";
 import Image from "next/image";
 interface InfoBasicUserProps {
     userName: string; 

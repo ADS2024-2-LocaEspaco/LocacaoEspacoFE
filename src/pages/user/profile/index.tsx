@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 
-import AcountDetails from "../components/AcountDetails";
-import ContactInfo from "../components/ContactInfo";
+import AcountDetails from "./components/AcountDetails";
+import ContactInfo from "./components/ContactInfo";
 
 import Image from "next/image";
-import ImageUser from "../components/ImageUser";
+import ImageUser from "./components/ImageUser";
 import loadingImage from '../../../assets/loading.webp';
 
-import InfoBank from "../components/InfoBank";
-import InfoBasicUser from "../components/InfoBasicUser"
-import { DeleteAccountModal } from '../components/deleteAccountModal';
-import Notification from "../components/Notification";
+import InfoBank from "./components/InfoBank";
+import InfoBasicUser from "./components/InfoBasicUser"
+import { DeleteAccountModal } from './components/deleteAccountModal';
+import Notification from "./components/Notification";
 
 import axios from 'axios';
 
@@ -134,7 +134,7 @@ export default function profile() {
                 />
             )}
 
-            {/* <div className="flex gap-10 justify-center">
+            <div className="flex gap-10 justify-center">
                 <Notification 
                     title="Sucesso" 
                     message="Sua conta foi excluída." 
@@ -147,7 +147,7 @@ export default function profile() {
                     isSuccess={false}
                 />
 
-            </div> */}
+            </div>
             
         </div>
     );
