@@ -12,7 +12,7 @@ import InfoBasicUser from "./components/InfoBasicUser"
 import { DeleteAccountModal } from './components/deleteAccountModal';
 import Notification from "./components/Notification";
 
-import axios from 'axios';
+import { getUserProfile, UserData } from "../../api/user/profileService";
 
 export default function profile() {
 
@@ -26,33 +26,16 @@ export default function profile() {
         setIsModalOpen(false);
     };
 
-
-    interface UserData {
-        username: string;
-        fullname: string;
-        email: string;
-        cpf: string;
-        phone: string;
-        state: string;
-        city: string;
-        address: string;
-        cep: string;
-    }
     const [userData, setUserData] = useState<UserData | null>(null);
 
-    const getUserData = async () => {
-        try {
-            const response = await axios.get('http://localhost:3001/profile/1')
-            setUserData(response.data);
-        }
-        catch (error) {
-            console.log("Erro ao buscar perfil:", error.response ? error.response.data : error.message);
-        }
-    }
-
     useEffect(() => {
-        getUserData();
-    }, [])
+        const fetchData = async () => {
+            const data = await getUserProfile(1);
+            setUserData(data);
+        };
+
+        fetchData();
+    }, []);
 
 
     return (
@@ -134,7 +117,7 @@ export default function profile() {
                 />
             )}
 
-            <div className="flex gap-10 justify-center">
+            {/* <div className="flex gap-10 justify-center">
                 <Notification 
                     title="Sucesso" 
                     message="Sua conta foi excluída." 
@@ -147,7 +130,7 @@ export default function profile() {
                     isSuccess={false}
                 />
 
-            </div>
+            </div> */}
             
         </div>
     );
