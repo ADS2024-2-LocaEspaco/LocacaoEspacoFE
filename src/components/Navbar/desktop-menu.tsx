@@ -1,34 +1,40 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import Calendar from "../calendar";
 
 import Logo from '../../../public/icons/logo.svg';
+import UserImage from '../../assets/user.png'
+
 import SearchIcon from '../../../public/icons/search_icon.svg';
 import CalendarIcon from '../../../public/icons/calendar_icon.svg'
 import DestinyIcon from '../../../public/icons/destiny_icon.svg'
 import PersonIcon from '../../../public/icons/person_icon.svg'
 import PlusIcon from '../../../public/icons/plus_circle_icon.svg'
 import MinusIcon from '../../../public/icons/dash_circle_icon.svg'
-import Calendar from "../calendar";
+import ArrowDropDownIcon from '../../../public/icons/arrow_drop_down.svg'
+import Link from "next/link";
 
 interface DesktopMenuProps {
 	handleSearch: (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLImageElement>) => void;
 }
 
 export default function DesktopMenu({ handleSearch }: DesktopMenuProps) {
-	const user = ''
+	const user = 'Lucas'
 	const router = useRouter();
 
 	const modalGuestsRef = useRef<HTMLElement | null>(null);
 	const inputRef = useRef<HTMLElement | null>(null);
 	const modalCheckInRef = useRef<HTMLElement | null>(null);
 	const modalCheckOutRef = useRef<HTMLElement | null>(null);
+	const dropdownMenuRef = useRef<HTMLElement | null>(null);
 
 	const [local, setLocal] = useState('')
 	const [isOpenInputDestiny, setIsOpenInputDestiny] = useState(false)
 	const [isOpenCheckInCalendar, setIsOpenCheckInCalendar] = useState(false)
 	const [isOpenCheckOutCalendar, setIsOpenCheckOutCalendar] = useState(false)
 	const [isOpenModalGuests, setIsOpenModalGuests] = useState(false)
+	const [isOpenDropdownMenu, setIsOpenDropdownMenu] = useState(false)
 
 	const [searchBar, setSearchBar] = useState({
 		adults: 0,
@@ -71,11 +77,18 @@ export default function DesktopMenu({ handleSearch }: DesktopMenuProps) {
 			}
 		}
 
+		const handleClickOutsideDropdownMenu = (event: MouseEvent) => {
+			if (dropdownMenuRef.current && event.target instanceof Node && !dropdownMenuRef.current.contains(event.target)) {
+				setIsOpenDropdownMenu(false)
+			}
+		}
+
 		// Adiciona o event listener ao documento
 		document.addEventListener('mousedown', handleClickOutside)
 		document.addEventListener('mousedown', handleClickOutsideInput)
 		document.addEventListener('mousedown', handleClickOutsideModalCheckIn)
 		document.addEventListener('mousedown', handleClickOutsideModalCheckOut)
+		document.addEventListener('mousedown', handleClickOutsideDropdownMenu)
 
 		// Limpa o event listener quando o componente desmontar
 		return () => {
@@ -83,11 +96,12 @@ export default function DesktopMenu({ handleSearch }: DesktopMenuProps) {
 			document.removeEventListener('mousedown', handleClickOutsideInput)
 			document.removeEventListener('mousedown', handleClickOutsideModalCheckIn)
 			document.removeEventListener('mousedown', handleClickOutsideModalCheckOut)
+			document.removeEventListener('mousedown', handleClickOutsideDropdownMenu)
 		};
 	})
 
 	return (
-		<nav className="flex font-body w-full px-16 py-3 gap-2	4 justify-between items-center max-md:hidden">
+		<nav className="flex font-body w-full px-12 py-3 gap-2 justify-between items-center max-[1150px]:hidden">
 			<Image
 				src={Logo}
 				alt='Logo'
@@ -97,27 +111,29 @@ export default function DesktopMenu({ handleSearch }: DesktopMenuProps) {
 				className='cursor-pointer'
 			/>
 
-			<div className="flex gap-3 py-2 items-center border-[0.5px] border-gray-300 rounded-3xl">
+			<div className="flex gap-3 h-14  items-center border-[0.5px] border-gray-300 rounded-3xl">
 				<div className='flex relative'>
-					{
-						isOpenInputDestiny ? (
-							<div ref={inputRef} className='flex flex-col justify-start px-6 gap-1'>
-								<button className='flex items-center gap-2 text-black-100  text-[12px]'>
-									<Image src={DestinyIcon} alt='Ícone de destino' className='size-3' />
+					<div className="shrink-0">
+						{
+							isOpenInputDestiny ? (
+								<div ref={inputRef} className='flex flex-col justify-start px-6 gap-1'>
+									<button className='flex items-center gap-2 text-black-100  text-[12px]'>
+										<Image src={DestinyIcon} alt='Ícone de destino' className='size-3' />
+
+										Destino
+									</button>
+
+									<input value={local} onChange={(event) => setLocal(event.target.value)} className=' bg-transparent border-b focus:outline-none text-[12px] placeholder:text-gray-300 ' type="text" placeholder='Informe o local' />
+								</div>
+							) : (
+								<button onClick={() => setIsOpenInputDestiny(true)} className='flex items-center gap-2 text-black-100 px-6 text-sm'>
+									<Image src={DestinyIcon} alt='Ícone de destino' />
 
 									Destino
 								</button>
-
-								<input value={local} onChange={(event) => setLocal(event.target.value)} className='flex-1 bg-transparent border-b focus:outline-none text-[12px] placeholder:text-gray-300 ' type="text" placeholder='Informe o local' />
-							</div>
-						) : (
-							<button onClick={() => setIsOpenInputDestiny(true)} className='flex items-center gap-2 text-black-100 px-6 text-sm'>
-								<Image src={DestinyIcon} alt='Ícone de destino' />
-
-								Destino
-							</button>
-						)
-					}
+							)
+						}
+					</div>
 
 					<button onClick={() => setIsOpenCheckInCalendar(!isOpenCheckInCalendar)} className='flex items-center border-x border-blue-300  gap-2 text-sm text-black-100 px-6'>
 						<Image src={CalendarIcon} alt='Ícone de destino' />
@@ -214,8 +230,44 @@ export default function DesktopMenu({ handleSearch }: DesktopMenuProps) {
 
 			{
 				user ? (
-					<div className="flex gap-4">
-						<button>Anunciar</button>
+					<div className="relative flex gap-4">
+						<button className="w-32 h-10 font-bold bg-blue-300 text-white border border-gray-100 rounded-2xl hover:opacity-80">
+							Anunciar
+						</button>
+
+						<div onClick={() => setIsOpenDropdownMenu(true)} className="flex gap-2 items-center cursor-pointer">
+							<h1 className="font-bold text-black-100">{user}</h1>
+
+							<Image
+								src={UserImage}
+								alt='Logo'
+								onClick={handleSearch}
+								height={40}
+								width={40}
+							/>
+
+							<Image
+								src={ArrowDropDownIcon}
+								alt='Logo'
+								onClick={handleSearch}
+								height={8}
+								width={12}
+							/>
+						</div>
+
+						{
+							isOpenDropdownMenu && (
+								<nav ref={dropdownMenuRef} className='absolute top-10 right-0 flex flex-col w-48 bg-white rounded-2xl text-black-300 shadow-xl'>
+									<Link href={'#'} className='pl-7 py-2 hover:opacity-80'>Ver perfil</Link>
+									<Link href={'#'} className='pl-7 py-2 hover:opacity-80'>Favoritos</Link>
+									<Link href={'#'} className='pl-7 py-2 hover:opacity-80'>Notificações</Link>
+									<Link href={'#'} className='pl-7 py-2 hover:opacity-80'>Viagens</Link>
+									<div className="border border-b-gray-100 opacity-30" />
+									<Link href={'#'} className='pl-7 py-2 hover:opacity-80'>Editar Perfil</Link>
+									<Link href={'#'} className='pl-7 py-2 hover:opacity-80 text-red-500'>Sair</Link>
+								</nav>
+							)
+						}
 					</div>
 				) : (
 					<div className="flex gap-4">
