@@ -52,22 +52,22 @@ const Carrossel: React.FC<CarrosselProps> = ({ anuncios }) => {
   return (
     <div className="relative">
       <div
-        className="overflow-hidden rounded-3xl sm:min-w-96	"
+        className="overflow-hidden h-80 md:h-auto w-full rounded-3xl sm:min-w-96	"
         ref={emblaRef}
         style={{ aspectRatio: "16/9" }}
       >
         {/* Carrossel */}
-        <div className="flex h-[574px] justify-stretch items-stretch">
+        <div className="flex h-auto w-full justify-stretch items-stretch">
           {imagens.map((imagem, index) => (
             <div key={index} className="flex-[0_0_100%] relative">
               <img
                 src={imagem}
                 alt={`Imagem ${index + 1}`}
-                className="rounded-3xl"
+                className="w-full h-full object-cover rounded-lg"
               />
 
               {/* Título da casa e localização */}
-              <div className="absolute top-10 left-14 bg-white bg-opacity-75 text-black-100 px-3 py-1 hidden sm400:block rounded-md shadow-md z-20">
+              <div className="absolute top-10 left-14 sm:left-9 bg-white bg-opacity-75 text-black-100 px-3 py-1 hidden sm400:block rounded-md shadow-md z-20">
                 <span className="text-sm font-semibold">{titulo} - {endereco}</span>
               </div>
 
@@ -94,7 +94,7 @@ const Carrossel: React.FC<CarrosselProps> = ({ anuncios }) => {
         ))}
       </div>
       {/* Texto "Melhores avaliados" */}
-      <h2 className="absolute z-20 -ml-[80px] bottom-[36px] left-[140px] text-[20px] md:text-5xl text-white font-bold">Melhores avaliados</h2>
+      <h2 className="absolute font-title z-20 bottom-[340px] left-[5px] text-[22px] text-black-100 font-bold sm:bottom-[36px] sm:left-[140px] sm:text-5xl sm:text-white">Melhores avaliados</h2>
 
       {/* Botão "Ver local" */}
       <div className="absolute bottom-12 right-0 transform -translate-x-1/2">
