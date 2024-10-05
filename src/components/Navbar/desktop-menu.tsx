@@ -18,8 +18,12 @@ export default function DesktopMenu() {
 		router.push('/');
 	}
 
+	const loginWithGoogle = () => {
+		console.log('GOOGLE')
+	}
+
 	return (
-		<nav className="flex font-body w-full px-12 py-3 gap-2 justify-between items-center max-[1150px]:hidden">
+		<nav className="flex font-body w-full px-12 py-3 gap-2 justify-between items-center max-[1300px]:hidden">
 			<Image
 				src={Logo}
 				alt='Logo'
@@ -45,7 +49,7 @@ export default function DesktopMenu() {
 
 						<button
 							className="w-32 h-10 font-bold bg-orange-300 text-white rounded-2xl hover:opacity-80"
-							onClick={() => router.push('/login')}
+							onClick={loginWithGoogle}
 						>
 							Entrar
 						</button>

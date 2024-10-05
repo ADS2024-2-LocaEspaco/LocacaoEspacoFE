@@ -10,7 +10,7 @@ interface DesktopMenuButtonsProps {
 }
 
 export default function DesktopMenuButtons() {
-    const user = ''
+    const user = 'Lucas Santos'
 
     const dropdownMenuRef = useRef<HTMLElement | null>(null);
 

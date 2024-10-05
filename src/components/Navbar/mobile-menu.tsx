@@ -28,35 +28,33 @@ export default function MobileMenu() {
     }
 
     return (
-        <>
-            <nav className='flex relative w-full px-6 py-2 justify-between items-center min-[1150px]:hidden border-b border-gray-300'>
-                <Image
-                    src={MenuHamburgerIcon}
-                    alt='Ícone do menu'
-                    onClick={() => setIsOpenLateralMenu(true)}
-                    height={18}
-                    width={28}
-                    className='cursor-pointer'
-                />
+        <nav className='flex relative w-full px-6 py-2 justify-between items-center min-[1300px]:hidden border-b border-gray-300'>
+            <Image
+                src={MenuHamburgerIcon}
+                alt='Ícone do menu'
+                onClick={() => setIsOpenLateralMenu(true)}
+                height={18}
+                width={28}
+                className='cursor-pointer'
+            />
 
-                <Image
-                    src={Logo}
-                    alt='Logo'
-                    onClick={handleBackToHomePage}
-                    height={52}
-                    width={48}
-                    className='cursor-pointer'
-                />
+            <Image
+                src={Logo}
+                alt='Logo'
+                onClick={handleBackToHomePage}
+                height={52}
+                width={48}
+                className='cursor-pointer'
+            />
 
-                <Image
-                    src={SearchIcon}
-                    alt='Botão de pesquisa'
-                    height={24}
-                    width={24}
-                    className='cursor-pointer'
-                    onClick={() => setIsOpenSearch(true)}
-                />
-            </nav>
+            <Image
+                src={SearchIcon}
+                alt='Botão de pesquisa'
+                height={24}
+                width={24}
+                className='cursor-pointer'
+                onClick={() => setIsOpenSearch(true)}
+            />
 
             {
                 isOpenLateralMenu && (
@@ -69,6 +67,6 @@ export default function MobileMenu() {
                     <MobileModalSearch closeModalSearch={closeModalSearch} />
                 )
             }
-        </>
+        </nav>
     )
 }

@@ -11,7 +11,7 @@ export default function MobileLateralMenu({ closeLateralmenu }: MobileLateralMen
     const user = ''
 
     return (
-        <div className='fixed inset-0 flex font-sans h-screen w-screen min-[1150px]:hidden'>
+        <div className='fixed inset-0 flex font-sans h-screen w-screen min-[1300px]:hidden'>
             <div className='flex-1 bg-white'>
                 <div className='flex gap-7 py-2 items-center px-4 border-b border-gray-300'>
                     <Image

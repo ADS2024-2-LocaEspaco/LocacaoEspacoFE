@@ -9,6 +9,14 @@ import DestinyIcon from '../../../public/icons/destiny_icon.svg'
 import PersonIcon from '../../../public/icons/person_icon.svg'
 import PlusIcon from '../../../public/icons/plus_circle_icon.svg'
 import MinusIcon from '../../../public/icons/dash_circle_icon.svg'
+import Checkbox from "./checkbox";
+
+interface Guests {
+    adults: number
+    children: number
+    babies: number
+    pets: number
+}
 
 export default function DesktopSearch() {
     const modalGuestsRef = useRef<HTMLDivElement | null>(null);
@@ -17,17 +25,42 @@ export default function DesktopSearch() {
     const modalCheckOutRef = useRef<HTMLDivElement | null>(null);
 
     const [local, setLocal] = useState('')
-    const [isOpenInputDestiny, setIsOpenInputDestiny] = useState(false)
-    const [isOpenCheckInCalendar, setIsOpenCheckInCalendar] = useState(false)
-    const [isOpenCheckOutCalendar, setIsOpenCheckOutCalendar] = useState(false)
-    const [isOpenModalGuests, setIsOpenModalGuests] = useState(false)
-
-    const [searchBar, setSearchBar] = useState({
+    const [checkInDate, setCheckInDate] = useState<Date | null>(null)
+    const [checkOutDate, setCheckOutDate] = useState<Date | null>(null)
+    const [guests, setGuests] = useState<Guests>({
         adults: 0,
         children: 0,
         babies: 0,
         pets: 0
     })
+
+    const [isOpenInputDestiny, setIsOpenInputDestiny] = useState(false)
+    const [isOpenCheckInCalendar, setIsOpenCheckInCalendar] = useState(false)
+    const [isOpenCheckOutCalendar, setIsOpenCheckOutCalendar] = useState(false)
+    const [isOpenModalGuests, setIsOpenModalGuests] = useState(false)
+
+    const [isCheckedGuests, setIsCheckedGuests] = useState(false)
+    const [isCheckedCheckIn, setIsCheckedCheckIn] = useState(false)
+    const [isCheckedCheckOut, setIsCheckedCheckOut] = useState(false)
+
+    const updateGuests = (type: keyof Guests, value: number) => {
+        setGuests(prev => ({
+            ...prev,
+            [type]: Math.max(0, prev[type] + value)
+        }));
+    };
+
+    const handleSearch = () => {
+        if (local) {
+            if (checkOutDate && checkInDate) {
+                setCheckOutDate(checkOutDate <= checkInDate ? null : checkOutDate)
+            }
+
+            console.log(local, checkInDate, checkOutDate, guests)
+        } else {
+            alert('Insira um Destino!')
+        }
+    }
 
     useEffect(() => {
 
@@ -38,7 +71,7 @@ export default function DesktopSearch() {
         };
 
         const handleClickOutsideInput = (event: MouseEvent) => {
-            if (inputRef.current && event.target instanceof Node && !inputRef.current.contains(event.target) && local) {
+            if (inputRef.current && event.target instanceof Node && !inputRef.current.contains(event.target) && !local) {
                 setIsOpenInputDestiny(false)
             }
         }
@@ -70,13 +103,38 @@ export default function DesktopSearch() {
         };
     })
 
+    useEffect(() => {
+        if (checkInDate && checkOutDate && (checkOutDate <= checkInDate)) {
+            setCheckOutDate(null)
+        }
+    }, [checkInDate, checkOutDate])
+
+    useEffect(() => {
+        if (isCheckedCheckIn) {
+            setCheckInDate(null)
+        }
+
+        if (isCheckedCheckOut) {
+            setCheckOutDate(null)
+        }
+
+        if (isCheckedGuests) {
+            setGuests({
+                adults: 0,
+                children: 0,
+                babies: 0,
+                pets: 0
+            })
+        }
+    }, [isCheckedCheckIn, isCheckedCheckOut, isCheckedGuests])
+
     return (
-        <div className="flex gap-3 h-14  items-center border-[0.5px] border-gray-300 rounded-3xl">
-            <div className='flex relative'>
-                <div className="shrink-0">
+        <div className="relative flex gap-3 h-14 items-center border-[0.5px] border-gray-300 rounded-3xl ">
+            <div className='flex divide-x-[1px] divide-blue-300 items-center' >
+                <div className="shrink-0 w-[160px]">
                     {
                         isOpenInputDestiny ? (
-                            <div ref={inputRef} className='flex flex-col justify-start px-6 gap-1'>
+                            <div ref={inputRef} className='flex flex-col justify-center px-6 gap-1 transition-opacity duration-700'>
                                 <button className='flex items-center gap-2 text-black-100  text-[12px]'>
                                     <Image src={DestinyIcon} alt='Ícone de destino' className='size-3' />
 
@@ -86,7 +144,7 @@ export default function DesktopSearch() {
                                 <input value={local} onChange={(event) => setLocal(event.target.value)} className=' bg-transparent border-b focus:outline-none text-[12px] placeholder:text-gray-300 ' type="text" placeholder='Informe o local' />
                             </div>
                         ) : (
-                            <button onClick={() => setIsOpenInputDestiny(true)} className='flex items-center gap-2 text-black-100 px-6 text-sm'>
+                            <button onClick={() => setIsOpenInputDestiny(true)} className='flex mx-auto items-center gap-2 text-black-100 px-6 text-sm'>
                                 <Image src={DestinyIcon} alt='Ícone de destino' />
 
                                 Destino
@@ -95,70 +153,94 @@ export default function DesktopSearch() {
                     }
                 </div>
 
-                <button onClick={() => setIsOpenCheckInCalendar(!isOpenCheckInCalendar)} className='flex items-center border-x border-blue-300  gap-2 text-sm text-black-100 px-6'>
+                <button onClick={() => setIsOpenCheckInCalendar(!isOpenCheckInCalendar)} className='flex items-center gap-2 text-sm text-black-100 px-6'>
                     <Image src={CalendarIcon} alt='Ícone de destino' />
 
-                    Check-in
+                    {checkInDate ? checkInDate.toLocaleDateString() : 'Check-in'}
                 </button>
 
-                <button onClick={() => setIsOpenCheckOutCalendar(!isOpenCheckOutCalendar)} className='flex items-center border-r border-blue-300 gap-2 text-sm text-black-100 px-6'>
+                <button onClick={() => setIsOpenCheckOutCalendar(!isOpenCheckOutCalendar)} className='flex items-center gap-2 text-sm text-black-100 px-6'>
                     <Image src={CalendarIcon} alt='Ícone de destino' />
 
-                    Check-out
+
+                    {checkOutDate ? checkOutDate.toLocaleDateString() : 'Check-out'}
                 </button>
 
-                <button onClick={() => setIsOpenModalGuests(!isOpenModalGuests)} className='flex items-center gap-2 text-black-100 px-6 text-sm'>
+                <button onClick={() => setIsOpenModalGuests(!isOpenModalGuests)} className='flex items-center gap-2 text-sm text-black-100 px-6'>
                     <Image src={PersonIcon} alt='Ícone de destino' />
 
                     Hóspedes
                 </button>
+            </div>
 
-                {
-                    isOpenCheckInCalendar && (
-                        <div ref={modalCheckInRef} className='absolute top-11 right-[35%] bg-white rounded-2xl drop-shadow'>
-                            <Calendar selectedDate={new Date()} />
+            <div className='bg-blue-200 p-2 mr-6 rounded-full'>
+                <Image
+                    src={SearchIcon}
+                    alt='Logo'
+                    onClick={handleSearch}
+                    height={24}
+                    width={24}
+                    className='cursor-pointer'
+                />
+            </div>
+
+            {
+                isOpenCheckInCalendar && (
+                    <div ref={modalCheckInRef} className='absolute top-16 right-64 px-5 py-3 space-y-2 bg-white rounded-2xl drop-shadow'>
+                        <Checkbox isChecked={isCheckedCheckIn} setIsChecked={setIsCheckedCheckIn} text="Sem data definida" />
+
+                        <div className={`${isCheckedCheckIn && 'pointer-events-none opacity-60'}`}>
+                            <Calendar selectedDate={checkInDate} onChangeDate={setCheckInDate} />
                         </div>
-                    )
-                }
+                    </div>
+                )
+            }
 
-                {
-                    isOpenCheckOutCalendar && (
-                        <div ref={modalCheckOutRef} className='absolute top-11 right-[10%] bg-white rounded-2xl drop-shadow'>
-                            <Calendar selectedDate={new Date()} />
+            {
+                isOpenCheckOutCalendar && (
+                    <div ref={modalCheckOutRef} className='absolute top-16 right-32 px-5 py-3 space-y-2 bg-white rounded-2xl drop-shadow'>
+                        <Checkbox isChecked={isCheckedCheckOut} setIsChecked={setIsCheckedCheckOut} text="Sem data definida" />
+
+                        <div className={`${isCheckedCheckOut && 'pointer-events-none opacity-60'}`}>
+                            <Calendar minimumDateToSelect={checkInDate} selectedDate={checkOutDate} onChangeDate={setCheckOutDate} />
                         </div>
-                    )
-                }
+                    </div>
+                )
+            }
 
-                {
-                    isOpenModalGuests && (
-                        <div ref={modalGuestsRef} className='absolute top-11 right-[-15%] px-5 bg-white rounded-2xl drop-shadow'>
+            {
+                isOpenModalGuests && (
+                    <div ref={modalGuestsRef} className='absolute top-16 right-0 px-5 py-3 space-y-2 bg-white rounded-2xl drop-shadow'>
+                        <Checkbox isChecked={isCheckedGuests} setIsChecked={setIsCheckedGuests} text="Sem número de hóspedes definido" />
+
+                        <div className={`divide-y-[0.5px] ${isCheckedGuests && 'pointer-events-none opacity-60'}`}>
                             <div className='flex py-3 justify-between gap-4'>
                                 Adultos
 
                                 <div className='flex gap-1'>
-                                    <Image onClick={() => searchBar.adults > 0 && setSearchBar({ ...searchBar, adults: searchBar.adults - 1 })} src={MinusIcon} alt='Ícone de menos' />
-                                    {searchBar.adults}
-                                    <Image onClick={() => setSearchBar({ ...searchBar, adults: searchBar.adults + 1 })} src={PlusIcon} alt='Ícone de mais' />
+                                    <Image onClick={() => updateGuests('adults', -1)} src={MinusIcon} alt='Ícone de menos' />
+                                    {guests.adults}
+                                    <Image onClick={() => updateGuests('adults', 1)} src={PlusIcon} alt='Ícone de mais' />
                                 </div>
                             </div>
 
-                            <div className='flex py-3 justify-between gap-4 border-y-[0.5px] border-gray-200'>
+                            <div className='flex py-3 justify-between gap-4'>
                                 Crianças
 
                                 <div className='flex gap-1'>
-                                    <Image onClick={() => searchBar.children > 0 && setSearchBar({ ...searchBar, children: searchBar.children - 1 })} src={MinusIcon} alt='Ícone de menos' />
-                                    {searchBar.children}
-                                    <Image onClick={() => setSearchBar({ ...searchBar, children: searchBar.children + 1 })} src={PlusIcon} alt='Ícone de mais' />
+                                    <Image onClick={() => updateGuests('children', -1)} src={MinusIcon} alt='Ícone de menos' />
+                                    {guests.children}
+                                    <Image onClick={() => updateGuests('children', 1)} src={PlusIcon} alt='Ícone de mais' />
                                 </div>
                             </div>
 
-                            <div className='flex py-3 justify-between gap-4 border-b-[0.5px] border-gray-200'>
+                            <div className='flex py-3 justify-between gap-4'>
                                 Bebês
 
                                 <div className='flex gap-1'>
-                                    <Image onClick={() => searchBar.babies > 0 && setSearchBar({ ...searchBar, babies: searchBar.babies - 1 })} src={MinusIcon} alt='Ícone de menos' />
-                                    {searchBar.babies}
-                                    <Image onClick={() => setSearchBar({ ...searchBar, babies: searchBar.babies + 1 })} src={PlusIcon} alt='Ícone de mais' />
+                                    <Image onClick={() => updateGuests('babies', -1)} src={MinusIcon} alt='Ícone de menos' />
+                                    {guests.babies}
+                                    <Image onClick={() => updateGuests('babies', 1)} src={PlusIcon} alt='Ícone de mais' />
                                 </div>
                             </div>
 
@@ -166,26 +248,15 @@ export default function DesktopSearch() {
                                 Animais de estimação
 
                                 <div className='flex gap-1'>
-                                    <Image onClick={() => searchBar.pets > 0 && setSearchBar({ ...searchBar, pets: searchBar.pets - 1 })} src={MinusIcon} alt='Ícone de menos' />
-                                    {searchBar.pets}
-                                    <Image onClick={() => setSearchBar({ ...searchBar, pets: searchBar.pets + 1 })} src={PlusIcon} alt='Ícone de mais' />
+                                    <Image onClick={() => updateGuests('pets', -1)} src={MinusIcon} alt='Ícone de menos' />
+                                    {guests.pets}
+                                    <Image onClick={() => updateGuests('pets', 1)} src={PlusIcon} alt='Ícone de mais' />
                                 </div>
                             </div>
                         </div>
-                    )
-                }
-            </div>
-
-            <div className='bg-blue-200 p-2 mr-6 rounded-full'>
-                <Image
-                    src={SearchIcon}
-                    alt='Logo'
-                    onClick={() => console.log()}
-                    height={24}
-                    width={24}
-                    className='cursor-pointer'
-                />
-            </div>
+                    </div>
+                )
+            }
         </div>
     )
 };
