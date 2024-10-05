@@ -10,7 +10,8 @@ interface UserData {
 }
 
 export const useSession = () => {
-  const [setUser, userExit] = useUserStore((state) => [state.setUser, state.exit])
+  const setUser = useUserStore((state) => state.setUser)
+  const userExit = useUserStore((state) => state.exit)
 
   const createSession = (user: UserData) => {
 

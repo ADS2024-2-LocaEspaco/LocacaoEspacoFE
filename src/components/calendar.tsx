@@ -1,70 +1,44 @@
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import ArrowBackIcon from '../../public/icons/arrow_back_icon.svg'
 import ArrowForwardIcon from '../../public/icons/arrow_forward_icon.svg'
 
 interface CalendarProps {
-    onDateChange: (startDate: Date, endDate: Date) => void;
-    valorDiaria: number;
+    minimumDateToSelect?: Date | null
+    selectedDate: Date | null
+    onChangeDate: Dispatch<SetStateAction<Date | null>>
 }
 
+export default function Calendar({ minimumDateToSelect, selectedDate, onChangeDate }: CalendarProps) {
+    const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    const weekDays = ['dom.', 'seg.', 'ter.', 'qua.', 'qui.', 'sex.', 'sab.'];
 
-export default function Calendar({ onDateChange, valorDiaria }: CalendarProps) {
-    const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
-    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-    const [startDate, setStartDate] = useState<number | null>(null);
-    const [endDate, setEndDate] = useState<number | null>(null);
-    const [totalValue, setTotalValue] = useState(0);
+    // Month and Year selected in options of Calendar
+    const [selectedMonth, setSelectedMonth] = useState(selectedDate ? selectedDate.getMonth() : new Date().getMonth());
+    const [selectedYear, setSelectedYear] = useState(selectedDate ? selectedDate.getFullYear() : new Date().getFullYear());
 
-    const months = [
-        'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-    ];
-
-    const years = Array.from({ length: 10 }, (_, i) => 2024 + i);
-
+    // Counts the total number of days in each month
     const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
-    const firstDayOfMonth = new Date(selectedYear, selectedMonth, 1).getDay();
+    const totalDaysInMonth = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
-    useEffect(() => {
-        if (startDate !== null && endDate !== null) {
-            const start = new Date(selectedYear, selectedMonth, startDate);
-            const end = new Date(selectedYear, selectedMonth, endDate);
-            const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
-            setTotalValue(days * valorDiaria);
-            onDateChange(start, end);
-        }
-    }, [startDate, endDate, selectedYear, selectedMonth, valorDiaria, onDateChange]);
+    // Used to check the first day of the week of the selected month
+    const firstDayOfTheWeek = new Date(selectedYear, selectedMonth, 1).getDay();
 
-    const handleDayClick = (day: number) => {
-        if (startDate === null || (startDate !== null && endDate !== null)) {
-            setStartDate(day);
-            setEndDate(null);
-        } else if (startDate !== null && endDate === null) {
-            if (day < startDate) {
-                setEndDate(startDate);
-                setStartDate(day);
-            } else {
-                setEndDate(day);
-            }
-        }
+    // Checks the current year and shows the current year and the next 4 years in the options
+    const currentYear = new Date().getFullYear();
+    const yearsToSelect = Array.from({ length: 5 }, (_, i) => currentYear + i);
+
+    const handleSelectedDay = (day: number) => {
+        const selectedDate = new Date(selectedYear, selectedMonth, day)
+
+        onChangeDate(selectedDate)
     };
 
-    const isSelected = (day: number) => {
-        if (startDate !== null && endDate !== null) {
-            return day >= startDate && day <= endDate;
-        }
-        return day === startDate;
-    };
-
-    const isWeekend = (day: number) => {
-        const dayOfWeek = new Date(selectedYear, selectedMonth, day).getDay();
-        return dayOfWeek === 0 || dayOfWeek === 6;
-    };
-
-    const handleMonthChange = (direction: number) => {
+    const handleChangeMonth = (direction: number) => {
         setSelectedMonth((prev) => {
             let newMonth = prev + direction;
             let newYear = selectedYear;
+
             if (newMonth < 0) {
                 newMonth = 11;
                 newYear -= 1;
@@ -72,100 +46,133 @@ export default function Calendar({ onDateChange, valorDiaria }: CalendarProps) {
                 newMonth = 0;
                 newYear += 1;
             }
+
             setSelectedYear(newYear);
+
             return newMonth;
-        });
+        })
     };
 
-    const weekDays = ['Dom.', 'Seg.', 'Ter.', 'Qua.', 'Qui.', 'Sex.', 'Sab.'];
+    const isCurrentDateSelected = (day: number) => {
+        const date = new Date(selectedYear, selectedMonth, day)
+
+        if (minimumDateToSelect && selectedDate) {
+            if (minimumDateToSelect >= selectedDate) {
+                onChangeDate(null)
+            }
+        }
+
+        return selectedDate?.getTime() === date.getTime()
+    }
+
+    const isPreviousDate = (day: number) => {
+        const selectedDate = new Date(selectedYear, selectedMonth, day)
+
+        if (minimumDateToSelect) {
+            return minimumDateToSelect >= selectedDate
+        } else {
+            minimumDateToSelect = new Date()
+
+            minimumDateToSelect.setDate(minimumDateToSelect.getDate() - 1)
+
+            return minimumDateToSelect > selectedDate
+        }
+    }
 
     return (
-        <div className="p-4 bg-white dark:bg-[#3D3D43] overflow-auto h-full">
-            <div className="flex items-center justify-between mb-4">
-                <button type="button" className="p-2 text-white" onClick={() => handleMonthChange(-1)}>
-                    <Image src={ArrowBackIcon} alt="seta-voltar" className='w-5 h-5' />
-                </button>
+        <div className="p-4 bg-black-100 rounded-lg">
+            <div className="flex items-center justify-between">
+                <Image
+                    src={ArrowBackIcon}
+                    onClick={() => handleChangeMonth(-1)}
+                    height={6}
+                    width={6}
+                    alt="seta-voltar"
+                    className='filter invert cursor-pointer'
+                />
+
                 <div className="flex items-center gap-2">
                     <select
-                        title="mes"
+                        title="month"
                         value={selectedMonth}
                         onChange={(e) => setSelectedMonth(Number(e.target.value))}
-                        className="bg-white dark:bg-[#3D3D43] text-gray-800 dark:text-neutral-200 border border-gray-300 dark:border-neutral-600 rounded-md"
+                        className="bg-white dark:bg-gray-300 text-gray-800 dark:text-white border text-sm border-gray-300 dark:border-neutral-600 rounded-md"
                     >
-                        {months.map((month, index) => (
-                            <option key={index} value={index}>
-                                {month}
-                            </option>
-                        ))}
+                        {
+                            months.map((month, index) => (
+                                <option key={index} value={index}>
+                                    {month}
+                                </option>
+                            ))
+                        }
                     </select>
+
                     <select
                         title='year'
                         value={selectedYear}
                         onChange={(e) => setSelectedYear(Number(e.target.value))}
-                        className="bg-white dark:bg-[#3D3D43] text-gray-800 dark:text-neutral-200 border border-gray-300 dark:border-neutral-600 rounded-md"
+                        className="bg-white dark:bg-gray-300 text-gray-800 dark:text-white border text-sm border-gray-300 dark:border-neutral-600 rounded-md"
                     >
-                        {years.map((year) => (
-                            <option key={year} value={year}>
-                                {year}
-                            </option>
-                        ))}
+                        {
+                            yearsToSelect.map((year) => (
+                                <option key={year} value={year}>
+                                    {year}
+                                </option>
+                            ))
+                        }
                     </select>
                 </div>
-                <button type="button" className="p-2 text-white" onClick={() => handleMonthChange(1)}>
-                    <Image src={ArrowForwardIcon} alt="seta-voltar" className='w-5 h-5' />
-                </button>
+
+                <Image
+                    src={ArrowForwardIcon}
+                    onClick={() => handleChangeMonth(1)}
+                    height={6}
+                    width={6}
+                    alt="seta-avançar"
+                    className='filter invert cursor-pointer'
+                />
             </div>
 
             {/* Weeks */}
-            <div className="grid grid-cols-7 gap-2 bg-[#3D3D43]">
-                {weekDays.map((day, index) => (
-                    <div
-                        key={day}
-                        className={`text-center text-sm ${index === 0 || index === 6 ? 'text-[#1270B0]' : 'text-gray-800 dark:text-neutral-200'}`}
-                    >
-                        {day}
-                    </div>
-                ))}
+            <div className="grid grid-cols-7 gap-px my-2">
+                {
+                    weekDays.map((day, index) => (
+                        <div
+                            key={index}
+                            className={`text-center text-sm ${index == 0 || index == 6 ? 'text-blue-300' : ' text-white'}`}
+                        >
+                            {day}
+                        </div>
+                    ))
+                }
             </div>
 
             {/* Days */}
-            <div className="grid grid-cols-7 gap-px bg-[#3D3D43]">
-                {[...Array(firstDayOfMonth).keys()].map((_, index) => (
-                    <div key={`empty-${index}`} />
-                ))}
-                {[...Array(daysInMonth).keys()].map((day) => (
-                    <div key={day}>
+            <div className="grid grid-cols-7 gap-px">
+                {
+                    Array.from({ length: firstDayOfTheWeek }).map((_, index) => (
+                        <div key={index} className="m-px size-10"></div>
+                    ))
+                }
+                {
+                    totalDaysInMonth.map((day, index) => (
                         <button
-                            type="button"
+                            key={index}
                             className={`
-                m-px size-10 flex justify-center items-center border border-transparent text-sm rounded-full 
-                hover:border-blue-600 hover:text-white disabled:opacity-50 disabled:pointer-events-none 
-                focus:outline-none focus:border-blue-600 focus:text-white
-                ${isSelected(day + 1)
-                                    ? 'bg-blue-600 text-white'
-                                    : isWeekend(day + 1)
-                                        ? 'text-[#1270B0]'
-                                        : 'text-gray-800 dark:text-neutral-200'
-                                }
-              `}
-                            onClick={() => handleDayClick(day + 1)}
+                                m-px size-10 flex justify-center items-center border border-transparent text-sm rounded-full 
+                                disabled:opacity-50 disabled:pointer-events-none  
+                                focus:outline-none text-white hover:border-blue-600
+                                ${isCurrentDateSelected(day) && 'bg-blue-600'}
+                                
+                            `}
+                            onClick={() => handleSelectedDay(day)}
+                            disabled={isPreviousDate(day)}
                         >
-                            {day + 1}
+                            {day}
                         </button>
-                    </div>
-                ))}
+                    ))
+                }
             </div>
-            {/* Valor Total e diárias*/}
-            {totalValue > 0 && (
-                <div className="mt-4 text-center">
-                    <p className="text-lg font-bold text-[#FF6F00]">
-                        Total: R$ {totalValue.toFixed(2)}
-                    </p>
-                    <p className="text-sm text-[#FF6F00]">
-                        {startDate && endDate ? `${endDate - startDate + 1} diárias` : ''}
-                    </p>
-                </div>
-            )}
         </div>
     )
 }
