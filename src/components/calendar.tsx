@@ -73,10 +73,9 @@ export default function Calendar({ minimumDateToSelect, selectedDate, onChangeDa
         } else {
             minimumDateToSelect = new Date()
 
-            const previousDate = new Date(minimumDateToSelect)
-            previousDate.setDate(minimumDateToSelect.getDate() - 1)
+            minimumDateToSelect.setDate(minimumDateToSelect.getDate() - 1)
 
-            return previousDate >= selectedDate
+            return minimumDateToSelect > selectedDate
         }
     }
 
