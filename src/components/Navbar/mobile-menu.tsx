@@ -28,7 +28,7 @@ export default function MobileMenu() {
     }
 
     return (
-        <nav className='flex relative w-full px-6 py-2 justify-between items-center min-[1300px]:hidden border-b border-gray-300'>
+        <nav className='flex relative w-full px-6 py-2 justify-between items-center min-[1300px]:hidden border-b border-gray-300 bg-transparent'>
             <Image
                 src={MenuHamburgerIcon}
                 alt='Ícone do menu'

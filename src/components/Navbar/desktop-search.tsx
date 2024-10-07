@@ -129,12 +129,12 @@ export default function DesktopSearch() {
     }, [isCheckedCheckIn, isCheckedCheckOut, isCheckedGuests])
 
     return (
-        <div className="relative flex gap-3 h-14 items-center border-[0.5px] border-gray-300 rounded-3xl ">
+        <div className="relative flex gap-3 h-14 items-center border-[0.5px] border-gray-300 rounded-3xl bg-transparent">
             <div className='flex divide-x-[1px] divide-blue-300 items-center' >
                 <div className="shrink-0 w-[160px]">
                     {
                         isOpenInputDestiny ? (
-                            <div ref={inputRef} className='flex flex-col justify-center px-6 gap-1 transition-opacity duration-700'>
+                            <div ref={inputRef} className='flex flex-col justify-center px-6 gap-1 transition-shadow duration-700'>
                                 <button className='flex items-center gap-2 text-black-100  text-[12px]'>
                                     <Image src={DestinyIcon} alt='Ícone de destino' className='size-3' />
 
@@ -144,7 +144,7 @@ export default function DesktopSearch() {
                                 <input value={local} onChange={(event) => setLocal(event.target.value)} className=' bg-transparent border-b focus:outline-none text-[12px] placeholder:text-gray-300 ' type="text" placeholder='Informe o local' />
                             </div>
                         ) : (
-                            <button onClick={() => setIsOpenInputDestiny(true)} className='flex mx-auto items-center gap-2 text-black-100 px-6 text-sm'>
+                            <button onClick={() => setIsOpenInputDestiny(true)} className='flex mx-auto items-center justify-center gap-2 text-black-100 px-6 text-sm'>
                                 <Image src={DestinyIcon} alt='Ícone de destino' />
 
                                 Destino
@@ -153,20 +153,20 @@ export default function DesktopSearch() {
                     }
                 </div>
 
-                <button onClick={() => setIsOpenCheckInCalendar(!isOpenCheckInCalendar)} className='flex items-center gap-2 text-sm text-black-100 px-6'>
+                <button onClick={() => setIsOpenCheckInCalendar(!isOpenCheckInCalendar)} className='w-[160px] flex items-center justify-center gap-2 text-sm text-black-100 px-6'>
                     <Image src={CalendarIcon} alt='Ícone de destino' />
 
                     {checkInDate ? checkInDate.toLocaleDateString() : 'Check-in'}
                 </button>
 
-                <button onClick={() => setIsOpenCheckOutCalendar(!isOpenCheckOutCalendar)} className='flex items-center gap-2 text-sm text-black-100 px-6'>
+                <button onClick={() => setIsOpenCheckOutCalendar(!isOpenCheckOutCalendar)} className='w-[160px] flex items-center justify-center gap-2 text-sm text-black-100 px-6'>
                     <Image src={CalendarIcon} alt='Ícone de destino' />
 
 
                     {checkOutDate ? checkOutDate.toLocaleDateString() : 'Check-out'}
                 </button>
 
-                <button onClick={() => setIsOpenModalGuests(!isOpenModalGuests)} className='flex items-center gap-2 text-sm text-black-100 px-6'>
+                <button onClick={() => setIsOpenModalGuests(!isOpenModalGuests)} className='w-[160px] flex items-center justify-center gap-2 text-sm text-black-100 px-6'>
                     <Image src={PersonIcon} alt='Ícone de destino' />
 
                     Hóspedes
