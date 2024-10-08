@@ -1,4 +1,6 @@
 import React, {useState} from "react"
+import Image from "next/image";
+import Asterisk from '../../../../assets/asterisk.svg';
 
 export default function InfoBank() {
 
@@ -28,35 +30,62 @@ export default function InfoBank() {
 
             <main className="flex flex-col justify-center px-8">
                 
-                <label htmlFor="" className="text-base font-medium mt-4dark:text-white">Banco</label> 
-                <input type="text" className="text-xs h-8 text-center border border-solid  border-black rounded-xl bg-gray-100  placeholder:items-center
-                dark:bg-custom-gray-2 dark:border-white dark:text-white
-                "
-                    id="bank"
-                    value={bank}
-                    onChange={(e) => setBank(e.target.value)}
-                    readOnly={!isEditing}
-                /> 
+                <label htmlFor="" className="text-base font-medium mt-4dark:text-white">Banco</label>
+                <div className="relative flex items-center">
+                    <input
+                        type="text"
+                        className={`text-xs h-8 text-center border border-solid  border-black rounded-xl bg-gray-100  placeholder:items-center
+                    dark:bg-custom-gray-2 dark:border-white dark:text-white pr-[110px]
+                    ${isEditing ? 'pl-8' : ''}`}
+                        id="bank"
+                        value={bank}
+                        onChange={(e) => setBank(e.target.value)}
+                        readOnly={!isEditing}
+                    />
+                    {isEditing && (
+                        <span className="absolute right-2 top-1/2 transform -translate-y-1/2 mr-2">
+                            <Image src={Asterisk} alt="Asterisk" className="h-5 w-5" />
+                        </span>
+                    )}
+                </div>
 
                 <label htmlFor="" className="mt-2 dark:text-white">Agência</label>
-                <input type="text" className="h-8 text-center border border-solid  border-black rounded-xl  bg-gray-100 placeholder:items-center
-                dark:bg-custom-gray-2 dark:border-white dark:text-white
-                "  
-                    id="agency"
-                    value={agency}
-                    onChange={(e) => setAgency(e.target.value)}
-                    readOnly={!isEditing}
-                />
+                <div className="relative flex items-center">
+                    <input
+                        type="text"
+                        className={`h-8 text-center border border-solid border-black rounded-xl bg-gray-100 placeholder:items-center 
+                        dark:bg-custom-gray-2 dark:border-white dark:text-white pr-24`}
+                        id="agency"
+                        value={agency}
+                        onChange={(e) => setAgency(e.target.value)}
+                        readOnly={!isEditing}
+                    />
+                    {isEditing && (
+                        <span className="absolute right-4 top-1/2 transform -translate-y-1/2 mt-0.5">
+                            <Image src={Asterisk} alt="Asterisk" className="h-5 w-5" />
+                        </span>
+                    )}
+                </div>
+
                 
                 <label htmlFor="" className="mt-2 dark:text-white">Número da Conta</label>
-                <input type="text" className="h-8 text-center border border-solid  border-black rounded-xl  bg-gray-100 placeholder:items-center
-                dark:bg-custom-gray-2 dark:border-white dark:text-white" 
-                    id="accountNumber"
-                    value={accountNumber}
-                    onChange={(e) => setAccountNumber(e.target.value)}
-                    readOnly={!isEditing}
 
-                />
+                <div className="relative flex items-center">
+                    <input
+                        type="text"
+                        className={`h-8 text-center border border-solid  border-black rounded-xl  bg-gray-100 placeholder:items-center
+                    dark:bg-custom-gray-2 dark:border-white dark:text-white ${isEditing ? 'pl-8' : ''} pr-[70px]`} 
+                        id="accountNumber"
+                        value={accountNumber}
+                        onChange={(e) => setAccountNumber(e.target.value)}
+                        readOnly={!isEditing}
+                    />
+                    {isEditing && (
+                        <span className="absolute right-2 top-1/2 transform -translate-y-1/2 mr-1">
+                            <Image src={Asterisk} alt="Asterisk" className="h-5 w-5" />
+                        </span>
+                    )}
+                </div>
 
                 <div className="flex items-center mt-4 gap-2">
                     <label htmlFor="" className="text-base font-medium flex-shrink-0 dark:text-white">Tipo da conta</label>

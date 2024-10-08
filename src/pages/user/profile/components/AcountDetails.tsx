@@ -1,4 +1,7 @@
 import React, {useState} from "react"
+import Image from "next/image";
+import Asterisk from '../../../../assets/asterisk.svg';
+import Lock from '../../../../assets/lock.svg'
 
 interface AccountDetailsProps {
     currentFullName: string;
@@ -37,30 +40,66 @@ export default function AcountDetails({ currentFullName, currentEmail, currenteC
 
             <main className="flex flex-col justify-center ml-20 mr-20">
                 
-                <label htmlFor="" className="text-base font-medium mt-4 dark:text-white ">Nome completo</label> 
-                <input type="text" className="text-xs h-8 text-center border border-solid  border-black rounded-xl mt-2 bg-gray-100 placeholder:items-center dark:bg-custom-gray-2 dark:border-white dark:text-white " 
-                    id="fullName"
-                    value={fullName}
-                    onChange={(event) => setFullName(event.target.value)}
-                    readOnly={!isEditing}
-                    
-                /> 
+                <label htmlFor="" className="text-base font-medium mt-4 dark:text-white ">Nome completo</label>
+
+
+                <div className="relative flex items-center">
+                    <input
+                        type="text"
+                        className={`h-8 text-center border border-solid border-black rounded-xl mt-2 bg-gray-100 
+                                    dark:bg-custom-gray-2 dark:border-white dark:text-white pr-8 ${isEditing ? 'pl-8' : ''}`} 
+                        id="fullName"
+                        value={fullName}
+                        onChange={(event) => setFullName(event.target.value)}
+                        readOnly={!isEditing}
+                    /> 
+                    {isEditing && (
+                        <span className="absolute right-2 top-1/2 transform -translate-y-1/2 mt-1">
+                            <Image src={Asterisk} alt="Asterisk" className="h-5 w-5" />
+                        </span>
+                    )}
+                </div>
+
+                
 
                 <label htmlFor="" className="dark:text-white">Email</label>
-                <input type="text" className="h-8 text-center border border-solid  border-black rounded-xl mt-2 bg-gray-100  placeholder:items-center dark:bg-custom-gray-2 dark:border-white dark:text-white" 
-                    id="email"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    readOnly={!isEditing}
-                />
+                
+                <div className="relative flex items-center">
+                    <input
+                        type="text"
+                        className={`h-8 text-center border border-solid border-black rounded-xl mt-2 bg-gray-100 placeholder:items-center dark:bg-custom-gray-2 dark:border-white dark:text-white pr-8 ${isEditing ? 'pl-8' : ''}`} 
+                        id="email"
+                        value={email}
+                        onChange={(event) => setEmail(event.target.value)}
+                        readOnly={true}
+                    />
+                    {isEditing && (
+                        <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 mt-1">
+                            <Image src={Lock} alt="Asterisk" className="h-5 w-5" />
+                        </span>
+                    )}
+                </div>
+
+                
                 
                 <label htmlFor="" className="dark:text-white">CPF</label>
-                <input type="text" className="h-8 text-center border border-solid  border-black rounded-xl mt-2 bg-gray-100 placeholder:items-center dark:bg-custom-gray-2 dark:border-white dark:text-white"
-                    id="cpf"
-                    value={cpf}
-                    onChange={(event) => setCpf(event.target.value)}
-                    readOnly={!isEditing}
-                />
+
+                <div className="relative flex items-center">
+                    <input
+                        type="text"
+                        className={`h-8 text-center border border-solid border-black rounded-xl mt-2 bg-gray-100 placeholder:items-center dark:bg-custom-gray-2 dark:border-white dark:text-white 
+                        pr-8  ${isEditing ? 'pl-8' : ''}`}  
+                        id="cpf"
+                        value={cpf}
+                        onChange={(event) => setCpf(event.target.value)}
+                        readOnly={!isEditing}
+                    />
+                    {isEditing && (
+                        <span className="absolute right-2 top-1/2 transform -translate-y-1/2 mt-1">
+                            <Image src={Asterisk} alt="Asterisk" className="h-5 w-5" />
+                        </span>
+                    )}
+                </div>
 
             </main>
 
