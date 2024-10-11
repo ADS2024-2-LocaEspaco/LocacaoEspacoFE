@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
 import { Swiper, SwiperClass, SwiperSlide, useSwiper } from 'swiper/react';
@@ -17,6 +17,19 @@ interface SliderCarouselProps {
 }
 
 export default function SliderCarousel({ id, dataSectionMostReserved }: SliderCarouselProps) {
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return (
         <div className="relative">
             <Swiper
@@ -31,7 +44,7 @@ export default function SliderCarousel({ id, dataSectionMostReserved }: SliderCa
 
                 {
                     dataSectionMostReserved.map((ad, index) => (
-                        <SwiperSlide key={index} style={{ width: '260px' }}>
+                        <SwiperSlide key={index} style={{ width: isMobile ? '220px' : '260px'}}>
                             <CardAd
                                 id={ad.id}
                                 title={ad.title}
@@ -46,11 +59,11 @@ export default function SliderCarousel({ id, dataSectionMostReserved }: SliderCa
                 }
             </Swiper>
 
-            <button className={`arrow-back-icon-${id} disabled:opacity-70 z-10 absolute left-[-16px] top-1/2 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-lg`}>
+            <button className={`arrow-back-icon-${id} disabled:opacity-70 z-10 absolute left-[-16px] top-1/2 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-lg max-md:hidden`}>
                 <Image src={ArrowBackIcon} alt="Icone de voltar" />
             </button>
 
-            <button className={`arrow-next-icon-${id} disabled:opacity-70 z-10 absolute right-[-16px] top-1/2 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-lg`}>
+            <button className={`arrow-next-icon-${id} disabled:opacity-70 z-10 absolute right-[-16px] top-1/2 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-lg max-md:hidden`}>
                 <Image src={ArrowForwardIcon} alt="Icone de próximo" />
             </button>
         </div>

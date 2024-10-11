@@ -2,132 +2,135 @@ import { useEffect, useState } from "react";
 
 import { CardAdProps } from "./components/cardAd";
 import SliderCarousel from "./components/sliderCarousel";
-import BannerCarousel from './components/bannerCarousel'; 
+import BannerCarousel from './components/bannerCarousel';
 import AdImage from '../../assets/card.png'; // Imagem do anúncio
 import { GetServerSideProps } from "next/types";
 
 type AnuncioProps = {
-    titulo: string;
-    imagens: string[];
-    endereco: {
-      pais: string;
-      uf: string;
-    };
-  };
+	titulo: string;
+	imagens: string[];
+	endereco: {
+		pais: string;
+		uf: string;
+	};
+};
 
 export default function Homepage({ melhoresAvaliados }: { melhoresAvaliados: AnuncioProps[] }) {
-    const [dataSectionMostReserved, setDataSectionMostReserved] = useState<CardAdProps[]>([]);
-    const [dataSectionChoicesForYou, setDataSectionChoicesForYou] = useState<CardAdProps[]>([]);
-    useEffect(() => {
-      setDataSectionMostReserved([
-          {   
-              id: 1,
-              title: 'Mansão Oasis',
-              city: 'Varginha',
-              country: 'Brasil',
-              image: AdImage,
-              rating: 5,
-              value: 1000
-          },
-          {
-              id: 2,
-              title: 'Mansão Oasis',
-              city: 'Varginha',
-              country: 'Brasil',
-              image: AdImage,
-              rating: 5,
-              value: 1000
-          },
-          {
-              id: 1,
-              title: 'Mansão Oasis',
-              city: 'Varginha',
-              country: 'Brasil',
-              image: AdImage,
-              rating: 5,
-              value: 1000
-          },
-          {
-              id: 1,
-              title: 'Mansão Oasis',
-              city: 'Varginha',
-              country: 'Brasil',
-              image: AdImage,
-              rating: 5,
-              value: 1000
-          },
-          {
-              id: 1,
-              title: 'Mansão Oasis',
-              city: 'Varginha',
-              country: 'Brasil',
-              image: AdImage,
-              rating: 5,
-              value: 1000
-          },
-          {
-              id: 1,
-              title: 'Mansão Oasis',
-              city: 'Varginha',
-              country: 'Brasil',
-              image: AdImage,
-              rating: 5,
-              value: 1000
-          },
-      ])
+	const [dataSectionMostReserved, setDataSectionMostReserved] = useState<CardAdProps[]>([]);
+	const [dataSectionChoicesForYou, setDataSectionChoicesForYou] = useState<CardAdProps[]>([]);
 
-      setDataSectionChoicesForYou([
-          {
-              id: 1,
-              title: 'Mansão Oasis',
-              city: 'Varginha',
-              country: 'Brasil',
-              image: AdImage,
-              rating: 5,
-              value: 1000
-          },
-          {
-              id: 1,
-              title: 'Mansão Oasis',
-              city: 'Varginha',
-              country: 'Brasil',
-              image: AdImage,
-              rating: 5,
-              value: 1000
-          },
-      ])
-  }, []);
-return (
-  <main className="min-h-screen space-y-20 px-4 custom:px-32  py-[68px]">
-                <div><BannerCarousel anuncios={melhoresAvaliados} /></div>
-      <section className="space-y-9 z-0">
-          <h1 className="font-title text-4xl font-bold text-black-100">Mais reservados</h1>
+	useEffect(() => {
+		setDataSectionMostReserved([
+			{
+				id: 1,
+				title: 'Mansão Oasis Sem Fronteiras',
+				city: 'Varginha',
+				country: 'Brasil',
+				image: AdImage,
+				rating: 5,
+				value: 1000
+			},
+			{
+				id: 2,
+				title: 'Mansão Oasis',
+				city: 'Varginha',
+				country: 'Brasil',
+				image: AdImage,
+				rating: 5,
+				value: 1000
+			},
+			{
+				id: 1,
+				title: 'Mansão Oasis',
+				city: 'Varginha',
+				country: 'Brasil',
+				image: AdImage,
+				rating: 5,
+				value: 1000
+			},
+			{
+				id: 1,
+				title: 'Mansão Oasis',
+				city: 'Varginha',
+				country: 'Brasil',
+				image: AdImage,
+				rating: 5,
+				value: 1000
+			},
+			{
+				id: 1,
+				title: 'Mansão Oasis',
+				city: 'Varginha',
+				country: 'Brasil',
+				image: AdImage,
+				rating: 5,
+				value: 1000
+			},
+			{
+				id: 1,
+				title: 'Mansão Oasis',
+				city: 'Varginha',
+				country: 'Brasil',
+				image: AdImage,
+				rating: 5,
+				value: 1000
+			},
+		])
 
-          <SliderCarousel id={'mostReserved'} dataSectionMostReserved={dataSectionMostReserved}/>
-      </section>
+		setDataSectionChoicesForYou([
+			{
+				id: 1,
+				title: 'Mansão Oasis',
+				city: 'Varginha',
+				country: 'Brasil',
+				image: AdImage,
+				rating: 5,
+				value: 1000
+			},
+			{
+				id: 1,
+				title: 'Mansão Oasis',
+				city: 'Varginha',
+				country: 'Brasil',
+				image: AdImage,
+				rating: 5,
+				value: 1000
+			},
+		])
+	}, []);
 
-      <section className="space-y-9">
-          <h1 className="font-title text-4xl font-bold text-black-100">Escolhas para você</h1>
+	return (
+		<main className="min-h-screen space-y-20 max-md:space-y-10 px-4 custom:px-32 py-[68px]">
+			<BannerCarousel anuncios={melhoresAvaliados} />
 
-          <SliderCarousel id={'choices'} dataSectionMostReserved={dataSectionChoicesForYou}/>
-      </section>
-  </main>
-)
+			<section className="space-y-9 max-md:space-y-6">
+				<h1 className="font-title text-4xl max-md:text-xl font-bold text-black-100">Mais reservados</h1>
+
+				<SliderCarousel id={'mostReserved'} dataSectionMostReserved={dataSectionMostReserved} />
+			</section>
+
+			<section className="space-y-9 max-md:space-y-6">
+				<h1 className="font-title text-4xl max-md:text-xl font-bold text-black-100">Escolhas para você</h1>
+
+				<SliderCarousel id={'choices'} dataSectionMostReserved={dataSectionChoicesForYou} />
+			</section>
+		</main>
+	)
 }
 
 // Função para buscar o anúncio e avaliações
-export const getServerSideProps: GetServerSideProps = async (context) => {  
-    try {
-      const res = await fetch(`http://localhost:3000/api/homepage/homeService`);
-      const melhoresAvaliados = await res.json();
-      console.log(`Melhores avaliados encontrado: ${JSON.stringify(melhoresAvaliados)}`);
-      return {
-        props: melhoresAvaliados,
-      };
-    } catch (error) {
-      return {
-        notFound: true,
-      };
-    }
-  };
-  
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	try {
+		const res = await fetch(`http://localhost:3000/api/homepage/homeService`);
+		const melhoresAvaliados = await res.json();
+		console.log(`Melhores avaliados encontrado: ${JSON.stringify(melhoresAvaliados)}`);
+		return {
+			props: melhoresAvaliados,
+		};
+	} catch (error) {
+		return {
+			notFound: true,
+		};
+	}
+};
+

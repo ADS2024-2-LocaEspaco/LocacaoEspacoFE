@@ -19,28 +19,29 @@ export default function CardAd({ id, image, title, rating, city, country, value 
     }
 
     return (
-        <div onClick={handleShowAdPage} className="flex flex-col max-w-[260px] max-sm:m-auto px-4 pt-5 pb-4 rounded-3xl hover:opacity-90 cursor-pointer bg-white shadow-[0px_1px_7.6px_0px_rgba(128,128,128,1)]">
+        <div onClick={handleShowAdPage} className="flex flex-col max-w-[260px] max-sm:m-auto px-4 max-md:px-[14px] py-4 max-md:py-3 rounded-3xl hover:opacity-90 cursor-pointer bg-white shadow-[0px_1px_7.6px_0px_rgba(128,128,128,1)]">
             <Image
                 src={image}
                 alt="Imagem do anúncio"
                 className="rounded-2xl"
             />
 
-            <div className="flex justify-between mt-4">
-                <h4 className="font-title font-bold text-xl text-black-200">{title}</h4>
+            <div className="flex justify-between items-center mt-4 gap-2">
+                <h2 className="font-title font-bold text-xl max-md:text-base text-black-200 truncate ">{title}</h2>
 
                 <div className="flex gap-1 justify-center items-center">
                     <Image
                         src={StarIcon}
                         alt="Imagem do anúncio"
+                        className="size-4 max-md:size-3"
                     />
-                    <p className="text-sm text-orange-400">{rating}</p>
+                    <p className="text-[12px] text-orange-400">{rating}</p>
                 </div>
             </div>
 
-            <p className="mt-2 text-gray-400">{city}, {country}</p>
+            <p className="mt-2 text-gray-400 max-md:text-sm truncate">{city}, {country}</p>
 
-            <span className="mt-6 block font-title font-bold text-xl text-blue-600">R$ {value} diária</span>
+            <span className="mt-6 block font-title font-bold text-xl max-md:text-base text-blue-600">R$ {value} diária</span>
         </div>
     )
 };
