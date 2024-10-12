@@ -25,6 +25,12 @@ const acomodacoes: Acomodacao[] = [
 const Acomodacoes: React.FC = () => {
 
   const { goToPreviousPage, goToNextPage } = useNavigation();
+
+  function handleVaiCurintia()
+  {
+    localStorage.setItem("@stayeasy:imovel", "Olá mundo!");
+  }
+
   return (
     // Left Side
   <>
@@ -64,7 +70,7 @@ const Acomodacoes: React.FC = () => {
         </div>
         <div className="flex justify-between items-center w-full mt-4">
           <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage}/>
-          <IoIosArrowForward className="text-6xl cursor-pointer text-black" onClick={goToNextPage}/>
+          <IoIosArrowForward className="text-6xl cursor-pointer text-black" onClick={handleVaiCurintia}/>
         </div>
       </div>
     </div>

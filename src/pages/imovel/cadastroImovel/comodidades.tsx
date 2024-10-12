@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { FaWifi, FaTv, FaCar, FaHammer } from 'react-icons/fa';
 import { TbAirConditioning  } from "react-icons/tb";
 import { MdKitchen, MdLocalLaundryService, MdAttachMoney } from "react-icons/md";
@@ -32,8 +33,22 @@ const Comodidade: React.FC = () => {
   const { goToPreviousPage, goToNextPage } = useNavigation();
   const [selectedItem, setSelectedItem] = React.useState<string | null>(null);
 
+  useEffect(() => {
+    console.log(localStorage.getItem("@stayeasy:imovel"));
+  }, []);
+
+  
+  function getSelectable(selectedItem: string | null)
+  {
+    if(selectedItem){
+      localStorage.setItem("@form:comodidade", selectedItem);
+    }
+  }
+
+
   const handleSelect = (item: string) => {
     setSelectedItem(item);
+    getSelectable(item);
   };
 
   return (
