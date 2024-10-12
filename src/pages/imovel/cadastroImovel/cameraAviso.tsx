@@ -2,8 +2,6 @@ import React from 'react';
 import { FaUserFriends, FaBed, FaShower  } from 'react-icons/fa'
 import { MdOutlineBedroomChild  } from "react-icons/md";
 import { FiCamera } from "react-icons/fi";
-import { PiShippingContainerFill, PiFarm } from "react-icons/pi";
-import { GiEcology } from "react-icons/gi";
 import styles from '@/styles/LayoutCadImovel.module.css'
 import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -41,14 +39,14 @@ const Acomodacoes: React.FC = () => {
 
       {/* Right Side */}
       <div className="w-1/2 flex flex-col justify-center items-center p-4 bg-white">
-        <h1 className="mb-40 text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
+        <h1 className="mb-20 text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
           Atenção!
         </h1>
         <div className="flex flex-col justify-center items-center">
             <div>
-                <FiCamera className="h-16 w-16 text-red-600" />
+                <FiCamera className="h-16 w-16 mb-10 text-red-600" />
             </div>
-            <div>
+            <div className="mb-40">
                 <h2 className="mb-4 text-[35px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
                     <span className="text-red-600 font-bold">!</span> Câmeras de segurança nos espaços internos não são permitidas, mesmo quando desligadas.
                 </h2>
