@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Reserva } from '@/hooks/ReservaContext';
 
@@ -10,15 +10,38 @@ interface CalendarModalProps {
   onClose: () => void;
   unavailableDates?: string[];
   onSave: (checkIn: string | null, checkOut: string | null, datesInRange: string | null) => void;
+  anuncioId: string;
 }
 
-export default function CalendarModal({ isOpen, onClose, unavailableDates = [], onSave }: CalendarModalProps) {
+export default function CalendarModal({ isOpen, onClose, unavailableDates = [], onSave, anuncioId }: CalendarModalProps) {
   const [checkIn, setCheckIn] = useState<string | null>(null)
   const [checkOut, setCheckOut] = useState<string | null>(null)
-  const [currentMonth, setCurrentMonth] = useState(8) // September
-  const [currentYear, setCurrentYear] = useState(2024)
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth())
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear())
   const [selectedDates, setSelectedDates] = useState<string[]>([])
   const [savedDates, setSavedDates] = useState<Reserva>({ startDate: null, endDate: null, valorTotal: 0 })
+
+  useEffect(() => {
+    const fetchReservedDates = () => {
+      const reservas = JSON.parse(localStorage.getItem('reservas') || '[]');
+      const anuncioReserva = reservas.find((reserva: any) => reserva.anuncio.id === anuncioId);
+      if (anuncioReserva) {
+        const startDate = new Date(anuncioReserva.datas.startDate);
+        const endDate = new Date(anuncioReserva.datas.endDate);
+        setSavedDates({
+          startDate,
+          endDate,
+          valorTotal: anuncioReserva.valorTotal
+        });
+        setCheckIn(formatDate(startDate.getDate(), startDate.getMonth(), startDate.getFullYear()));
+        setCheckOut(formatDate(endDate.getDate(), endDate.getMonth(), endDate.getFullYear()));
+      }
+    };
+
+    if (isOpen) {
+      fetchReservedDates();
+    }
+  }, [isOpen, anuncioId]);
 
   const formatDate = (day: number, month: number, year: number) => {
     return `${day.toString().padStart(2, '0')}/${(month + 1).toString().padStart(2, '0')}/${year}`
@@ -46,7 +69,7 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
     const end = new Date(endDate.split('/').reverse().join('-'))
     const dates = []
 
-    let currentDate = new Date(start.getTime()) // Cria uma nova instância para evitar mutação do objeto original
+    let currentDate = new Date(start.getTime())
     while (currentDate <= end) {
       dates.push(
         `${currentDate.getDate().toString().padStart(2, '0')}/${(currentDate.getMonth() + 1)
@@ -68,7 +91,7 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
       setSavedDates({
         startDate: new Date(startDate.split('/').reverse().join('-')),
         endDate: new Date(endDate.split('/').reverse().join('-')),
-        valorTotal: savedDates.valorTotal // Assuming valorTotal remains unchanged
+        valorTotal: savedDates.valorTotal
       })
       setSelectedDates([])
       onSave(startDate, endDate, datesInRange.join(', '))

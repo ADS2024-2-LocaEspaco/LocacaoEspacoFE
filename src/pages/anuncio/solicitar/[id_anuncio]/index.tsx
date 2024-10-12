@@ -1,10 +1,10 @@
 import React from 'react'
-import Component from '../components/compo1'
+import Component from '../../components/solicitarReserva'
 import { GetServerSideProps } from 'next';
 
 function index() {
   return (
-    <Component anuncioId={'2'} />
+    <Component />
   )
 }
 

@@ -47,7 +47,7 @@ const ExibirAnuncio: React.FC<AnuncioProps> = ({ titulo, qtd_hospedes, qtd_camas
 
   const openShareModal = () => setIsShareModalOpen(true);  // Função para abrir modal de compartilhar
   const closeShareModal = () => setIsShareModalOpen(false);  // Função para fechar modal de compartilhar
-  
+
   return (
     <div className="bg-[#fff7f4] h-full font-josefin md:flex flex-col items-center" >
       {/* Section 1 */}
@@ -64,8 +64,8 @@ const ExibirAnuncio: React.FC<AnuncioProps> = ({ titulo, qtd_hospedes, qtd_camas
             qtd_hospedes={qtd_hospedes}
             qtd_banheiros={qtd_banheiros}
             qtd_camas={qtd_camas}
-            onOpenMapModal={openMapModal} 
-            onOpenFavoritosModal={openFavoritosModal} 
+            onOpenMapModal={openMapModal}
+            onOpenFavoritosModal={openFavoritosModal}
             onOpenShareModal={openShareModal}
           />
         </div>
@@ -80,19 +80,19 @@ const ExibirAnuncio: React.FC<AnuncioProps> = ({ titulo, qtd_hospedes, qtd_camas
       />
 
       {/* Modal de favoritos */}
-      <FavoritosModal 
-        isOpen={isFavModalOpen} 
-        onClose={closeFavoritosModal} 
+      <FavoritosModal
+        isOpen={isFavModalOpen}
+        onClose={closeFavoritosModal}
         currentFavorite={{ id: '1', name: titulo, icon: imagens[0] }}  // Favorito atual
         userId="123"  // ID do usuário
       />
 
 
       {/* Modal de compartilhar */}
-      <CompartilharModal 
-        isOpen={isShareModalOpen} 
-        onClose={closeShareModal} 
-        titulo={titulo}  
+      <CompartilharModal
+        isOpen={isShareModalOpen}
+        onClose={closeShareModal}
+        titulo={titulo}
       />
 
       {/* Section 2 */}
