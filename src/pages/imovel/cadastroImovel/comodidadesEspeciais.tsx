@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FaWifi, FaTv, FaSwimmingPool, FaUmbrellaBeach } from 'react-icons/fa';
 import { TbAirConditioning  } from "react-icons/tb";
 import { MdKitchen, MdLocalLaundryService, MdOutdoorGrill } from "react-icons/md";
@@ -14,24 +14,41 @@ import '@fontsource/josefin-sans';
 
 interface SpecialAmenity {
   name: string;
+  value: number;
   icon: React.ReactNode;
 }
 
 const specialAmenities: SpecialAmenity[] = [
-  { name: 'Piscina', icon: <FaSwimmingPool size={32} /> },
-  { name: 'Churrasqueira', icon: <MdOutdoorGrill size={32} /> },
-  { name: 'Acesso à Praia', icon: <FaUmbrellaBeach size={32} /> },
-  { name: 'Mesa de bilhar', icon: <RiBilliardsFill size={32} /> },
+  { name: 'Piscina', value: 1, icon: <FaSwimmingPool size={32} /> },
+  { name: 'Churrasqueira', value: 2, icon: <MdOutdoorGrill size={32} /> },
+  { name: 'Acesso à Praia', value: 3, icon: <FaUmbrellaBeach size={32} /> },
+  { name: 'Mesa de bilhar', value: 4, icon: <RiBilliardsFill size={32} /> },
 ];
 
 const ComodidadeEspecial: React.FC = () => {
-
   const { goToPreviousPage, goToNextPage } = useNavigation();
-  const [selectedItem, setSelectedItem] = React.useState<string | null>(null);
+  const [selectedItems, setSelectedItems] = React.useState<SpecialAmenity[]>([]);
 
+  useEffect(() => {
+    const storedSpecialAmenities = localStorage.getItem('comodidades_especiais');
+    if (storedSpecialAmenities) {
+      const parsedSpecialAmenities = JSON.parse(storedSpecialAmenities);
+      setSelectedItems(parsedSpecialAmenities);
+    }
+  }, []);
 
-  const handleSelect = (item: string) => {
-    setSelectedItem(item);
+  const handleSelect = (specialAmenity: SpecialAmenity) => {
+    const isSelected = selectedItems.some(item => item.name === specialAmenity.name);
+
+    let updatedSelection;
+    if (isSelected) {
+      updatedSelection = selectedItems.filter(item => item.name !== specialAmenity.name);
+    } else {
+      updatedSelection = [...selectedItems, specialAmenity];
+    }
+
+    setSelectedItems(updatedSelection);
+    localStorage.setItem('comodidades_especiais', JSON.stringify(updatedSelection));
   };
 
   return (
@@ -56,10 +73,11 @@ const ComodidadeEspecial: React.FC = () => {
           {specialAmenities.map((specialAmenity, index) => (
               <CardSelect
                 key={index}
+                value={specialAmenity.value}
                 name={specialAmenity.name}
-                selected={selectedItem === specialAmenity.name}
+                selected={selectedItems.some(item => item.name === specialAmenity.name)}
                 icon={specialAmenity.icon}
-                onSelect={() => handleSelect(specialAmenity.name)}
+                onSelect={() => handleSelect(specialAmenity)}
               />
           ))}
         </div>

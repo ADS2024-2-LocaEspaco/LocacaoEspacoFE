@@ -35,7 +35,7 @@ const Comodidade: React.FC = () => {
   const [selectedItems, setSelectedItems] = React.useState<Amenity[]>([]);
 
   useEffect(() => {
-    const storedAmenities = localStorage.getItem("@form:comodidade");
+    const storedAmenities = localStorage.getItem("comodidades");
     if (storedAmenities) {
       const parsedAmenities = JSON.parse(storedAmenities);
       setSelectedItems(parsedAmenities);
@@ -53,7 +53,7 @@ const Comodidade: React.FC = () => {
     }
 
     setSelectedItems(updatedSelection);
-    localStorage.setItem("@form:comodidade", JSON.stringify(updatedSelection));
+    localStorage.setItem("comodidades", JSON.stringify(updatedSelection));
   }
 
   return (
