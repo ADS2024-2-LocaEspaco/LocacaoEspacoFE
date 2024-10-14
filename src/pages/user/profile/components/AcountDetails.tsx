@@ -106,7 +106,7 @@ export default function AcountDetails({ currentFullName, currentEmail, currenteC
             <footer className="flex justify-end ">
                 {isEditing ? (
                     <button
-                        className="bg-blue-500 rounded text-white flex items-center rounded-2xl px-2 py-1 border-solid border border-black m-1 gap-1"
+                        className="bg-blue-500 text-white flex items-center rounded-2xl px-2 py-1 border-solid border border-black m-1 gap-1"
                         onClick={handleSaveClick}
                     >
                         Salvar
@@ -114,7 +114,7 @@ export default function AcountDetails({ currentFullName, currentEmail, currenteC
                     </button>
                 ) : (
                     <button
-                        className="bg-orange-500 rounded text-white flex items-center rounded-2xl px-2 py-1 border-solid border border-black m-1 gap-1"
+                        className="bg-orange-500 text-white flex items-center rounded-2xl px-2 py-1 border-solid border border-black m-1 gap-1"
                         onClick={handleEditClick}
                     >
                         Editar

@@ -35,7 +35,7 @@ export default function InfoBank() {
                     <input
                         type="text"
                         className={`text-xs h-8 text-center border border-solid  border-black rounded-xl bg-gray-100  placeholder:items-center
-                    dark:bg-custom-gray-2 dark:border-white dark:text-white pr-[110px]
+                    dark:bg-custom-gray-2 dark:border-white dark:text-white pr-[140px]
                     ${isEditing ? 'pl-8' : ''}`}
                         id="bank"
                         value={bank}
@@ -54,7 +54,7 @@ export default function InfoBank() {
                     <input
                         type="text"
                         className={`h-8 text-center border border-solid border-black rounded-xl bg-gray-100 placeholder:items-center 
-                        dark:bg-custom-gray-2 dark:border-white dark:text-white pr-24`}
+                        dark:bg-custom-gray-2 dark:border-white dark:text-white pr-[100px] ${isEditing ? 'pl-8' : ''}`}
                         id="agency"
                         value={agency}
                         onChange={(e) => setAgency(e.target.value)}
@@ -74,7 +74,7 @@ export default function InfoBank() {
                     <input
                         type="text"
                         className={`h-8 text-center border border-solid  border-black rounded-xl  bg-gray-100 placeholder:items-center
-                    dark:bg-custom-gray-2 dark:border-white dark:text-white ${isEditing ? 'pl-8' : ''} pr-[70px]`} 
+                    dark:bg-custom-gray-2 dark:border-white dark:text-white ${isEditing ? 'pl-8' : ''} pr-[100px]`} 
                         id="accountNumber"
                         value={accountNumber}
                         onChange={(e) => setAccountNumber(e.target.value)}
@@ -119,7 +119,7 @@ export default function InfoBank() {
                 (
                     <button
                         onClick={handleEditClick}
-                        className="bg-orange-500 rounded text-white flex items-center rounded-2xl px-2 py-1 border-solid border border-black m-1 gap-1">
+                        className="bg-orange-500 text-white flex items-center rounded-2xl px-2 py-1 border-solid border border-black m-1 gap-1">
                         Editar
                         <div className="material-symbols-outlined">
                             edit

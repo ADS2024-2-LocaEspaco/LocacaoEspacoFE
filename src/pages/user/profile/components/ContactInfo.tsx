@@ -147,12 +147,12 @@ export default function ContactInfo({currentPhone, currentState, currentCity, cu
 
             <footer className="flex justify-end">
                 {!isEditing ? (
-                    <button onClick={handleEditClick} className='bg-orange-500 rounded text-white flex items-center rounded-2xl px-2 py-1 border-solid border border-black m-1 gap-1'>
+                    <button onClick={handleEditClick} className='bg-orange-500 text-white flex items-center rounded-2xl px-2 py-1 border-solid border border-black m-1 gap-1'>
                         Editar
                         <div className='material-symbols-outlined'>edit</div>
                     </button>
                 ) : (
-                    <button onClick={handleSaveClick} className='bg-blue-500 rounded text-white flex items-center rounded-2xl px-2 py-1 border-solid border border-black m-1 gap-1'>
+                    <button onClick={handleSaveClick} className='bg-blue-500 text-white flex items-center rounded-2xl px-2 py-1 border-solid border border-black m-1 gap-1'>
                         Salvar
                         <div className='material-symbols-outlined'>check_circle</div>
                     </button>

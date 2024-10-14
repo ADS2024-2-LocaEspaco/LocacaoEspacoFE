@@ -40,7 +40,7 @@ export const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ title, m
                 <footer className="flex justify-center mb-2">
                     <button 
                         onClick={handleConfirmDelete} 
-                        className="bg-blue-500 rounded rounded-2xl px-12 py-1 text-white"
+                        className="bg-blue-500 rounded-2xl px-12 py-1 text-white"
                     >
                         Enviar
                     </button>

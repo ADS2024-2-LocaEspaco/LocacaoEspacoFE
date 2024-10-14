@@ -71,7 +71,7 @@ export default function ImageUser() {
                     
                     <button
                         onClick={handleSaveClick}
-                        className="mt-auto bg-blue-500 rounded text-white flex items-center rounded-2xl px-2 py-1 border-solid border border-black m-1 gap-1">
+                        className="mt-auto bg-blue-500 text-white flex items-center rounded-2xl px-2 py-1 border-solid border border-black m-1 gap-1">
                         Salvar
                         
                         <div className="material-symbols-outlined">
