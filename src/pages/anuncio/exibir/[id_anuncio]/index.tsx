@@ -116,7 +116,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const res = await fetch(`http://localhost:3000/api/anuncio/${id_anuncio}`);
     const anuncio = await res.json();
+    localStorage.setItem('anuncio', JSON.stringify(anuncio));
     console.log(`Anúncio encontrado: ${JSON.stringify(anuncio)}`);
+    
     return {
       props: anuncio,
     };

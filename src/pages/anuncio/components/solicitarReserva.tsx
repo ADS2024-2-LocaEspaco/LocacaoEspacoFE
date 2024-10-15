@@ -6,7 +6,7 @@ import HospedeModal from './hospedeCompo';
 import { Anuncio } from '../../../types/types';
 import { hospedeCategory } from './hospedeCompo';
 
-export default function Component() {
+export default function SolicitarReserva() {
   const router = useRouter();
   const { anuncioId, startDate, endDate, totalValue } = router.query;
 

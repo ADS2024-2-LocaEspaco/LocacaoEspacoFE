@@ -1,4 +1,22 @@
+import { cp } from 'fs';
 import { NextApiRequest, NextApiResponse } from 'next';
+
+
+
+const fetchComodidadesByAnuncioId = () => {
+  return ([
+    { nome: 'Jardim amplo', icone: '/icons/outdoor_garden_icon.svg' },
+    { nome: 'Wi-Fi', icone: '/icons/wifi_icon.svg' },
+    { nome: 'Ar Condicionado', icone: '/icons/ice_icon.svg' },
+    { nome: 'Acessibilidade', icone: '/icons/accessibility_icon.svg' },
+    { nome: 'Piscina', icone: '/icons/pool_icon.svg' },
+    { nome: 'Cozinha', icone: '/icons/restaurant_icon.svg' },
+    { nome: 'Máquina de Lavar', icone: '/icons/laundry_icon.svg' },
+    { nome: 'Permitido animais', icone: '/icons/pets_icon.svg' },
+    { nome: 'Área para churrasco', icone: '/icons/outdoor_grill_icon.svg' },
+    { nome: 'Garagem para quatro carros', icone: '/icons/car_icon.svg' }
+  ])
+}
 
 // Simulando dados de um anúncio no banco de dados
 export const fetchAnuncioFromDB = async (id_anuncio: string) => {
@@ -90,8 +108,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const avaliacoes = await fetchAvaliacoesByAnuncio(id_anuncio as string);
     const notaMedia = calcularMediaAvaliacoes(avaliacoes);
-
-    res.status(200).json({ ...anuncio, nota: notaMedia, qtd_avaliacoes: avaliacoes.length });
+    const comodidades = fetchComodidadesByAnuncioId();
+    res.status(200).json({ ...anuncio, nota: notaMedia, qtd_avaliacoes: avaliacoes.length, comodidades: comodidades });
   } catch (error) {
     res.status(500).json({ message: 'Erro ao buscar o anúncio' });
   }
