@@ -3,8 +3,8 @@ import { useUserStore } from "../lib/store/userStore";
 
 interface UserData {
   email: string;
-  firstName: string;
-  lastName: string;
+  name: string;
+  fullName: string;
   picture: string;
   accessToken: string;
 }
@@ -19,8 +19,8 @@ export const useSession = () => {
       "session",
       JSON.stringify({
         email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
+        name: user.name,
+        fullName: user.fullName,
         picture: user.picture,
         accessToken: user.accessToken,
       }),
@@ -33,8 +33,8 @@ export const useSession = () => {
 
     setUser({
       email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
+      name: user.name,
+      fullName: user.fullName,
       picture: user.picture,
     })
   }

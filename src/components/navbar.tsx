@@ -1,7 +1,8 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
+import axios from 'axios';
 
 import Logo from '../../public/icons/logo.svg';
 import MenuHamburgerIcon from '../../public/icons/menu_icon.svg';
@@ -16,6 +17,7 @@ import MinusIcon from '../../public/icons/dash_circle_icon.svg'
 import Calendar from './calendar';
 import { useSession } from '@/hooks/useSession';
 import { useUserStore } from '@/lib/store/userStore';
+import { redirect } from 'next/navigation';
 
 interface MobileMenuProps {
 	openMobileMenu: () => void;
@@ -295,18 +297,35 @@ export default function Navbar() {
 		}
 	};
 
-	const loginWithGoogle = () => {
-		const user = {
+	useEffect(() => {
+		const urlParams = new URLSearchParams(window.location.search);
+		const token = urlParams.get('token');
+		if (token) {
+			getUserData(token);
+		}
+	}, []);
+
+	const loginWithGoogle = async () => {
+		/*const user = {
 			email: 'user@example.com',
 			firstName: 'Lucas',
 			lastName: 'Silva',
 			picture: 'https://example.com/profile.jpg',
 			accessToken: 'abcd1234token',
-		}
+		}*/
 
-		session.createSession(user)
+		window.location.href = "http://localhost:3001/google"
 	}
 
+	const getUserData = async (token: string) => {
+
+		console.log(token)
+		const user = await axios.get(`http://localhost:3001/user/${token}`)
+		console.log(user.data)
+		session.createSession(user.data)
+		
+		router.push('/home')
+	}
 	return (
 		<>
 			<MobileMenu openMobileMenu={openMobileMenu} handleBackToHomePage={handleBackToHomePage} />
