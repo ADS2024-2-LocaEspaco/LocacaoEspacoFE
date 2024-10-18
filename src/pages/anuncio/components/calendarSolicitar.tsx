@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from 'react'
-import { X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Reserva } from '@/hooks/ReservaContext';
 import router from 'next/router';
 
-const DAYS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb']
-const MONTHS = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro']
+const DAYS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+const MONTHS = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
 
 interface CalendarModalProps {
   isOpen: boolean;
@@ -12,27 +12,29 @@ interface CalendarModalProps {
   unavailableDates?: string[];
   onSave: (checkIn: string | null, checkOut: string | null, datesInRange: string | null) => void;
   anuncioId: string;
+  regras: {
+    quant_diaria_min: number;
+    quant_diaria_max: number;
+  };
 }
 
-export default function CalendarModal({ isOpen, onClose, unavailableDates = [], onSave, anuncioId }: CalendarModalProps) {
-  const [checkIn, setCheckIn] = useState<string | null>(null)
-  const [checkOut, setCheckOut] = useState<string | null>(null)
-  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth())
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear())
-  const [selectedDates, setSelectedDates] = useState<string[]>([])
-  const [savedDates, setSavedDates] = useState<Reserva>({ startDate: null, endDate: null, valorTotal: 0 })
-  const modalRef = useRef<HTMLDivElement>(null)
+export default function CalendarModal({ isOpen, onClose, unavailableDates = [], onSave, anuncioId, regras }: CalendarModalProps) {
+  const [checkIn, setCheckIn] = useState<string | null>(null);
+  const [checkOut, setCheckOut] = useState<string | null>(null);
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [selectedDates, setSelectedDates] = useState<string[]>([]);
+  const [savedDates, setSavedDates] = useState<Reserva>({ startDate: null, endDate: null, valorTotal: 0 });
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchReservedDates = () => {
       const { id_anuncio, startDate, endDate, totalValue } = router.query;
       if (id_anuncio && startDate && endDate) {
-
-
         setSavedDates({
           startDate: new Date(startDate as string),
           endDate: new Date(endDate as string),
-          valorTotal: Number(totalValue)
+          valorTotal: Number(totalValue),
         });
         const startDateObj = new Date(startDate as string);
         const endDateObj = new Date(endDate as string);
@@ -47,88 +49,88 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
   }, [isOpen, anuncioId]);
 
   const formatDate = (day: number, month: number, year: number) => {
-    return `${day.toString().padStart(2, '0')}/${(month + 1).toString().padStart(2, '0')}/${year}`
-  }
+    return `${day.toString().padStart(2, '0')}/${(month + 1).toString().padStart(2, '0')}/${year}`;
+  };
 
   const handleDateClick = (day: number, month: number, year: number) => {
-    const date = formatDate(day, month, year)
+    const date = formatDate(day, month, year);
     if (selectedDates.length === 0 || selectedDates.length === 2) {
-      setSelectedDates([date])
+      setSelectedDates([date]);
     } else if (selectedDates.length === 1) {
-      const [firstDate] = selectedDates
-      const firstDateTime = new Date(firstDate.split('/').reverse().join('-')).getTime()
-      const currentDateTime = new Date(date.split('/').reverse().join('-')).getTime()
+      const [firstDate] = selectedDates;
+      const firstDateTime = new Date(firstDate.split('/').reverse().join('-')).getTime();
+      const currentDateTime = new Date(date.split('/').reverse().join('-')).getTime();
 
       if (currentDateTime < firstDateTime) {
-        setSelectedDates([date, firstDate])
+        setSelectedDates([date, firstDate]);
       } else {
-        setSelectedDates([firstDate, date])
+        setSelectedDates([firstDate, date]);
       }
     }
-  }
+  };
 
   const getDatesInRange = (startDate: string, endDate: string) => {
-    const start = new Date(startDate.split('/').reverse().join('-'))
-    const end = new Date(endDate.split('/').reverse().join('-'))
-    const dates = []
+    const start = new Date(startDate.split('/').reverse().join('-'));
+    const end = new Date(endDate.split('/').reverse().join('-'));
+    const dates = [];
 
-    let currentDate = new Date(start.getTime())
+    let currentDate = new Date(start.getTime());
     while (currentDate <= end) {
       dates.push(
         `${currentDate.getDate().toString().padStart(2, '0')}/${(currentDate.getMonth() + 1)
           .toString()
           .padStart(2, '0')}/${currentDate.getFullYear()}`
-      )
-      currentDate.setDate(currentDate.getDate() + 1)
+      );
+      currentDate.setDate(currentDate.getDate() + 1);
     }
     return dates;
-  }
+  };
 
   const handleSave = () => {
     if (selectedDates.length === 2) {
       const [startDate, endDate] = selectedDates;
-      const datesInRange = getDatesInRange(startDate, endDate)
+      const datesInRange = getDatesInRange(startDate, endDate);
 
-      setCheckIn(startDate)
-      setCheckOut(endDate)
+      setCheckIn(startDate);
+      setCheckOut(endDate);
       setSavedDates({
         startDate: new Date(startDate.split('/').reverse().join('-')),
         endDate: new Date(endDate.split('/').reverse().join('-')),
-        valorTotal: savedDates.valorTotal
-      })
-      setSelectedDates([])
-      onSave(startDate, endDate, datesInRange.join(', '))
-      console.log('Datas selecionadas:', datesInRange)
+        valorTotal: savedDates.valorTotal,
+      });
+      setSelectedDates([]);
+      onSave(startDate, endDate, datesInRange.join(', '));
+      console.log('Datas selecionadas:', datesInRange);
     }
-  }
+  };
 
   const generateCalendar = (month: number, year: number) => {
-    const firstDay = new Date(year, month, 1).getDay()
-    const daysInMonth = new Date(year, month + 1, 0).getDate()
-    const calendar = []
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const calendar = [];
 
     for (let i = 0; i < 42; i++) {
       if (i < firstDay || i >= firstDay + daysInMonth) {
-        calendar.push(null)
+        calendar.push(null);
       } else {
-        calendar.push(i - firstDay + 1)
+        calendar.push(i - firstDay + 1);
       }
     }
 
-    return calendar
-  }
+    return calendar;
+  };
 
   const isDateInRange = (date: string) => {
-    if (selectedDates.length !== 2) return false
-    const [start, end] = selectedDates
-    const dateObj = new Date(date.split('/').reverse().join('-'))
-    const startObj = new Date(start.split('/').reverse().join('-'))
-    const endObj = new Date(end.split('/').reverse().join('-'))
-    return dateObj >= startObj && dateObj <= endObj
-  }
+    if (selectedDates.length !== 2) return false;
+    const [start, end] = selectedDates;
+    const dateObj = new Date(date.split('/').reverse().join('-'));
+    const startObj = new Date(start.split('/').reverse().join('-'));
+    const endObj = new Date(end.split('/').reverse().join('-'));
+    return dateObj >= startObj && dateObj <= endObj;
+  };
 
   const renderCalendar = (month: number, year: number) => {
-    const calendar = generateCalendar(month, year)
+    const calendar = generateCalendar(month, year);
     return (
       <div className="grid grid-cols-7 gap-1">
         {DAYS.map(day => (
@@ -137,8 +139,8 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
           </div>
         ))}
         {calendar.map((day, index) => {
-          const date = day ? formatDate(day, month, year) : null
-          const isSelected = selectedDates.includes(date || '') || (date && isDateInRange(date))
+          const date = day ? formatDate(day, month, year) : null;
+          const isSelected = selectedDates.includes(date || '') || (date && isDateInRange(date));
           const isUnavailable = date && savedDates.startDate && savedDates.endDate
             ? new Date(date.split('/').reverse().join('-')) >= savedDates.startDate &&
             new Date(date.split('/').reverse().join('-')) <= savedDates.endDate
@@ -153,11 +155,11 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
             >
               {day}
             </div>
-          )
+          );
         })}
       </div>
-    )
-  }
+    );
+  };
 
   // função para fechar a modal ao clicar fora dela
   const handleClickOutside = (event: MouseEvent) => {
@@ -177,9 +179,8 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isOpen]);
-  
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
@@ -189,9 +190,9 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
             <X size={24} />
           </div>
           <h2 className="text-lg font-semibold">Selecionar datas</h2>
-          <button 
-          title='close-btn'
-          onClick={onClose}
+          <button
+            title='close-btn'
+            onClick={onClose}
           >
             <X size={24} />
           </button>
@@ -199,32 +200,33 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
 
         <div className="flex justify-between items-center">
           <div className='flex flex-row space-x-4 mb-4 max-w-[100px]'>
-          <div className="flex-1 p-2 border rounded-lg">
-            <div className="text-xs text-gray-500">Check-in</div>
-            <div>{checkIn || 'Selecione'}</div>
+            <div className="flex-1 p-2 border rounded-lg">
+              <div className="text-xs text-gray-500">Check-in</div>
+              <div>{checkIn || 'Selecione'}</div>
+            </div>
+            <div className="flex-1 p-2 border rounded-lg">
+              <div className="text-xs text-gray-500">Checkout</div>
+              <div>{checkOut || 'Selecione'}</div>
+            </div>
           </div>
-          <div className="flex-1 p-2 border rounded-lg">
-            <div className="text-xs text-gray-500">Checkout</div>
-            <div>{checkOut || 'Selecione'}</div>
-          </div>
-        </div>
 
-        <div className="text-right text-sm text-gray-500 mb-4 p-4">
-          Mínimo de 2 noites
-        </div>
+          <div className="flex flex-col gap-2 text-left text-sm text-gray-500 mx-4 mb-4 p-4">
+            <span>Mínimo de {regras.quant_diaria_min} noites</span>
+            <span>Máximo de {regras.quant_diaria_max} noites</span>
+          </div>
         </div>
         <div className="flex justify-between items-center mb-2 border-t border-[#c0c0c5] p-4">
           <button
-           title='set-prev-month-btn'
-           onClick={() => setCurrentMonth(prev => (prev === 0 ? 11 : prev - 1))}>
+            title='set-prev-month-btn'
+            onClick={() => setCurrentMonth(prev => (prev === 0 ? 11 : prev - 1))}>
             <ChevronLeft size={20} />
           </button>
           <div className="text-lg font-medium">
             {MONTHS[currentMonth]} {currentYear}
           </div>
-          <button 
-          title='set-next-month-btn'
-          onClick={() => setCurrentMonth(prev => (prev === 11 ? 0 : prev + 1))}>
+          <button
+            title='set-next-month-btn'
+            onClick={() => setCurrentMonth(prev => (prev === 11 ? 0 : prev + 1))}>
             <ChevronRight size={20} />
           </button>
         </div>
@@ -261,5 +263,5 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
         </div>
       </div>
     </div>
-  )
+  );
 }

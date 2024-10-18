@@ -118,6 +118,7 @@ export default function SolicitarReserva({ regras }: any) {
                 onSave={handleSave}
                 unavailableDates={[]}
                 anuncioId={anuncioId as string}
+                regras={regras}
               />
             </div>
           </div>
