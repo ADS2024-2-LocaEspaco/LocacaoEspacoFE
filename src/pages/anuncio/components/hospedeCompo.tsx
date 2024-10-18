@@ -29,6 +29,7 @@ export default function HospedeModal({ isOpen, onClose, onSave, regras }: Hosped
   ]);
 
   const [maxGuestsReached, setMaxGuestsReached] = useState(false);
+  const [maxBebesReached, setMaxBebesReached] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
   // função para fechar a modal ao clicar fora dela
@@ -49,16 +50,17 @@ export default function HospedeModal({ isOpen, onClose, onSave, regras }: Hosped
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isOpen]);
-  
+
   useEffect(() => {
     const totalGuests = hospede
       .filter(guest => guest.name === 'Adultos' || guest.name === 'Crianças')
       .reduce((sum, guest) => sum + guest.count, 0);
 
+    const adultosCount = hospede.find(guest => guest.name === 'Adultos')?.count || 0;
+    const bebesCount = hospede.find(guest => guest.name === 'Bebês')?.count || 0;
+
     setMaxGuestsReached(totalGuests >= regras.qtd_hospedes);
-    console.log('maxGuestsReached', maxGuestsReached);
-    console.log('totalGuests', totalGuests);
-    console.log('regras.qtd_hospede', regras.qtd_hospedes);
+    setMaxBebesReached(bebesCount >= adultosCount * 3);
   }, [hospede, regras.qtd_hospedes]);
 
   const handleIncrement = (index: number) => {
@@ -72,10 +74,9 @@ export default function HospedeModal({ isOpen, onClose, onSave, regras }: Hosped
     if (newGuests[index].count > 0) {
       newGuests[index].count--;
       setHospede(newGuests);
-      console.log('newGuests', newGuests);
     }
   };
-  
+
   if (!isOpen) return null;
 
   return (
@@ -114,7 +115,7 @@ export default function HospedeModal({ isOpen, onClose, onSave, regras }: Hosped
                 disabled={
                   maxGuestsReached ||
                   (hospede.name === 'Crianças' && !regras.aceita_crianca) ||
-                  (hospede.name === 'Bebês' && !regras.aceita_bebe) ||
+                  (hospede.name === 'Bebês' && (!regras.aceita_bebe || maxBebesReached)) ||
                   (hospede.name === 'Animais de estimação' && (!regras.aceita_pet || hospede.count >= regras.quant_pet))
                 }
               >
@@ -127,6 +128,12 @@ export default function HospedeModal({ isOpen, onClose, onSave, regras }: Hosped
         {maxGuestsReached && (
           <div className="text-red-500 text-md mb-4 border p-2 border-red-300 rounded">
             O número máximo de hóspedes foi atingido.
+          </div>
+        )}
+
+        {maxBebesReached && (
+          <div className="text-red-500 text-md mb-4 border p-2 border-red-300 rounded">
+            Cada adulto pode adicionar até 3 bebês.
           </div>
         )}
 
