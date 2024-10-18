@@ -35,7 +35,7 @@ export default function Calendar({ valorDiaria, anuncioId }: CalendarProps) {
   useEffect(() => {
     if (startDate && endDate) {
       const diasSelecionados = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
-      setTotalValue(diasSelecionados * valorDiaria);
+      setTotalValue((diasSelecionados -1) * valorDiaria);
     } else {
       setTotalValue(0);
     }
@@ -104,7 +104,7 @@ export default function Calendar({ valorDiaria, anuncioId }: CalendarProps) {
       localStorage.setItem('reservas', JSON.stringify(reservas));
 
       router.push({
-        pathname: `/solicitar/reserva/${anuncioId}`,
+        pathname: `/anuncio/solicitar/${anuncioId}`,
         query: { startDate: startDate.toISOString(), endDate: endDate.toISOString(), totalValue: totalValue.toString() }
       });
     }
@@ -193,7 +193,7 @@ export default function Calendar({ valorDiaria, anuncioId }: CalendarProps) {
               Total: R$ {totalValue.toFixed(2)}
             </p>
             <p className="text-sm text-[#FF6F00]">
-              {Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1} diárias
+              {Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))} diárias
             </p>
           </div>
         )}

@@ -37,7 +37,7 @@ const AnuncioCard: React.FC = () => {
     const nota = anuncio.nota.toFixed(1);
 
     return (
-        <div className='h-full w-full flex -justify-center items-center'>
+        <div className='text-black-300'>
         <div className='justify-evenly items-center flex-col flex border border-[#f1f1f3] rounded-[10px] w-[357px] h-[342px] shadow-md'>
             <div className='justify-center items-center flex flex-col '>
             <img

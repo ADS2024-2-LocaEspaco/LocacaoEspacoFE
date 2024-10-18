@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Reserva } from '@/hooks/ReservaContext';
+import router from 'next/router';
 
 const DAYS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb']
 const MONTHS = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro']
@@ -20,21 +21,23 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear())
   const [selectedDates, setSelectedDates] = useState<string[]>([])
   const [savedDates, setSavedDates] = useState<Reserva>({ startDate: null, endDate: null, valorTotal: 0 })
+  const modalRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const fetchReservedDates = () => {
-      const reservas = JSON.parse(localStorage.getItem('reservas') || '[]');
-      const anuncioReserva = reservas.find((reserva: any) => reserva.anuncio.id === anuncioId);
-      if (anuncioReserva) {
-        const startDate = new Date(anuncioReserva.datas.startDate);
-        const endDate = new Date(anuncioReserva.datas.endDate);
+      const { id_anuncio, startDate, endDate, totalValue } = router.query;
+      if (id_anuncio && startDate && endDate) {
+
+
         setSavedDates({
-          startDate,
-          endDate,
-          valorTotal: anuncioReserva.valorTotal
+          startDate: new Date(startDate as string),
+          endDate: new Date(endDate as string),
+          valorTotal: Number(totalValue)
         });
-        setCheckIn(formatDate(startDate.getDate(), startDate.getMonth(), startDate.getFullYear()));
-        setCheckOut(formatDate(endDate.getDate(), endDate.getMonth(), endDate.getFullYear()));
+        const startDateObj = new Date(startDate as string);
+        const endDateObj = new Date(endDate as string);
+        setCheckIn(formatDate(startDateObj.getDate(), startDateObj.getMonth(), startDateObj.getFullYear()));
+        setCheckOut(formatDate(endDateObj.getDate(), endDateObj.getMonth(), endDateObj.getFullYear()));
       }
     };
 
@@ -156,22 +159,46 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
     )
   }
 
+  // função para fechar a modal ao clicar fora dela
+  const handleClickOutside = (event: MouseEvent) => {
+    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      onClose();
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+  
+
   if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg max-w-4xl w-full p-6 text-[#3D3D43]">
-        <div className="flex justify-between items-center mb-4">
-          <div className="invisible">
+      <div ref={modalRef} className="bg-white rounded-lg max-w-4xl w-full p-6 text-[#3D3D43] border border-[#e9e9eb] shadow-md">
+        <div className="flex justify-between items-center pb-4 mb-4 border-b border-[#c0c0c5]">
+          <div className="invisible ">
             <X size={24} />
           </div>
           <h2 className="text-lg font-semibold">Selecionar datas</h2>
-          <button onClick={onClose}>
+          <button 
+          title='close-btn'
+          onClick={onClose}
+          >
             <X size={24} />
           </button>
         </div>
 
-        <div className="flex space-x-4 mb-4 max-w-[100px]">
+        <div className="flex justify-between items-center">
+          <div className='flex flex-row space-x-4 mb-4 max-w-[100px]'>
           <div className="flex-1 p-2 border rounded-lg">
             <div className="text-xs text-gray-500">Check-in</div>
             <div>{checkIn || 'Selecione'}</div>
@@ -182,18 +209,22 @@ export default function CalendarModal({ isOpen, onClose, unavailableDates = [], 
           </div>
         </div>
 
-        <div className="text-right text-sm text-gray-500 mb-4">
+        <div className="text-right text-sm text-gray-500 mb-4 p-4">
           Mínimo de 2 noites
         </div>
-
-        <div className="flex justify-between items-center mb-2">
-          <button onClick={() => setCurrentMonth(prev => (prev === 0 ? 11 : prev - 1))}>
+        </div>
+        <div className="flex justify-between items-center mb-2 border-t border-[#c0c0c5] p-4">
+          <button
+           title='set-prev-month-btn'
+           onClick={() => setCurrentMonth(prev => (prev === 0 ? 11 : prev - 1))}>
             <ChevronLeft size={20} />
           </button>
           <div className="text-lg font-medium">
             {MONTHS[currentMonth]} {currentYear}
           </div>
-          <button onClick={() => setCurrentMonth(prev => (prev === 11 ? 0 : prev + 1))}>
+          <button 
+          title='set-next-month-btn'
+          onClick={() => setCurrentMonth(prev => (prev === 11 ? 0 : prev + 1))}>
             <ChevronRight size={20} />
           </button>
         </div>
