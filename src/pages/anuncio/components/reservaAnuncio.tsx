@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Calendario from './calendarCompo';
+import Calendar from './calendarReserva';
 import { useReserva } from '@/hooks/ReservaContext';
 import { useRouter } from 'next/router';
 import { fetchAnuncioById } from '@/utils/api';
@@ -13,6 +13,7 @@ const ReservaAnuncio = () => {
     startDate: new Date(),
     endDate: NEXT_MONTH,
   });
+
   const [valorTotal, setValorTotal] = useState(0);
   const [anuncio, setAnuncio] = useState<Anuncio>();
   const [loading, setLoading] = useState(true);
@@ -56,8 +57,6 @@ const ReservaAnuncio = () => {
   }, [id_anuncio]);
 
   const handleReservarClick = () => {
-    const isLoggedIn = Boolean(localStorage.getItem('userToken'));
-
     console.log('Informações da reserva:', {
       startDate: value.startDate,
       endDate: value.endDate,
@@ -70,11 +69,23 @@ const ReservaAnuncio = () => {
       valorTotal: valorTotal,
     });
 
-    if (isLoggedIn) {
-      router.push('/finalizacao-reserva');
-    } else {
-      router.push('/login');
-    }
+    const reservas = JSON.parse(localStorage.getItem('reservas') || '[]');
+    reservas.push({
+      anuncio,
+      datas: {
+        startDate: value.startDate.toISOString().split('T')[0],
+        endDate: value.endDate.toISOString().split('T')[0],
+      },
+      valorTotal: valorTotal,
+    });
+    localStorage.setItem('reservas', JSON.stringify(reservas));
+
+    // const isLoggedIn = Boolean(localStorage.getItem('userToken'));
+    // if (isLoggedIn) {
+    //   router.push('/finalizacao-reserva');
+    // } else {
+    //   router.push('/login');
+    // }
   };
 
   if (loading) return <p>Carregando...</p>;
@@ -91,7 +102,7 @@ const ReservaAnuncio = () => {
         <p className="text-sm text-center lg:text-left text-[#3D3D43]">{`${anuncio?.endereco.rua}, ${anuncio?.endereco.bairro}, ${anuncio?.endereco.cidade} - ${anuncio?.endereco.uf}`}</p>
         <hr className="w-full border-t border-[#3D3D43] my-2 lg:not-sr-only" />
         <div>
-          <Calendario onDateChange={handleDateChange} valorDiaria={anuncio?.valorDiaria ?? 0} />
+          <Calendar valorDiaria={anuncio?.valorDiaria ?? 0} anuncioId={anuncio?.id ?? ''} />
         </div>
       </div>
     </div>
