@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import AcountDetails from "./components/AcountDetails";
+import AcountCard from "./cards/AcountCard";
 import ContactInfo from "./components/ContactInfo";
 import Image from "next/image";
-import ImageUser from "./components/ImageUser";
+import ImageUser from "./cards/ImageCard";
 import loadingImage from '../../../assets/loading.webp';
-import InfoBank from "./components/InfoBank";
-import InfoBasicUser from "./components/InfoBasicUser"
+import BankCard from "./cards/BankCard";
+import UserCard from "./cards/UserCard"
 import { DeleteAccountModal } from './components/deleteAccountModal';
 import { getUserProfile, UserData } from "../../api/user/profileService";
 import Notification from "./components/Notification";
@@ -50,23 +50,26 @@ export default function profile() {
             <div className="px-4 mt-4 max-w-4xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <div className="md:col-span-2 flex flex-col md:flex-row justify-center items-center">
+
                         <div className="w-full md:w-1/2 flex justify-center items-center p-2">
                             <ImageUser />
                         </div>
+
                         <div className="w-full md:w-1/2 flex justify-center items-center p-2">
                             {userData ? (
-                                <InfoBasicUser userName={userData.username} />
+                                <UserCard userName={userData.username} />
                             ) : (
                                 <div className="">
                                     <Image src={loadingImage} alt="Carregando..." className="w-16 h-16" />
                                 </div>
                             )}
                         </div>
+
                     </div>
 
                     <div className="hidden md:flex justify-center items-center p-2">
                         {userData ? (
-                            <AcountDetails
+                            <AcountCard
                                 currentFullName={userData.fullname}
                                 currentEmail={userData.email}
                                 currenteCpf={userData.cpf}
@@ -95,7 +98,7 @@ export default function profile() {
                     </div>
 
                     <div className="hidden md:flex justify-center items-center p-2 md:col-span-2">
-                        <InfoBank />
+                        <BankCard />
                     </div>
 
                     <div className="md:hidden flex justify-center mt-10 space-x-4">
@@ -112,7 +115,7 @@ export default function profile() {
                         <div className="flex">
                             <div className="flex-shrink-0 w-full snap-center">
                                 {userData ? (
-                                    <AcountDetails
+                                    <AcountCard
                                         currentFullName={userData.fullname}
                                         currentEmail={userData.email}
                                         currenteCpf={userData.cpf}
@@ -139,7 +142,7 @@ export default function profile() {
                                 )}
                             </div>
                             <div className="flex-shrink-0 w-full snap-center">
-                                <InfoBank />
+                                <BankCard />
                             </div>
                         </div>
                     </div>

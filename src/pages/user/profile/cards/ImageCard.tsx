@@ -88,12 +88,6 @@ export default function ImageUser() {
                         <Image src={iconCamera} alt="Star Fill" className="size-9 "/>
                     </button>
                 )}
-
-
-
-
-
-
             </footer>
         </div>
     )
