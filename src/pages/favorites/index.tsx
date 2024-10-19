@@ -6,12 +6,11 @@ import FavoriteFolder, { CardFavoriteFolderProps } from "./components/card-favor
 import Card from './card.jpg'
 import AddIcon from '../../../public/icons/add_icon.svg'
 
-
 export default function Favorites() {
-    const [folders, useFolders] = useState<CardFavoriteFolderProps[]>()
+    const [folders, setFolders] = useState<CardFavoriteFolderProps[]>()
 
     useEffect(() => {
-        useFolders([
+        setFolders([
             {
                 id: 1,
                 banner: Card,
@@ -24,14 +23,20 @@ export default function Favorites() {
                 title: 'Meus favoritos',
                 total: 8
             },
+            {
+                id: 2,
+                banner: Card,
+                title: 'Meus favoritos',
+                total: 8
+            },
         ])
     }, [])
 
     return (
-        <main className="h-screen px-32 space-y-[60px]">
-            <h1 className="text-5xl font-bold text-black-100">Favoritos</h1>
+        <main className="h-full min-h-screen px-32 max-md:px-5 space-y-[60px] max-md:space-y-6">
+            <h1 className="text-5xl max-md:text-2xl font-bold text-black-100">Favoritos</h1>
 
-            <div className="flex gap-14 items-center">
+            <div className="flex flex-wrap gap-14 max-md:gap-5 max-sm:justify-center">
                 {
                     folders ? (
                         folders.map((folder, index) => (
@@ -48,8 +53,8 @@ export default function Favorites() {
                     )
                 }
 
-                <div className="h-[248px]">
-                    <Image src={AddIcon} alt='Botão para criar pasta' className="flex" />
+                <div className="flex self-start h-[248px] w-[248px] max-md:w-[184px] max-md:h-[184px] justify-center items-center">
+                    <Image src={AddIcon} alt='Botão para criar pasta' className="size-28 max-md:size-20 cursor-pointer hover:opacity-80"/>
                 </div>
             </div>
         </main>
