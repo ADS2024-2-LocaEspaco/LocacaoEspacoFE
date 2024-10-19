@@ -1,6 +1,4 @@
 import React from 'react';
-import { FaUserFriends, FaBed, FaShower  } from 'react-icons/fa'
-import { MdOutlineBedroomChild  } from "react-icons/md";
 import { FiCamera } from "react-icons/fi";
 import styles from '@/styles/LayoutCadImovel.module.css'
 import NavbarCadastro from '@/components/navbarCadastro';
@@ -9,19 +7,7 @@ import { useRouter } from 'next/router';
 import useNavigation from '@/hooks/CadImovel';
 import '@fontsource/josefin-sans'; 
 
-interface Acomodacao {
-  name: string;
-  icon: React.ReactNode;
-}
-
-const acomodacoes: Acomodacao[] = [
-  { name: 'Quartos', icon: <MdOutlineBedroomChild size={32} /> },
-  { name: 'Camas', icon: <FaBed size={32} /> },
-  { name: 'Banheiros', icon: <FaShower size={32} /> },
-  { name: 'Hóspedes', icon: <FaUserFriends size={32} /> },
-];
-
-const Acomodacoes: React.FC = () => {
+const CameraAviso: React.FC = () => {
 
   const { goToPreviousPage, goToNextPage } = useNavigation();
   return (
@@ -65,4 +51,4 @@ const Acomodacoes: React.FC = () => {
   );
 };
 
-export default Acomodacoes;
+export default CameraAviso;
