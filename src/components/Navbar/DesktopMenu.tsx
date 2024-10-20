@@ -1,13 +1,18 @@
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
+
+import Logo from '../../../public/icons/logo.svg';
 
 import DesktopMenuButtons from "./desktop-menu-buttons";
 import DesktopSearch from "./desktop-search";
 
-import Logo from '../../../public/icons/logo.svg';
+import { useUserStore } from "@/lib/store/userStore";
+import { UserApi } from "@/api/user/userApi";
 
 export default function DesktopMenu() {
-	const user = 'Lucas'
+	const userAPI = UserApi()
+	const user = useUserStore((state) => state.user)
 	const router = useRouter();
 
 	const handleAnnounceClick = () => {
@@ -19,11 +24,20 @@ export default function DesktopMenu() {
 	}
 
 	const loginWithGoogle = () => {
-		console.log('GOOGLE')
+		userAPI.loginWithGoogle();
 	}
 
+	useEffect(() => {
+		const urlParams = new URLSearchParams(window.location.search);
+		const token = urlParams.get('token');
+
+		if (token) {
+			userAPI.getUserData(token);
+		}
+	}, []);
+
 	return (
-		<nav className="flex font-body w-full px-12 py-3 gap-2 justify-between items-center max-[1300px]:hidden">
+		<nav className="flex font-body w-full px-12 py-3 gap-2 justify-between items-center max-[1400px]:hidden">
 			<Image
 				src={Logo}
 				alt='Logo'
@@ -37,7 +51,7 @@ export default function DesktopMenu() {
 
 			{
 				user ? (
-					<DesktopMenuButtons />
+					<DesktopMenuButtons username={`${user.fullName}`} picture={user.picture} />
 				) : (
 					<div className="flex gap-4">
 						<button
