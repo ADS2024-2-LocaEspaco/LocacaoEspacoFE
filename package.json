@@ -9,8 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@fontsource/josefin-sans": "^5.0.21",
-    "axios": "^1.7.7",
+    "@fontsource/josefin-sans": "^5.0.22",
     "next": "^14.2.7",
     "react": "^18",
     "react-dom": "^18",
