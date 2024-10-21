@@ -29,12 +29,22 @@ export default function ModalCreateList({ isOpen, onClose, onCreate }: ModalCrea
         }
     };
 
+    const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
+
+        if (e.target === e.currentTarget) {
+            onClose();
+        }
+    };
+
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+            onClick={handleOutsideClick} 
+        >
             <div
                 className="bg-white p-6 rounded-[16px] shadow-lg w-[350px] flex flex-col"
                 style={{ boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)' }}
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e) => e.stopPropagation()} 
             >
                 <h2 className="text-xl font-bold mb-4 text-blue-600 text-left">Criar nova lista</h2>
                 <input
@@ -46,7 +56,7 @@ export default function ModalCreateList({ isOpen, onClose, onCreate }: ModalCrea
                 />
                 <div className="flex justify-center">
                     <button
-                        className="w-[120px] h-[40px] bg-blue-300 text-white rounded-[16px] flex items-center justify-center"
+                        className="w-[120px] h-[40px] bg-blue-400 text-white rounded-[16px] flex items-center justify-center"
                         onClick={handleCreate}
                         style={{ boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)' }}
                     >
