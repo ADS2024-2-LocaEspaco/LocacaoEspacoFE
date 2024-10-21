@@ -33,7 +33,7 @@ export default function Favorites() {
     }, [])
 
     return (
-        <main className="h-full min-h-screen px-32 max-md:px-5 space-y-[60px] max-md:space-y-6">
+        <main className="h-full min-h-screen px-32 max-md:px-5 space-y-[60px] max-md:space-y-6 bg-white">
             <h1 className="text-5xl max-md:text-2xl font-bold text-black-100">Favoritos</h1>
 
             <div className="flex flex-wrap gap-14 max-md:gap-5 max-sm:justify-center">

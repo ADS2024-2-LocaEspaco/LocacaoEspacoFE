@@ -22,14 +22,18 @@ export default function CardFavoriteFolder({ id, banner, title, total }: CardFav
     }
 
     return (
-        <div onClick={handleFavoritesFolder} className="w-[248px] max-md:w-[184px] space-y-5 text-center cursor-pointer hover:opacity-95">
+        <div onClick={handleFavoritesFolder} className="w-[248px] max-md:w-[184px] space-y-5 max-md:space-y-2 text-center cursor-pointer hover:opacity-95">
             <div className="relative">
                 <Image src={banner} alt="Banner da pasta" className="rounded-3xl h-[248px] max-md:h-[184px] drop-shadow" />
 
-                <Image onClick={(event) => {
-                    event.stopPropagation()
-                    handleDeleteFolder()
-                }} src={X} alt="Botão de favoritar" className="absolute z-50 top-4 left-4" />
+                <Image 
+                    onClick={(event) => {
+                        event.stopPropagation()
+                        handleDeleteFolder()
+                    }} 
+                    src={X} 
+                    alt="Botão de favoritar" 
+                    className="absolute z-50 top-4 left-4" />
             </div>
 
             <div className="my-1 px-2">
