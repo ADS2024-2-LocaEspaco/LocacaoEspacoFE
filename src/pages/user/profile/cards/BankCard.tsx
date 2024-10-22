@@ -1,6 +1,8 @@
 import React, {useState} from "react"
 import InputLargeComponent from "../components/InputLargeComponent";
 import ButtonComponent from "../components/ButtonComponent";
+import Asterisk from '../../../../assets/asterisk.svg';
+
 
 export default function BankCard() {
 
@@ -36,6 +38,8 @@ export default function BankCard() {
                     value={bank}
                     onChange={(e) => setBank(e.target.value)}
                     isEditing={isEditing}
+                    placeholder="Insira o banco"
+                    icon={Asterisk}
                     />
 
                 <InputLargeComponent
@@ -44,6 +48,8 @@ export default function BankCard() {
                     value={agency}
                     onChange={(e) => setAgency(e.target.value)}
                     isEditing={isEditing}
+                    placeholder="Insira a agencia"
+                    icon={Asterisk}
                     />
 
                 <InputLargeComponent
@@ -52,6 +58,8 @@ export default function BankCard() {
                     value={accountNumber}
                     onChange={(e) => setAccountNumber(e.target.value)}
                     isEditing={isEditing}
+                    placeholder="Insira o número da conta"
+                    icon={Asterisk}
                     />
 
                 <div className="flex items-center mt-4 gap-2">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import AcountCard from "./cards/AcountCard";
-import ContactInfo from "./components/ContactInfo";
+import AccountCard from "./cards/AccountCard";
+import ContactCard from "./cards/ContactCard";
 import Image from "next/image";
 import ImageUser from "./cards/ImageCard";
 import loadingImage from '../../../assets/loading.webp';
@@ -8,7 +8,7 @@ import BankCard from "./cards/BankCard";
 import UserCard from "./cards/UserCard"
 import { DeleteAccountModal } from './components/deleteAccountModal';
 import { getUserProfile, UserData } from "../../api/user/profileService";
-import Notification from "./components/Notification";
+import ConfirmeComponent from "./components/ConfirmeComponent";
 
 export default function profile() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,13 +31,14 @@ export default function profile() {
         setIsModalOpen(false);
     };
 
-    const handleScroll = (e) => {
-        const container = e.target;
+    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        const container = e.currentTarget;
         const scrollPosition = container.scrollLeft;
         const pageWidth = container.clientWidth;
         const newActivePage = Math.round(scrollPosition / pageWidth);
         setActivePage(newActivePage);
     };
+    
 
     return (
         <div className="w-screen h-full bg-white dark:bg-custom-gray">
@@ -69,7 +70,7 @@ export default function profile() {
 
                     <div className="hidden md:flex justify-center items-center p-2">
                         {userData ? (
-                            <AcountCard
+                            <AccountCard
                                 currentFullName={userData.fullname}
                                 currentEmail={userData.email}
                                 currenteCpf={userData.cpf}
@@ -83,7 +84,7 @@ export default function profile() {
 
                     <div className="hidden md:flex justify-center items-center p-2">
                         {userData ? (
-                            <ContactInfo
+                            <ContactCard
                                 currentPhone={userData.phone}
                                 currentState={userData.state}
                                 currentCity={userData.city}
@@ -115,7 +116,7 @@ export default function profile() {
                         <div className="flex">
                             <div className="flex-shrink-0 w-full snap-center">
                                 {userData ? (
-                                    <AcountCard
+                                    <AccountCard
                                         currentFullName={userData.fullname}
                                         currentEmail={userData.email}
                                         currenteCpf={userData.cpf}
@@ -128,7 +129,7 @@ export default function profile() {
                             </div>
                             <div className="flex-shrink-0 w-full snap-center">
                                 {userData ? (
-                                    <ContactInfo
+                                    <ContactCard
                                         currentPhone={userData.phone}
                                         currentState={userData.state}
                                         currentCity={userData.city}
@@ -167,6 +168,16 @@ export default function profile() {
             )}
 
             {/* <Notification  title="testes" message="testes" isSuccess={false} /> */}
+
+            {/* <div className="flex justify-center mb-12">
+
+                <ConfirmeComponent />
+                
+            </div> */}
+            
+
+            
+            
         </div>
     );
 }

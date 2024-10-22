@@ -4,13 +4,13 @@ import Lock from '../../../../assets/lock.svg'
 import InputComponent from "../components/InputComponent";
 import ButtonComponent from "../components/ButtonComponent";
 
-interface AccountDetailsProps {
+interface AccountCardProps {
     currentFullName: string;
     currentEmail: string;
-    currenteCpf: string;
+    currenteCpf: string;    
 }
 
-export default function AcountDetails({ currentFullName, currentEmail, currenteCpf }: AccountDetailsProps) {
+export default function AccountCard({ currentFullName, currentEmail, currenteCpf }: AccountCardProps) {
 
     const [isEditing, setIsEditing] = useState(false);
     const [fullName, setFullName] = useState(currentFullName);
