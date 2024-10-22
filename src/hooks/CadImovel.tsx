@@ -5,6 +5,17 @@ const pages = [
   '/imovel/cadastroImovel/tipoEspaco',
   '/imovel/cadastroImovel/endereco',
   '/imovel/cadastroImovel/acomodacoes',
+  '/imovel/cadastroImovel/comodidades',
+  '/imovel/cadastroImovel/comodidadesEspeciais',
+  '/imovel/cadastroImovel/seguranca',
+  '/imovel/cadastroImovel/imagem',
+  '/imovel/cadastroImovel/tituloEdescricao',
+  '/imovel/cadastroImovel/cameraAviso',
+  '/imovel/cadastroImovel/camera',
+  '/imovel/cadastroImovel/tipoReserva',
+  '/imovel/cadastroImovel/tiposHospede',
+  '/imovel/cadastroImovel/valorEreserva',
+  '/imovel/cadastroImovel/prototipo',
 ];
 
 const useNavigation = () => {
