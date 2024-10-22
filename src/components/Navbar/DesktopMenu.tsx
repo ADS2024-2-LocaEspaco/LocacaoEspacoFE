@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 
@@ -8,12 +8,13 @@ import DesktopMenuButtons from "./desktop-menu-buttons";
 import DesktopSearch from "./desktop-search";
 
 import { useUserStore } from "@/lib/store/userStore";
-import { UserApi } from "@/api/user/userApi";
+import ModalLogin from "../ModalLogin";
 
 export default function DesktopMenu() {
-	const userAPI = UserApi()
 	const user = useUserStore((state) => state.user)
 	const router = useRouter();
+
+	const [isOpenModalLogin, setIsOpenModalLogin] = useState(false)
 
 	const handleAnnounceClick = () => {
 		router.push('/anunciar');
@@ -23,18 +24,9 @@ export default function DesktopMenu() {
 		router.push('/');
 	}
 
-	const loginWithGoogle = () => {
-		userAPI.loginWithGoogle();
+	const openModalLogin = () => {
+		setIsOpenModalLogin(true)
 	}
-
-	useEffect(() => {
-		const urlParams = new URLSearchParams(window.location.search);
-		const token = urlParams.get('token');
-
-		if (token) {
-			userAPI.getUserData(token);
-		}
-	}, []);
 
 	return (
 		<nav className="flex font-body w-full px-12 py-3 gap-2 justify-between items-center max-[1400px]:hidden">
@@ -63,11 +55,17 @@ export default function DesktopMenu() {
 
 						<button
 							className="w-32 h-10 font-bold bg-orange-300 text-white rounded-2xl hover:opacity-80"
-							onClick={loginWithGoogle}
+							onClick={openModalLogin}
 						>
 							Entrar
 						</button>
 					</div>
+				)
+			}
+
+			{ 
+				isOpenModalLogin && (
+					<ModalLogin closeModal={() => setIsOpenModalLogin(false)} />
 				)
 			}
 		</nav >
