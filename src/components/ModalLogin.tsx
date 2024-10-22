@@ -1,10 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 
+import { UserApi } from "@/api/user/userApi";
+
 import X from '../../public/icons/x.svg'
 import GoogleIcon from '../../public/icons/google_logo_icon.svg'
-import { UserApi } from "@/api/user/userApi";
-import { useRouter } from "next/router";
 
 interface ModalLoginProps {
     closeModal: () => void
@@ -27,7 +27,7 @@ export default function ModalLogin({closeModal}: ModalLoginProps) {
                     Continuar com o Google
                 </button>
 
-                <p className="text-justify text-black-200 text-sm">Clicando em {'"Continuar com o Google"'}, você concorda com os <Link href={'/terms'} className="text-black-300 font-bold underline hover:opacity-80">termos de uso</Link> e <Link href={'/terms'} className="text-black-300 font-bold underline hover:opacity-80">políticas de privacidade</Link>.</p>
+                <p className="text-justify text-black-200 text-sm">Clicando em {'"Continuar com o Google"'}, você concorda com os <Link  href={'/legal/terms'} className="text-black-300 font-bold underline hover:opacity-80">Termos de uso</Link> e <Link href={'/legal/privacy'} className="text-black-300 font-bold underline hover:opacity-80">Políticas de privacidade</Link>.</p>
             </div>
         </div>
     )
