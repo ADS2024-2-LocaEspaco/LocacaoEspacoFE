@@ -1,14 +1,20 @@
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
+
+import Logo from '../../../public/icons/logo.svg';
 
 import DesktopMenuButtons from "./desktop-menu-buttons";
 import DesktopSearch from "./desktop-search";
 
-import Logo from '../../../public/icons/logo.svg';
+import { useUserStore } from "@/lib/store/userStore";
+import ModalLogin from "../ModalLogin";
 
 export default function DesktopMenu() {
-	const user = 'Lucas'
+	const user = useUserStore((state) => state.user)
 	const router = useRouter();
+
+	const [isOpenModalLogin, setIsOpenModalLogin] = useState(false)
 
 	const handleAnnounceClick = () => {
 		router.push('/anunciar');
@@ -18,12 +24,12 @@ export default function DesktopMenu() {
 		router.push('/');
 	}
 
-	const loginWithGoogle = () => {
-		console.log('GOOGLE')
+	const openModalLogin = () => {
+		setIsOpenModalLogin(true)
 	}
 
 	return (
-		<nav className="flex font-body w-full px-12 py-3 gap-2 justify-between items-center max-[1300px]:hidden">
+		<nav className="flex font-body w-full px-12 py-3 gap-2 justify-between items-center max-[1400px]:hidden">
 			<Image
 				src={Logo}
 				alt='Logo'
@@ -37,7 +43,7 @@ export default function DesktopMenu() {
 
 			{
 				user ? (
-					<DesktopMenuButtons />
+					<DesktopMenuButtons username={`${user.fullName}`} picture={user.picture} />
 				) : (
 					<div className="flex gap-4">
 						<button
@@ -49,11 +55,17 @@ export default function DesktopMenu() {
 
 						<button
 							className="w-32 h-10 font-bold bg-orange-300 text-white rounded-2xl hover:opacity-80"
-							onClick={loginWithGoogle}
+							onClick={openModalLogin}
 						>
 							Entrar
 						</button>
 					</div>
+				)
+			}
+
+			{ 
+				isOpenModalLogin && (
+					<ModalLogin closeModal={() => setIsOpenModalLogin(false)} />
 				)
 			}
 		</nav >
