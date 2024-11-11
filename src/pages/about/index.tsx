@@ -1,11 +1,13 @@
 import Image from "next/image"
 
+import Card from "./components/card"
+
 import BannerImage from '../../../public/banner-about-page.jpg'
 import HouseImage from '../../../public/house-about-page.png'
-import WomanIcon from '../../../public/woman-about-page.png'
+import DiamondIcon from '../../../public/icons/diamond_icon.svg'
 import TargetIcon from '../../../public/icons/target_icon.svg'
 import VisionIcon from '../../../public/icons/vision_icon.svg'
-import DiamondIcon from '../../../public/icons/diamond_icon.svg'
+import WomanIcon from '../../../public/woman-about-page.png'
 
 export default function About() {
     return (
@@ -22,23 +24,17 @@ export default function About() {
 
             <div className="relative -mt-[60px] space-y-32 max-md:space-y-[68px] z-20">
                 <section className="flex flex-wrap justify-center items-center gap-20 max-lg:gap-10 max-md:gap-3 max-md:flex-col">
-                    <div className="h-[220px] max-md:h-[160px] w-[260px] shadow-md px-4 max-md:px-3 py-7 max-md:py-2 space-y-4 rounded-lg text-center  bg-white dark:bg-black-100">
-                        <Image src={TargetIcon} alt="Ícone de objetivo" className="mx-auto text-white" />
-
+                    <Card pathImage={TargetIcon}>
                         <p className="max-md:text-xs">Nossa <span className="text-blue-600 dark:text-blue-200">missão</span> é proporcionar experiências únicas e acessíveis conectando anfitriões e viajantes de todo o mundo.</p>
-                    </div>
+                    </Card>
 
-                    <div className="h-[220px] max-md:h-[160px] w-[260px] shadow-md px-4 py-7 space-y-4 rounded-lg text-center  bg-white dark:bg-black-100">
-                        <Image src={VisionIcon} alt="Ícone de visão" className="mx-auto" />
-
+                    <Card pathImage={VisionIcon}>
                         <p className="max-md:text-xs">Temos como <span className="text-blue-600 dark:text-blue-200">objetivo</span> nos tornar uma plataforma global para viagens e experiências, ganhando a confiança de nossos usuários.</p>
-                    </div>
+                    </Card>
 
-                    <div className="h-[220px] max-md:h-[160px] w-[260px] shadow-md px-4 py-7 space-y-4 rounded-lg text-center  bg-white dark:bg-black-100">
-                        <Image src={DiamondIcon} alt="Ícone de valores" className="mx-auto" />
-
+                    <Card pathImage={DiamondIcon}>
                         <p className="max-md:text-xs"><span className="text-blue-600 dark:text-blue-200">Valorizamos</span> e buscamos a autenticidade, acessibilidade, sustentabilidade, inovação e a confiança.</p>
-                    </div>
+                    </Card>
                 </section>
 
                 <section className="flex items-center gap-32 max-lg:gap-24 max-md:flex-col px-44 max-xl:px-20 max-md:px-6">
