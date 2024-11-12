@@ -1,6 +1,4 @@
 import Image from "next/image";
-import StarFill from "../../../../public/icons/starFill.svg";
-import Star from "../../../../public/icons/star.svg";
 import RatingComponent from "./RatingComponent";
 export default function ItemComponent() {
     return (

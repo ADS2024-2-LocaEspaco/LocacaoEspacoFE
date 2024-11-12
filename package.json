@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "locacaoespaco_fe": "file:",
     "material-icons": "^1.13.12",
     "next": "14.2.6",
     "react": "^18",
