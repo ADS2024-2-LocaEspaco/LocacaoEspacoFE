@@ -1,26 +1,44 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import useNavigation from '@/hooks/CadImovel';
+import CardSelect from './components/CardSelect';
 import { FaPerson } from "react-icons/fa6";
 import { PiBabyLight } from "react-icons/pi";
 import { PiBabyCarriageLight } from "react-icons/pi";
 
 interface tiposHospede {
     name: string;
+    value: number;
     icon: React.ReactNode;
 }
 
 const TiposHospede: tiposHospede[] = [
-    { name: 'Adultos', icon: <FaPerson size={32} /> },
-    { name: 'Crainças', icon: <PiBabyLight size={32} /> },
-    { name: 'Bebês', icon: <PiBabyCarriageLight size={32} /> },
+    { name: 'Adultos', value: 1, icon: <FaPerson size={32} /> },
+    { name: 'Crainças', value: 2, icon: <PiBabyLight size={32} /> },
+    { name: 'Bebês', value: 3, icon: <PiBabyCarriageLight size={32} /> },
 ];
 
 const tiposHospede: React.FC = () => {
     const { goToPreviousPage, goToNextPage } = useNavigation();
+    const [selectedItem, setSelectedItem] = React.useState<tiposHospede | null>(null);
+
+    useEffect(() => {
+        const storedTiposHospede = localStorage.getItem('comodidades_especiais');
+        if (storedTiposHospede) {
+            const parsedTiposHospede = JSON.parse(storedTiposHospede);
+            setSelectedItem(parsedTiposHospede);
+        }
+    }, []);
+
+    const handleSelect = (item: tiposHospede) => {
+        setSelectedItem(item);
+        localStorage.setItem('tipos_hospede', JSON.stringify(item));
+    }
+
     return (
-        <>  {/* Left Side */}
+        // Left Side
+        <>  
             <NavbarCadastro />
             <div className="flex h-screen">
                 <div className="w-1/2">
@@ -39,13 +57,14 @@ const tiposHospede: React.FC = () => {
                     <p className="block text-gray-600 text-black font-bold mb-4">Selecione o tipo de hóspede que deseja receber:</p>
                     <div className="grid grid-cols-3 gap-10 rounded-md mt-4">
                         {TiposHospede.map((tipoHospede, index) => (
-                            <div
+                            <CardSelect
                                 key={index}
-                                className="flex flex-col items-center border border-gray-400 justify-center bg-white p-4 h-40 w-40 rounded-lg"
-                            >
-                                <p className="text-gray-700">{tipoHospede.icon}</p>
-                                <p className="text-center font-josefin text-gray-700">{tipoHospede.name}</p>
-                            </div>
+                                value={tipoHospede.value}
+                                name={tipoHospede.name}
+                                selected={selectedItem?.value == tipoHospede.value}
+                                icon={tipoHospede.icon}
+                                onSelect={() => handleSelect(tipoHospede)}
+                            />
                         ))}
                     </div>
                     <div className="flex justify-between items-center w-full mt-24">

@@ -3,6 +3,7 @@ import NavbarCadastro from '@/components/navbarCadastro';
 import useNavigation from '@/hooks/CadImovel';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
+import '@fontsource/josefin-sans'; 
 
 const ValorEreserva: React.FC = () => {
   const { goToPreviousPage, goToNextPage } = useNavigation();
@@ -10,6 +11,7 @@ const ValorEreserva: React.FC = () => {
   const [valor, setValor] = useState<string>("0,00");
   const [minDias, setMinDias] = useState<number>(0);
   const [maxDias, setMaxDias] = useState<number>(0);
+  const [antecedencia, setAntecedencia] = useState<number>(0);
 
   const formatCurrency = (value: number) => {
     return value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -77,10 +79,13 @@ const ValorEreserva: React.FC = () => {
 
         {/* Right Side */}
         <div className="w-full md:w-1/2 flex flex-col justify-start items-center p-4 bg-white">
-          <h1 className="mb-4 text-3xl text-gray-700 font-semibold">Valor e Reserva</h1>
+          <h1 className="mb-4 text-4xl text-gray-700 font-semibold font-josefin">Valor e Reserva</h1>
           <div className="w-full px-8">
+
+            {/* 1st input */}
+
             <div className="px-8 flex flex-col items-center">
-              <p className="text-gray-600 text-xl font-bold text-center mb-4 mt-10">Valor da diária</p>
+              <p className="text-gray-600 text-2xl font-bold text-center mb-4 mt-10 font-josefin">Valor da diária</p>
 
               <div className="flex flex-col items-center w-full max-w-sm">
                 <div className="flex items-center w-full">
@@ -89,7 +94,7 @@ const ValorEreserva: React.FC = () => {
                     onClick={handleDecrementValor} 
                   />
                   <div className="relative w-full">
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-800">R$</span>
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-800 font-josefin text-2xl">R$</span>
                     <input
                       type="text"
                       id="valor"
@@ -106,13 +111,45 @@ const ValorEreserva: React.FC = () => {
                   />
                 </div>
 
-                <p className="text-gray-500 font-bold text-center mt-2">por dia</p>
-                <p className="text-gray-600 text-xl font-bold text-center mb-4 mt-10">Reserva</p>
+                <p className="text-gray-500 text-center mt-2 font-josefin text-lg">por dia</p>
+
+                {/* 2nd Input */}
+
+                <div className="flex flex-col items-center w-full max-w-sm">
+                  <p className="text-gray-600 text-2xl font-bold text-center mb-4 mt-10 font-josefin">
+                    Dias mínimos de antecedência de reserva
+                  </p>
+
+                  <div className="flex items-center w-full">
+                    <AiOutlineMinus
+                      className="text-3xl cursor-pointer text-black mr-2"
+                      onClick={() => setAntecedencia(Math.max(antecedencia - 1, 0))} // Prevent negative values
+                    />
+                    <div className="relative w-full">
+                      <input
+                        type="number"
+                        id="antecedencia"
+                        name="antecedencia"
+                        value={antecedencia}
+                        onChange={(e) => setAntecedencia(parseInt(e.target.value) || 0)} // Update antecedencia state
+                        className="border border-gray-400 text-black h-16 rounded-lg text-center pl-12 w-full"
+                      />
+                    </div>
+                    <AiOutlinePlus
+                      className="text-3xl cursor-pointer text-black ml-2"
+                      onClick={() => setAntecedencia(antecedencia + 1)}
+                    />
+                  </div>
+                </div>
+
+                {/* 3rd and 4th Input */}
+
+                <p className="text-gray-600 font-bold text-center mb-4 mt-10 font-josefin text-2xl">Reserva</p>
                 
                 <div className="flex w-full justify-between mt-6 mb-4 space-x-8"> 
                   
                   <div className="flex flex-col items-center w-1/2">
-                    <p className="text-gray-600 text-center mb-2">mínimo</p>
+                    <p className="text-gray-600 text-center mb-2 font-josefin text-lg">mínimo</p>
                     <div className="flex items-center w-full">
                       <AiOutlineMinus 
                         className="text-3xl cursor-pointer text-black mr-2" 
@@ -131,11 +168,11 @@ const ValorEreserva: React.FC = () => {
                         onClick={handleIncrementMinDias} 
                       />
                     </div>
-                    <p className="text-gray-500 text-center mt-2">dias</p>
+                    <p className="text-gray-500 text-center mt-2 font-josefin text-lg">dias</p>
                   </div>
 
                   <div className="flex flex-col items-center w-1/2">
-                    <p className="text-gray-600 text-center mb-2">máximo</p>
+                    <p className="text-gray-600 text-center mb-2 font-josefin text-lg">máximo</p>
                     <div className="flex items-center w-full">
                       <AiOutlineMinus 
                         className="text-3xl cursor-pointer text-black mr-2" 
@@ -154,7 +191,7 @@ const ValorEreserva: React.FC = () => {
                         onClick={handleIncrementMaxDias} 
                       />
                     </div>
-                    <p className="text-gray-500 text-center mt-2">dias</p>
+                    <p className="text-gray-500 text-center mt-2 font-josefin">dias</p>
                   </div>
                 </div>
 

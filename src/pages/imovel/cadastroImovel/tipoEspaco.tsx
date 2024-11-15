@@ -56,7 +56,8 @@ const TipoEspaco: React.FC = () => {
                 key={index}
                 name={room.name}
                 selected={selectedItem?.value === room.value}
-                onSelect={() => handleSelect(room)} value={''}              />
+                onSelect={() => handleSelect(room)} value={''}
+                />
             ))}
           </div>
           <div className="flex justify-between items-center w-full mt-4">
