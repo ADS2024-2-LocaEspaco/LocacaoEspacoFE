@@ -9,6 +9,7 @@ import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import useNavigation from '@/hooks/CadImovel';
 import CardSelect from './components/CardSelect';
+import ProgressoCadastro from '@/components/ProgressoCadastro';
 import '@fontsource/josefin-sans'; 
 
 interface Categoria {
@@ -77,6 +78,7 @@ const TipoImovel: React.FC = () => {
             <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage} />
             <IoIosArrowForward className="text-6xl cursor-pointer text-black" onClick={goToNextPage} />
           </div>
+          <ProgressoCadastro />
         </div>
       </div>
     </>
