@@ -17,7 +17,7 @@ const CameraAviso: React.FC = () => {
     <div className="flex h-screen">
       <div className="w-1/2">
         <img
-          src="https://via.placeholder.com/800x600"
+          src="https://s3-alpha-sig.figma.com/img/3e8e/4bb0/e6350a8eb6bab056ae304b6c2912325b?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=OmKhoTynFacnIDmnwp9ozG23X4IMWkmc5g7-LK1826IM2ohpcC~oCJG-mU6j68o8fuESxdiuQhuPK8rj5IPy~Fp8IlUkzK4zxBWslI4o9kHseElzq5~xldWxKNsKDPheildX6AuUD~9Quwa-Yxv47xL4HIxfapRMUqPhpcrqkHk9baSbPS~3NeG~NtmjDZmGPJy02hDjF8qIAwgTI3WNUeeJTeDnwfGkd5cUrPs70au7wyn0h7f05fl~OqA5dHNE1Msv6yzOAenx3-9ja6GjoW9sPGTiK8~im0axQVzYuucC1U-IRDMXqMjPyPBpsrIfU1rXGqAi60Ez05voPlO7Fw__"
           alt="Imagem de imóvel"
           className="w-full h-full object-cover"
         />

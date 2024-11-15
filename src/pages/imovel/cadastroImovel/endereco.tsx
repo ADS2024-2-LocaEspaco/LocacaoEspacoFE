@@ -122,7 +122,7 @@ const Endereco: React.FC = () => {
         {/* Left Side */}
         <div className="w-full md:w-1/2">
           <img
-            src="https://via.placeholder.com/800x600"
+            src="https://s3-alpha-sig.figma.com/img/b0f5/f193/6985a9fd998fba53aacea4ebea36ee35?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Cyj5fZ~Ih6wSBVzvtUnU5QGbglEg5CdILidzvq5hwiZR8yE-0aF7WNQc8apQMClXwsPCFhZjjoJgQqwYPphYar7IEbQgqcu7skQYX3jCi7yCaenxow97Jt4QV8F5l6oB7mMaDGhb~CJm-Ent9Y40AexlWd0wYhr34h~~gCOSSOHuLyiBSKVmN8vztMCbbn0GL0Uzxf6sHuUbT~K1sHEJIg2aAV7W31PRV~mFjKyMVaR~-woFRX1pJ9awV1z3PG7qT8imV80yPZ-5bdDLjjqzTFY1uqvrerCDm422GD4RgQN4A5siRC-YYSVPydlFEu7OCQhEuMY~-SdIcvwdhR2vSg__"
             alt="Imagem de imóvel"
             className="w-full h-full object-cover"
           />

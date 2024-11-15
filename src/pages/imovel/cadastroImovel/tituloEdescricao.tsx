@@ -18,7 +18,7 @@ const tituloEdescricao: React.FC = () => {
         {/* Left Side */}
         <div className="w-full md:w-1/2">
           <img
-            src="https://via.placeholder.com/800x600"
+            src="https://s3-alpha-sig.figma.com/img/c6e9/1b9b/5e7f842c0234981a348d3e239ef4523f?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=IEcUXmY-xNnG3nP-yzxbKDB77TnZyVb7BDKizFwwvxUORJQscKZ6OtwynpHq~sObdssBb~OnJqAnITPute1HPbiANDr9hVAFge7SeZZ-aIu1t3RVdKPgT4LX5GrPCgRUsF3mahTLNJWBZLmA5Rf0ARythKDWYuzs3EqOf9SxQ~uW4LOvsyi9yKT-M3ejT3ql7NbEaLRXb-rqBwFbBwA6bKBd1HVQuqe7io4US6uggOUgOEnOD343a~16J~IZSdw7lFyF7tb9f92Tna3zU2FSbaVLy2vrewvAsjt6UMlvHXscUeG~VnlqR6lw~pBErnKnGf01lqJ4rYGpeGxY9tHq5A__"
             alt="Imagem de imóvel"
             className="w-full h-full object-cover"
           />

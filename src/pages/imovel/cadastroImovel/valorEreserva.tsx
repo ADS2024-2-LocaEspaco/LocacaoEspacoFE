@@ -69,7 +69,7 @@ const ValorEreserva: React.FC = () => {
         {/* Left Side */}
         <div className="w-full md:w-1/2">
           <img
-            src="https://via.placeholder.com/800x600"
+            src="https://s3-alpha-sig.figma.com/img/a46f/4a29/e28d2482d9492128db512efc3f429be3?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=EcTKzebp1PjTjKfNz819MwyTMkNkj01qOoUix-wlTvuGKYfHoVo66j13ywHXArwIGstD9xsRy9Ai373ZwYS0EMcyol2AtlKLh8gzDXfmFR4M4qXYyPki0n~9VB1JRRoF4P0EFlY1xW9iLAcrzi0Y8n4zgQ3l1nzf1i9DqzXBU87VuqTQ589sIlDRihP0DFwn~wStADaQv-9V5khGhcW~qcbFfNjWfb8QvilEU5FmKt4Gg5OEMH38LXUat29xsuBdOElCpvh40wMVgPwGqQtkzKsEOqztK1xNyse7OxPwAayL4zCuXuV~lsi-ANGAn4CFEHIor-tCm76JDJ3NyMrBxA__"
             alt="Imagem de imóvel"
             className="w-full h-full object-cover"
           />

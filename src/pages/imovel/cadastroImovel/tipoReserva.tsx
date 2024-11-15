@@ -42,7 +42,7 @@ const TipoReserva: React.FC = () => {
       <div className="flex h-screen">
         <div className="w-1/2">
           <img
-            src="https://via.placeholder.com/800x600"
+            src="https://s3-alpha-sig.figma.com/img/bdf8/20d3/1ed24f348c4581a4a1d394d6fa73d1cd?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=cZAGi-ahcSL6ayyq7CVyvVYxf-JrRIRBiSFnVBu-WW15fN8ht8vbZ6unQaZc-jQk-Uc1HmbGh9NHk9-bWlXmR97bXxW4UWiThjfXwhENziaFvOOoozGWZkBBKpRAbUwMVs0sRWfQAXQ~qrVf81NGVkcgidnVQlmE3nWonfkSEVuoAHWvUIHhBUENlrZWXWXkh1M0kF6sA-rOaI0dBWOyVtmZnoJZVUxUIf~ElKvBcZ-sjuKwGbqczbxcx9BKyfBmGCG5BZbX00~EuyBMaPPd9smJOzlZYVROZcooq1FdPkzQGSQAUJNFtGZWW8QqKzNp15MuuJ9A2EcFyPpTHYEIxg__"
             alt="Imagem de imóvel"
             className="w-full h-full object-cover"
           />
