@@ -24,7 +24,7 @@ const TipoEspaco: React.FC = () => {
     const storedSelection = localStorage.getItem("tipo_espaco");
     if (storedSelection) {
       const parsedSelection = JSON.parse(storedSelection);
-      setSelectedItem(parsedSelection); 
+      setSelectedItem(parsedSelection);
     }
   }, []);
 
@@ -36,8 +36,9 @@ const TipoEspaco: React.FC = () => {
   return (
     <>
       <NavbarCadastro />
-      <div className="flex h-screen">
-        <div className="w-1/2">
+      <div className="flex h-screen overflow-visible">
+        {/* Left Side */}
+        <div className="w-1/2 h-full flex-1 flex-shrink-0">
           <img
             src="https://s3-alpha-sig.figma.com/img/c195/1a63/a8166f15ab0f1918c9e2ead73f2abf6e?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=X5qVGu-B0UEuW0oiytyQovTdF62A6cNUddZoLsurQU4cpDLzsA61hV-wD4mAaEehZt88d292lMtGruajU5CH9Xv0Zaeivl6tvZZdFEUo3innTJArhmcxz7F~sppUKLruxTJfmomwwaaEaZ9i1vKF0cCfzwyRB~FsqKxHFe9WKlmFjmV7OgoY14k8cxUHt3TVMYEnfDqM8oa-uaL~CkkKHKh5GxDDbkNXo-IuY0ilhOW0LriJFUjatdVVFZlB7Fd0L278z74Y-2BsmXRdVXPDLHwgYki4oG2dZV5ZfymaUPrxxE0Hm4Y1-DB2AFdsr9Rl-hbDTV5iNT5f5auJ~816lA__"
             alt="Imagem de imóvel"
@@ -46,23 +47,35 @@ const TipoEspaco: React.FC = () => {
         </div>
 
         {/* Right Side */}
-        <div className="w-1/2 flex flex-col justify-center items-center p-4 bg-white">
-          <h1 className="mb-4 text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
-            Tipo de espaço
+        <div className="w-1/2 flex-1 flex-shrink-0 h-screen grid grid-rows-[auto_1fr_auto] bg-white p-4">
+          {/* Title */}
+          <h1 className="flex-1 flex-shrink-0 text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
+            Tipo de Espaço
           </h1>
-          <div className="grid grid-cols-3 gap-10 rounded-md mt-20 mb-40">
+
+          {/* Content */}
+          <div className="grid grid-cols-3 flex-1 flex-grow-0 gap-10 rounded-md place-self-center">
             {rooms.map((room, index) => (
               <CardSelect
                 key={index}
                 name={room.name}
                 selected={selectedItem?.value === room.value}
-                onSelect={() => handleSelect(room)} value={''}
-                />
+                onSelect={() => handleSelect(room)}
+                value=""
+              />
             ))}
           </div>
+
+          {/* Navigation */}
           <div className="flex justify-between items-center w-full mt-4">
-            <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage} />
-            <IoIosArrowForward className="text-6xl cursor-pointer text-black" onClick={goToNextPage} />
+            <IoIosArrowBack
+              className="text-6xl cursor-pointer text-black"
+              onClick={goToPreviousPage}
+            />
+            <IoIosArrowForward
+              className="text-6xl cursor-pointer text-black"
+              onClick={goToNextPage}
+            />
           </div>
         </div>
       </div>

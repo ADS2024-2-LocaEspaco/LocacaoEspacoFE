@@ -1,0 +1,58 @@
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+/* Contêiner esquerdo */
+.leftContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Contêiner direito */
+.rightContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: #fff;
+}
+
+/* Título fixo no topo */
+.title {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+  z-index: 10;
+}
+
+/* Área do conteúdo */
+.content {
+  flex: 1;
+  margin-top: 5rem; /* Ajusta para caber entre o título e as setas */
+  margin-bottom: 4rem; /* Espaço para setas */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Garante que tudo fique visível */
+}
+
+/* Navegação fixa no rodapé */
+.navigation {
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2rem;
+  z-index: 10;
+}

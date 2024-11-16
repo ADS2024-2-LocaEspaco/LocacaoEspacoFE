@@ -193,7 +193,7 @@ const ValorEreserva: React.FC = () => {
                       value={antecedencia}
                       onChange={(e) => setAntecedencia(parseInt(e.target.value) || 0)}
                       onBlur={handleAntecedenciaBlur}
-                      className="border border-gray-400 text-black h-16 rounded-lg text-center pl-12 w-full"
+                      className="border border-gray-400 text-black h-16 rounded-lg text-center pl-12 w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
                     </div>
                     <AiOutlinePlus
