@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavbarCadastro from '@/components/navbarCadastro';
 import useNavigation from '@/hooks/CadImovel';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
@@ -12,6 +12,25 @@ const ValorEreserva: React.FC = () => {
   const [minDias, setMinDias] = useState<number>(0);
   const [maxDias, setMaxDias] = useState<number>(0);
   const [antecedencia, setAntecedencia] = useState<number>(0);
+
+  const saveToLocalStorage = () => {
+    const data = {
+      valor,
+      minDias,
+      maxDias,
+      antecedencia,
+    };
+    localStorage.setItem('valorEreserva', JSON.stringify(data));
+  };
+
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem('valorEreserva') || '{}');
+  
+    if (storedData.minDias !== undefined) setMinDias(storedData.minDias);
+    if (storedData.maxDias !== undefined) setMaxDias(storedData.maxDias);
+    if (storedData.valor !== undefined) setValor(storedData.valor);
+    if (storedData.antecedencia !== undefined) setAntecedencia(storedData.antecedencia);
+  }, []);
 
   const formatCurrency = (value: number) => {
     return value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -38,28 +57,69 @@ const ValorEreserva: React.FC = () => {
     const valorNumerico = parseFloat(valor.replace(/\./g, '').replace(',', '.'));
     if (!isNaN(valorNumerico)) {
       setValor(formatCurrency(valorNumerico));
+
+      const valorEreserva = JSON.parse(localStorage.getItem('valorEreserva') || '{}');
+      valorEreserva.valor = formatCurrency(valorNumerico);
+      localStorage.setItem('valorEreserva', JSON.stringify(valorEreserva));
     } else {
       setValor("0,00");
     }
   };
+  
+  const handleAntecedenciaChange = (newAntecedencia: number) => {
+    setAntecedencia(newAntecedencia);
+
+    const valorEreserva = JSON.parse(localStorage.getItem('valorEreserva') || '{}');
+    valorEreserva.antecedencia = newAntecedencia;
+    localStorage.setItem('valorEreserva', JSON.stringify(valorEreserva));
+  };
+
+  const handleAntecedenciaBlur = () => {
+    saveToLocalStorage();
+  };
+
+  const handleMinMaxBlur = () => {
+    saveToLocalStorage();
+  };
 
   const handleIncrementMinDias = () => {
-    setMinDias(minDias + 1);
+    const newMinDias = minDias + 1;
+    setMinDias(newMinDias);
+
+    const valorEreserva = JSON.parse(localStorage.getItem('valorEreserva') || '{}');
+    valorEreserva.minDias = newMinDias;
+    localStorage.setItem('valorEreserva', JSON.stringify(valorEreserva));
   };
 
   const handleDecrementMinDias = () => {
     if (minDias > 1) {
-      setMinDias(minDias - 1);
+      const newMinDias = minDias - 1;
+      setMinDias(newMinDias);
+
+      const valorEreserva = JSON.parse(localStorage.getItem('valorEreserva') || '{}');
+      valorEreserva.minDias = newMinDias;
+      localStorage.setItem('valorEreserva', JSON.stringify(valorEreserva));
     }
-  };
+  };  
 
   const handleIncrementMaxDias = () => {
-    setMaxDias(maxDias + 1);
+    const newMaxDias = maxDias + 1;
+    setMaxDias(newMaxDias);
+
+    const valorEreserva = JSON.parse(localStorage.getItem('valorEreserva') || '{}');
+    valorEreserva.maxDias = newMaxDias; 
+    localStorage.setItem('valorEreserva', JSON.stringify(valorEreserva));
   };
+
 
   const handleDecrementMaxDias = () => {
     if (maxDias > minDias) {
-      setMaxDias(maxDias - 1);
+      const newMaxDias = maxDias - 1;
+      setMaxDias(newMaxDias);
+  
+      const valorEreserva = JSON.parse(localStorage.getItem('valorEreserva') || '{}');
+      valorEreserva.maxDias = newMaxDias;
+      localStorage.setItem('valorEreserva', JSON.stringify(valorEreserva));
     }
   };
 
@@ -101,7 +161,7 @@ const ValorEreserva: React.FC = () => {
                       name="valor"
                       value={valor}
                       onChange={handleInputChangeValor}
-                      onBlur={handleBlurValor} 
+                      onBlur={handleBlurValor}
                       className="border border-gray-400 text-black h-16 rounded-lg text-center pl-12 w-full"
                     />
                   </div>
@@ -123,17 +183,18 @@ const ValorEreserva: React.FC = () => {
                   <div className="flex items-center w-full">
                     <AiOutlineMinus
                       className="text-3xl cursor-pointer text-black mr-2"
-                      onClick={() => setAntecedencia(Math.max(antecedencia - 1, 0))} // Prevent negative values
+                      onClick={() => setAntecedencia(Math.max(antecedencia - 1, 0))}
                     />
                     <div className="relative w-full">
-                      <input
-                        type="number"
-                        id="antecedencia"
-                        name="antecedencia"
-                        value={antecedencia}
-                        onChange={(e) => setAntecedencia(parseInt(e.target.value) || 0)} // Update antecedencia state
-                        className="border border-gray-400 text-black h-16 rounded-lg text-center pl-12 w-full"
-                      />
+                    <input
+                      type="number"
+                      id="antecedencia"
+                      name="antecedencia"
+                      value={antecedencia}
+                      onChange={(e) => setAntecedencia(parseInt(e.target.value) || 0)}
+                      onBlur={handleAntecedenciaBlur}
+                      className="border border-gray-400 text-black h-16 rounded-lg text-center pl-12 w-full"
+                    />
                     </div>
                     <AiOutlinePlus
                       className="text-3xl cursor-pointer text-black ml-2"
@@ -161,6 +222,7 @@ const ValorEreserva: React.FC = () => {
                         name="minDias"
                         value={minDias}
                         readOnly
+                        onBlur={handleMinMaxBlur}
                         className="border border-gray-400 text-black h-16 rounded-lg text-center w-full"
                       />
                       <AiOutlinePlus 
@@ -184,6 +246,7 @@ const ValorEreserva: React.FC = () => {
                         name="maxDias"
                         value={maxDias}
                         readOnly
+                        onBlur={handleMinMaxBlur}
                         className="border border-gray-400 text-black h-16 rounded-lg text-center w-full"
                       />
                       <AiOutlinePlus 

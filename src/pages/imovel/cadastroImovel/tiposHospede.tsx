@@ -24,7 +24,7 @@ const tiposHospede: React.FC = () => {
     const [selectedItem, setSelectedItem] = React.useState<tiposHospede | null>(null);
 
     useEffect(() => {
-        const storedTiposHospede = localStorage.getItem('comodidades_especiais');
+        const storedTiposHospede = localStorage.getItem('tipos_hospede');
         if (storedTiposHospede) {
             const parsedTiposHospede = JSON.parse(storedTiposHospede);
             setSelectedItem(parsedTiposHospede);
