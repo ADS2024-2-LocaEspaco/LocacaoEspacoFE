@@ -8,14 +8,15 @@ import '@fontsource/josefin-sans';
 
 interface Acomodacao {
   name: string;
+  label: string;
   icon: React.ReactNode;
 }
 
 const acomodacoes: Acomodacao[] = [
-  { name: 'Quartos', icon: <MdOutlineBedroomChild size={32} /> },
-  { name: 'Camas', icon: <FaBed size={32} /> },
-  { name: 'Banheiros', icon: <FaShower size={32} /> },
-  { name: 'Hóspedes', icon: <FaUserFriends size={32} /> },
+  { name: 'quartos', label: 'Quartos', icon: <MdOutlineBedroomChild size={32} /> },
+  { name: 'camas', label: 'Camas', icon: <FaBed size={32} /> },
+  { name: 'banheiros', label: 'Banheiros', icon: <FaShower size={32} /> },
+  { name: 'hospedes', label: 'Hóspedes', icon: <FaUserFriends size={32} /> },
 ];
 
 const Acomodacoes: React.FC = () => {
@@ -68,7 +69,7 @@ const Acomodacoes: React.FC = () => {
                 className="flex flex-col items-center border border-gray-400 justify-center bg-white p-4 h-40 w-40 rounded-lg"
               >
                 <p className="text-gray-700">{acomodacao.icon}</p>
-                <p className="mt-2 text-center font-josefin text-gray-700">{acomodacao.name}</p>
+                <p className="mt-2 text-center font-josefin text-gray-700">{acomodacao.label}</p>
                 <div>
                   <input
                     type="number"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CiShare2, CiMap, CiHeart } from "react-icons/ci";
 import { IoBedOutline } from "react-icons/io5";
 import { MdOutlineShower } from "react-icons/md";
@@ -9,6 +9,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useRouter } from 'next/router';
 import useNavigation from '@/hooks/CadImovel';
 import '@fontsource/josefin-sans'; 
+import tituloEdescricao from './tituloEdescricao';
 
 interface Prototipo {
   name: string;
@@ -16,15 +17,54 @@ interface Prototipo {
   icon: React.ReactNode;
 }
 
-const prototipos: Prototipo[] = [
-  { name: 'Hospedes', amount: 2, icon: <FiUsers size={20} /> },
-  { name: 'Quartos', amount: 2, icon: <IoBedOutline size={20} /> },
-  { name: 'Banheiros', amount: 1, icon: <MdOutlineShower size={20} /> },
-];
-
 const Prototipo: React.FC = () => {
+  
+  const [dados, setDados] = useState({
+    tituloEdescricao: {titulo: '', descricao: ''},
+    acomodacoes: { quartos: 0, camas: 0, banheiros: 0, hospedes: 0 },
+    comodidades: [] as any[],
+    comodidadesEspciais: [] as any[],
+    valorReserva: { valor: 0, minDias: 0, maxDias: 0, antecedencia: 0 },
+    endereco: [] as any[]
+  });
+  
+  useEffect(() => {
+    const tituloEdescricao = JSON.parse(localStorage.getItem('tituloEdescricao') || '{}');
+    const acomodacoes = JSON.parse(localStorage.getItem('acomodacoes') || '{}');
+    const comodidades = JSON.parse(localStorage.getItem('comodidades') || '[]');
+    const comodidadesEspciais = JSON.parse(localStorage.getItem('comodidadesEspciais') || '[]');
+    const valorReserva = JSON.parse(localStorage.getItem('valorEreserva') || '{}');
+    
+    const enderecoKeys = ['cep', 'rua', 'numero', 'bairro', 'cidade', 'uf', 'complemento'];
+    const endereco = enderecoKeys.reduce((acc, key) => {
+      const value = localStorage.getItem(key);
+      if (value) acc[key] = value;
+      return acc;
+    }, {} as Record<string, string>);
+    
+    setDados({
+      tituloEdescricao: {
+        titulo: tituloEdescricao.titulo || '',
+        descricao: tituloEdescricao.descricao || '',
+      },
+      acomodacoes: acomodacoes || {},
+      comodidades: comodidades || [],
+      comodidadesEspciais: comodidadesEspciais || [],
+      valorReserva: valorReserva || {},
+      endereco: Object.keys(endereco).length > 0 ? endereco : []
+    });
+  }, []);
 
+  console.log(dados);
+
+  const acomodacoesArray = [
+    { icon: <FiUsers size={20} />, label: 'Hóspedes', amount: dados.acomodacoes.hospedes },
+    { icon: <IoBedOutline size={20} />, label: 'Camas', amount: dados.acomodacoes.camas },
+    { icon: <MdOutlineShower size={20} />, label: 'Banheiros', amount: dados.acomodacoes.banheiros },
+  ];
+  
   const { goToPreviousPage, goToNextPage } = useNavigation();
+
   return (
     // Left Side
   <>
@@ -45,7 +85,7 @@ const Prototipo: React.FC = () => {
         </h1>
         <div className="flex flex-col border border-gray-500 p-10 w-full h-auto rounded-2xl font-black text-gray-800">
           <div className="flex justify-start font-josefin text-2xl">
-              Nome do Local
+              {dados.tituloEdescricao.titulo}
           </div>
           <div className="grid grid-cols-2 gap-4 p-4 w-full h-auto border border-gray-400 rounded-lg">
               <img
@@ -61,12 +101,12 @@ const Prototipo: React.FC = () => {
           </div>
           <div className="flex w-full mt-4 space-x-4">
               <div className="flex justify-start gap-2">
-                  {prototipos.map((prototipo, index) => (
+                  {acomodacoesArray.map((item, index) => (
                   <div key={index} className="border rounded-2xl p-2 gap-3 flex items-center space-x-2 bg-orange-200 font-josefin">
                       <span className="text-blue-500">
-                          {prototipo.icon}
+                          {item.icon}
                       </span>
-                      {prototipo.amount}
+                      {item.amount}
                   </div>
                   ))}
               </div>
@@ -92,22 +132,19 @@ const Prototipo: React.FC = () => {
                     className="w-24 h-24 rounded-full object-cover float-left mr-4"
                 />
                 <h2 className="text-2xl font-josefin text-gray-700">
-                    Lucas Santos
+                    Nome do Proprietário
                 </h2>
               </div>
                 {/* TODO: The first line of text needs to be alongside the image */}
               <div className="p-2">
                   <p className="text-lg font-josefin font-thin text-gray-700">
-                    Quando o texto ocupa mais de uma linha, ele automaticamente vai fluir abaixo da imagem. 
-                    Isso é feito usando o CSS float na imagem, fazendo com que o conteúdo flua ao redor dela 
-                    de forma natural. As linhas subsequentes, após a altura da imagem, ocupam todo o espaço 
-                    disponível.
+                    {dados.tituloEdescricao.descricao}
                   </p>
               </div>
             </div>
             <div className="flex-grow items-start ml-4 mt-20 border border-gray-400 rounded-xl p-8 w-full text-left">
-              <span className="block text-xl font-josefin text-gray-700 text-orange-500">R$ 950 / diária</span>
-              <span className="block text-md font-josefin text-gray-700 mt-2 font-thin">Endereço</span>
+              <span className="block text-xl font-josefin text-gray-700 text-orange-500">R$ {dados.valorReserva.valor} / diária</span>
+              <span className="block text-md font-josefin text-gray-700 mt-2 font-thin">Endereço: {dados.endereco.rua} {dados.endereco.numero}, {dados.endereco.bairro}, {dados.endereco.cidade} - {dados.endereco.uf}</span>
             </div>
           </div>
         </div>
