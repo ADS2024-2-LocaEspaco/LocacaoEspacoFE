@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react';
 import NavbarCadastro from '@/components/navbarCadastro';
 import useNavigation from '@/hooks/CadImovel';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
-import axios from 'axios';
+import dynamic from 'next/dynamic';
+import 'leaflet/dist/leaflet.css';
+
+const MapContainer = dynamic(() => import('react-leaflet').then(mod => mod.MapContainer), { ssr: false });
+const TileLayer = dynamic(() => import('react-leaflet').then(mod => mod.TileLayer), { ssr: false });
+const Marker = dynamic(() => import('react-leaflet').then(mod => mod.Marker), { ssr: false });
 
 const Endereco: React.FC = () => {
   const { goToPreviousPage, goToNextPage } = useNavigation();
@@ -14,6 +19,24 @@ const Endereco: React.FC = () => {
   const [uf, setUf] = useState('');
   const [numero, setNumero] = useState('');
   const [complemento, setComplemento] = useState('');
+  const [coordinates, setCoordinates] = useState<[number, number] | null>(null);
+
+  useEffect(() => {
+    if (cidade && rua && numero) {
+      const query = `${numero} ${rua}, ${bairro}, ${cidade}, ${uf}`;
+      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&addressdetails=1`;
+
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.length > 0) {
+            const { lat, lon } = data[0];
+            setCoordinates([parseFloat(lat), parseFloat(lon)]);
+          }
+        })
+        .catch((error) => console.error('Erro ao buscar coordenadas:', error));
+    }
+  }, [cidade, rua, numero, bairro, uf]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -96,7 +119,7 @@ const Endereco: React.FC = () => {
         try {
           const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
           const data = await response.json();
-  
+
           if (!data.erro) {
             setRua(data.logradouro);
             setBairro(data.bairro);
@@ -112,7 +135,7 @@ const Endereco: React.FC = () => {
         alert('CEP inválido');
       }
     }
-  };  
+  };
 
   return (
     <>
@@ -120,12 +143,22 @@ const Endereco: React.FC = () => {
       {/* Main Container */}
       <div className="flex flex-col md:flex-row h-screen">
         {/* Left Side */}
-        <div className="w-full md:w-1/2">
-          <img
-            src="https://s3-alpha-sig.figma.com/img/b0f5/f193/6985a9fd998fba53aacea4ebea36ee35?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Cyj5fZ~Ih6wSBVzvtUnU5QGbglEg5CdILidzvq5hwiZR8yE-0aF7WNQc8apQMClXwsPCFhZjjoJgQqwYPphYar7IEbQgqcu7skQYX3jCi7yCaenxow97Jt4QV8F5l6oB7mMaDGhb~CJm-Ent9Y40AexlWd0wYhr34h~~gCOSSOHuLyiBSKVmN8vztMCbbn0GL0Uzxf6sHuUbT~K1sHEJIg2aAV7W31PRV~mFjKyMVaR~-woFRX1pJ9awV1z3PG7qT8imV80yPZ-5bdDLjjqzTFY1uqvrerCDm422GD4RgQN4A5siRC-YYSVPydlFEu7OCQhEuMY~-SdIcvwdhR2vSg__"
-            alt="Imagem de imóvel"
-            className="w-full h-full object-cover"
-          />
+        <div className="w-full md:w-1/2 h-full">
+          {coordinates ? (
+            <MapContainer
+              center={coordinates}
+              zoom={15}
+              style={{ height: '100%', width: '100%' }}
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution="&copy; OpenStreetMap contributors"
+              />
+              <Marker position={coordinates} />
+            </MapContainer>
+          ) : (
+            <p className="text-center mt-4">Digite um endereço válido para visualizar no mapa.</p>
+          )}
         </div>
 
         {/* Right Side */}
