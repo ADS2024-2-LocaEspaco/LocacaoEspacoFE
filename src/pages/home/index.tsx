@@ -1,7 +1,5 @@
 import { useUserStore } from "@/lib/store/userStore";
-import Image from "next/image";
-
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/navbar";
 
 export default function Home() {
     const user = useUserStore((state) => state.user)

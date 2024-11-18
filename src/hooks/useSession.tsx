@@ -28,7 +28,6 @@ export const useSession = () => {
         expires: 7,
         secure: process.env.NODE_ENV === "production",
         sameSite: "Strict",
-        httpOnly: true,
       }
     );
 

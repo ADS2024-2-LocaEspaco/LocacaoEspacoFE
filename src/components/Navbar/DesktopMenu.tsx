@@ -4,8 +4,8 @@ import Image from "next/image";
 
 import Logo from '../../../public/icons/logo.svg';
 
-import DesktopMenuButtons from "./desktop-menu-buttons";
-import DesktopSearch from "./desktop-search";
+import DesktopMenuButtons from "./desktopMenuButtons";
+import DesktopSearch from "./desktopSearch";
 
 import { useUserStore } from "@/lib/store/userStore";
 import ModalLogin from "../ModalLogin";

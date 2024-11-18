@@ -19,6 +19,10 @@ export default function DesktopMenuButtons({ username, picture }: DesktopMenuBut
     const dropdownMenuRef = useRef<HTMLElement | null>(null);
     const [isOpenDropdownMenu, setIsOpenDropdownMenu] = useState(false);
 
+    const handleAnnounceClick = () => {
+        router.push('/anunciar');
+    };
+
     const handleLogout = () => {
         session.deleteSession()
         router.push('/')
@@ -41,7 +45,7 @@ export default function DesktopMenuButtons({ username, picture }: DesktopMenuBut
 
     return (
         <div className="relative flex items-center gap-4">
-            <button className="w-32 h-10 font-bold bg-blue-300 text-white border border-gray-100 rounded-2xl hover:opacity-80">
+            <button onClick={handleAnnounceClick} className="w-32 h-10 font-bold bg-blue-300 text-white border border-gray-100 rounded-2xl hover:opacity-80">
                 Anunciar
             </button>
 
@@ -51,49 +55,30 @@ export default function DesktopMenuButtons({ username, picture }: DesktopMenuBut
                 <Image
                     src={picture}
                     alt='Logo'
-                    onClick={() => console.log()}
                     height={62}
                     width={62}
                     className="rounded-full"
                 />
 
-                    <Image
-                        src={ArrowDropDownIcon}
-                        alt='Logo'
-                        onClick={() => console.log()}
-                        height={8}
-                        width={12}
-                    />
-                
-
-                {
-                    isOpenDropdownMenu && (
-                        <nav  className='absolute top-10 right-0 flex flex-col w-48 bg-white rounded-2xl text-black-300 shadow-xl'>
-                            <Link href={'#'} className='pl-7 py-2 hover:opacity-80'>Ver perfil</Link>
-                            <Link href={'#'} className='pl-7 py-2 hover:opacity-80'>Favoritos</Link>
-                            <Link href={'#'} className='pl-7 py-2 hover:opacity-80'>Notificações</Link>
-                            <Link href={'#'} className='pl-7 py-2 hover:opacity-80'>Viagens</Link>
-
-                            <div className="border border-b-gray-100 opacity-30" />
-
-                            <Link href={'#'} className='pl-7 py-2 hover:opacity-80'>Editar Perfil</Link>
-                            <Link href={'#'} className='pl-7 py-2 hover:opacity-80 text-red-500'>Sair</Link>
-                        </nav>
-                    )
-                }
+                <Image
+                    src={ArrowDropDownIcon}
+                    alt='Logo'
+                    height={8}
+                    width={12}
+                />
             </div>
 
             {
                 isOpenDropdownMenu && (
                     <nav ref={dropdownMenuRef} className='absolute top-10 right-0 flex flex-col w-48 bg-white rounded-2xl text-black-300 shadow-xl'>
-                        <Link href={'#'} className='pl-7 py-2 hover:opacity-80'>Ver perfil</Link>
-                        <Link href={'#'} className='pl-7 py-2 hover:opacity-80'>Favoritos</Link>
-                        <Link href={'#'} className='pl-7 py-2 hover:opacity-80'>Notificações</Link>
-                        <Link href={'#'} className='pl-7 py-2 hover:opacity-80'>Viagens</Link>
-                        
+                        <Link href={'/perfil'} className='pl-7 py-2 hover:opacity-80'>Ver perfil</Link>
+                        <Link href={'/favoritos'} className='pl-7 py-2 hover:opacity-80'>Favoritos</Link>
+                        <Link href={'/notificacoes'} className='pl-7 py-2 hover:opacity-80'>Notificações</Link>
+                        <Link href={'/viagens'} className='pl-7 py-2 hover:opacity-80'>Viagens</Link>
+
                         <div className="border border-b-gray-100 opacity-30" />
-                        
-                        <Link href={'#'} className='pl-7 py-2 hover:opacity-80'>Editar Perfil</Link>
+
+                        <Link href={'/editar-perfil'} className='pl-7 py-2 hover:opacity-80'>Editar Perfil</Link>
                         <button onClick={handleLogout} className='pl-7 py-2 self-start hover:opacity-80 text-red-500'>Sair</button>
                     </nav>
                 )

@@ -6,8 +6,8 @@ import Logo from '../../../public/icons/logo.svg';
 import MenuHamburgerIcon from '../../../public/icons/menu_icon.svg';
 import SearchIcon from '../../../public/icons/search_icon.svg';
 
-import MobileLateralMenu from "./mobile-lateral-menu";
-import MobileModalSearch from "./mobile-modal-search";
+import MobileLateralMenu from "./mobileLateralMenu";
+import MobileModalSearch from "./mobileModalSearch";
 
 export default function MobileMenu() {
     const router = useRouter()

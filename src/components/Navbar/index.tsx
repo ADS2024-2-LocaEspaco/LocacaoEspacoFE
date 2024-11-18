@@ -1,5 +1,5 @@
-import MobileMenu from './mobile-menu';
-import DesktopMenu from './DesktopMenu';
+import MobileMenu from './mobileMenu';
+import DesktopMenu from './desktopMenu';
 
 export default function Navbar() {
 	return (
