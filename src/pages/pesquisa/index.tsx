@@ -1,16 +1,21 @@
     import { useState } from "react";
     import ItemComponent from "./components/itemComponent";
 
-    export default function Pesquisa() {
-        const [filtroPropriedade, setfiltroPropriedade] = useState(false);
-        const [filtroPrecoe, setfiltroPrecoe] = useState(false);
-        const [filtroComodos, setfiltroComodos] = useState(false);
-        const [filtroComodidades, setfiltroComodidades] = useState(false);
-        const [filtroReserva, setfiltroReserva] = useState(false);
-        const [filtroAcessibilidade, setfiltroAcessibilidade] = useState(false);
+    type FiltroTipo = "propriedade" | "preco" | "comodos" | 'comodidades' | 'reserva' | 'acessibilidade' | null;
 
+    export default function Pesquisa() {
         const [quantidadeComodos, setquantidadeComodos] = useState(0);
         const [quantidadeChuveiros, setquantidadeChuveiros] = useState(0);
+
+        const [filtroAberto, setfiltroAberto] = useState<FiltroTipo>(null);
+
+        const toggleFiltro = (filtro: FiltroTipo) => {
+            if (filtroAberto === filtro) {
+                setfiltroAberto(null);
+            } else {
+                setfiltroAberto(filtroAberto === filtro ? null : filtro);
+            }
+        };
 
         const incrementarQuartidadeComodos = () => {
             setquantidadeComodos(quantidadeComodos + 1);
@@ -32,30 +37,6 @@
             }
         };
 
-        const openFiltro1 = () => {
-            setfiltroPropriedade(!filtroPropriedade);
-        };
-
-        const openFiltro2 = () => {
-            setfiltroPrecoe(!filtroPrecoe);
-        };
-
-        const openFiltro3 = () => {
-            setfiltroComodos(!filtroComodos);
-        };
-
-        const openFiltro4 = () => {
-            setfiltroComodidades(!filtroComodidades);
-        };
-
-        const openFiltro5 = () => {
-            setfiltroReserva(!filtroReserva);
-        };
-
-        const openFiltro6 = () => {
-            setfiltroAcessibilidade(!filtroAcessibilidade);
-        };
-
         return (
             <div className="min-h-screen bg-white">
                 <div className="p-12">
@@ -64,14 +45,14 @@
                             <div className="relative">
                                 <button
                                     className={`border border-1 rounded-2xl py-2 px-5 ${
-                                        filtroPropriedade ? "bg-orange-400 text-white" : ""
+                                        filtroAberto === "propriedade" ? "bg-orange-400 text-white" : ""
                                     }`}
-                                    onClick={openFiltro1}
+                                    onClick={() => toggleFiltro("propriedade")}
                                 >
                                     Tipo de propriedade
                                 </button>
 
-                                {filtroPropriedade && (
+                                {filtroAberto === "propriedade" && (
                                     <div className="absolute top-10 p-4 border rounded-xl bg-gray-50 shadow-lg w-64 z-10">
                                         <div className="grid grid-cols-2 gap-2">
                                             <div>
@@ -106,11 +87,11 @@
                             </div>
 
                             <div className="relative">
-                                <button className={`border border-1 rounded-2xl py-2 px-5 ${filtroPrecoe ? "bg-orange-400 text-white" : ""}`} onClick={openFiltro2}>
+                                <button className={`border border-1 rounded-2xl py-2 px-5 ${filtroAberto === "preco" ? "bg-orange-400 text-white" : ""}`} onClick={() => toggleFiltro("preco")}>
                                     Faixa de preço
                                 </button>
 
-                                {filtroPrecoe && (
+                                {filtroAberto === "preco" && (
                                     <div className="absolute top-10 p-4 border rounded-xl bg-gray-50 shadow-lg w-64 z-10">
 
                                         <div className="flex flex-col gap-2 items-center text-center">
@@ -133,11 +114,11 @@
                             </div>
 
                             <div className="relative">
-                                <button className={`border border-1 rounded-2xl py-2 px-5 ${filtroComodos ? "bg-orange-400 text-white" : ""}`} onClick={openFiltro3}>
+                                <button className={`border border-1 rounded-2xl py-2 px-5 ${ filtroAberto === "comodos" ? "bg-orange-400 text-white" : ""}`} onClick={() => toggleFiltro("comodos")}>
                                     Quantidade de comodos
                                 </button>
 
-                                {filtroComodos && (
+                                {filtroAberto === "comodos" && (
                                     <div className="absolute top-10 p-4 border rounded-xl bg-gray-50 shadow-lg w-64 z-10">
                                         <div className="grid grid-cols-2 gap-2 justify-center items-center">
                                             <div className="col-span-2">
@@ -173,11 +154,11 @@
 
                             <div className="relative">
 
-                                <button className={`border border-1 rounded-2xl py-2 px-5 ${filtroComodidades ? "bg-orange-400 text-white" : ""}`} onClick={openFiltro4}>
+                                <button className={`border border-1 rounded-2xl py-2 px-5 ${filtroAberto === "comodidades" ? "bg-orange-400 text-white" : ""}`} onClick={() => toggleFiltro("comodidades")}>
                                     Comodidades
                                 </button>
 
-                                {filtroComodidades && (
+                                {filtroAberto === "comodidades" && (
                                     <div className="absolute top-10 p-4 border rounded-xl bg-gray-50 shadow-lg w-96 z-10">
                                         <div className="flex gap-2">
                                             <div className="gap-2">
@@ -243,11 +224,11 @@
                             </div>
 
                             <div className="relative">
-                                <button className={`border border-1 rounded-2xl py-2 px-5 ${filtroReserva ? "bg-orange-400 text-white" : ""}`} onClick={openFiltro5}>
+                                <button className={`border border-1 rounded-2xl py-2 px-5 ${filtroAberto === "reserva" ? "bg-orange-400 text-white" : ""}`} onClick={() => toggleFiltro("reserva")}>
                                     Opções de reserva
                                 </button>
 
-                                {filtroReserva && (
+                                {filtroAberto === "reserva" && (
                                     <div className="absolute top-10 p-4 border rounded-xl bg-gray-50 shadow-lg w-56 z-10">
                                         <div className="">
                                             <div className="">
@@ -277,11 +258,11 @@
                             </div>
 
                             <div className="relative">
-                                <button className={`border border-1 rounded-2xl py-2 px-5 ${filtroAcessibilidade ? "bg-orange-400 text-white" : ""}`} onClick={openFiltro6}>
+                                <button className={`border border-1 rounded-2xl py-2 px-5 ${filtroAberto === "acessibilidade" ? "bg-orange-400 text-white" : ""}`} onClick={() => toggleFiltro("acessibilidade")}>
                                     Acessibilidade
                                 </button>
 
-                                {filtroAcessibilidade && (
+                                {filtroAberto === "acessibilidade" && (
                                     <div className="absolute top-10 p-4 border rounded-xl bg-gray-50 shadow-lg w-60 z-10">
                                         <div className="">
                                             <div className="">
