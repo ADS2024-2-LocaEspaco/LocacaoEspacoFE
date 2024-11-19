@@ -307,6 +307,19 @@
                         <ItemComponent />
                         <ItemComponent />
 
+                        <div className="flex gap-4 mt-8">
+                            <button className="bg-gray-500 text-white rounded-full px-4 py-2">
+                                1
+                            </button>
+
+                            <button className="bg-orange-500 text-white rounded-full px-4 py-2">
+                                2
+                            </button>
+
+                            <button className="bg-gray-500 text-white rounded-full px-4 py-2">
+                                3
+                            </button>
+                        </div>
 
                     </div>
                 </div>
