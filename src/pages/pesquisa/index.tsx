@@ -301,7 +301,7 @@
                     <h1 className="text-center text-3xl font-bold p-2">Resultado da busca</h1>
                     <hr className="border hidden lg:block mx-8" />
 
-                    <div className="flex flex-col items-center gap-2 m-4">
+                    <div className="flex flex-col items-center gap-2 m-4 lg:px-64">
                         <ItemComponent />
                         <ItemComponent />
                         <ItemComponent />
