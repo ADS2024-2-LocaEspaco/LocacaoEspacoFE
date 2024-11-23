@@ -2,42 +2,58 @@ import React, { useState, useEffect } from "react";
 import NavbarCadastro from "@/components/navbarCadastro";
 import useNavigation from "@/hooks/CadImovel";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import "@/styles/LayoutCadImovel.module.css";
 import "@fontsource/josefin-sans";
 
-const ValorEreserva: React.FC = () => {
+const BancoEpix: React.FC = () => {
   const { goToPreviousPage, goToNextPage } = useNavigation();
-
+  const [selectedOption, setSelectedOption] = useState<string>("");
   const [valor, setValor] = useState<string>("0,00");
-  const [minDias, setMinDias] = useState<number>(0);
-  const [maxDias, setMaxDias] = useState<number>(0);
   const [agencia, setAgencia] = useState<number>(0);
+  const [digitoAgencia, setDigitoAgencia] = useState<number>(0);
+  const [conta, setConta] = useState<number>(0);
+  const [digitoConta, setDigitoConta] = useState<number>(0);
+  const [chave, setChave] = useState<string>("");
 
   const saveToLocalStorage = () => {
     const data = {
       valor,
-      minDias,
-      maxDias,
       agencia,
+      digitoAgencia,
+      conta,
+      digitoConta,
+      chave,
+      selectedOption,
     };
-    localStorage.setItem("valorEreserva", JSON.stringify(data));
+    localStorage.setItem("bancoEpix", JSON.stringify(data));
   };
 
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem("valorEreserva") || "{}");
+    const storedData = JSON.parse(localStorage.getItem("bancoEpix") || "{}");
 
-    if (storedData.minDias !== undefined) setMinDias(storedData.minDias);
-    if (storedData.maxDias !== undefined) setMaxDias(storedData.maxDias);
     if (storedData.valor !== undefined) setValor(storedData.valor);
-    if (storedData.antecedencia !== undefined)
-      setAgencia(storedData.antecedencia);
+    if (storedData.agencia !== undefined) setAgencia(storedData.agencia);
+    if (storedData.digitoAgencia !== undefined) setDigitoAgencia(storedData.digitoAgencia);
+    if (storedData.conta !== undefined) setConta(storedData.conta);
+    if (storedData.digitoConta !== undefined) setDigitoConta(storedData.digitoConta);
+    if (storedData.chave !== undefined) setChave(storedData.chave);
+    if (storedData.selectedOption !== undefined) setSelectedOption(storedData.selectedOption);
   }, []);
 
+  useEffect(() => {
+    saveToLocalStorage();
+  }, [valor, agencia, digitoAgencia, conta, digitoConta, chave, selectedOption]);
+
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     setter: React.Dispatch<React.SetStateAction<any>>
   ) => {
     const value = e.target.type === "number" ? parseInt(e.target.value) || 0 : e.target.value;
     setter(value);
+  };
+
+  const handleButtonClick = (value: string) => {
+    setSelectedOption(value);
   };
 
   const handleBlur = () => {
@@ -62,96 +78,180 @@ const ValorEreserva: React.FC = () => {
           <h1 className="mb-4 text-4xl text-gray-700 font-semibold font-josefin">
             Banco e Pix
           </h1>
-          
+
           <div className="grid gap-10 px-8 w-full grid-cols-12">
+            {/* Dados Bancários */}
+            <div className="col-span-full">
+              <label
+                htmlFor="banco"
+                className="text-gray-600 text-2xl font-bold mb-2 block font-josefin"
+              >
+                Dados Bancários
+              </label>
+              <select
+                id="banco"
+                name="banco"
+                onChange={(e) => {
+                  handleInputChange(e, setValor);
+                  saveToLocalStorage();
+                }}
+                value={valor}
+                className="border border-gray-400 text-black h-16 rounded-lg text-center w-full"
+              >
+                <option value="">Banco...</option>
+                <option value="itau">Itaú</option>
+                <option value="bradesco">Bradesco</option>
+                <option value="santander">Santander</option>
+                <option value="banco-do-brasil">Banco do Brasil</option>
+                <option value="caixa">Caixa Econômica Federal</option>
+              </select>
+            </div>
 
-          {/* Dados Bancários */}
-          <div className="col-span-full">
-            <label
-              htmlFor="banco"
-              className="text-gray-600 text-2xl font-bold mb-2 block font-josefin"
-            >
-              Dados Bancários
-            </label>
-            <select
-              id="banco"
-              name="banco"
-              onChange={(e) => handleInputChange(e, setValor)} 
-              className="border border-gray-400 text-black h-16 rounded-lg text-center w-full"
-            >
-              <option value="">Banco...</option>
-              <option value="itau">Itaú</option>
-              <option value="bradesco">Bradesco</option>
-              <option value="santander">Santander</option>
-              <option value="banco-do-brasil">Banco do Brasil</option>
-              <option value="caixa">Caixa Econômica Federal</option>
-            </select>
+            {/* Agência */}
+            <div className="col-span-4">
+              <input
+                type="number"
+                id="agencia"
+                name="agencia"
+                placeholder="Agência..."
+                value={agencia}
+                onChange={(e) => handleInputChange(e, setAgencia)}
+                onBlur={handleBlur}
+                className="border border-gray-400 text-black h-16 rounded-lg text-center w-full no-arrows"
+              />
+            </div>
+
+            {/* Digito Agência */}
+            <div className="col-span-2 no-arrows">
+              <input
+                type="number"
+                id="digitoAgencia"
+                name="digitoAgencia"
+                placeholder="Digito.."
+                value={digitoAgencia}
+                onChange={(e) => handleInputChange(e, setDigitoAgencia)}
+                onBlur={handleBlur}
+                className="border border-gray-400 text-black h-16 rounded-lg text-center w-full no-arrows"
+              />
+            </div>
+
+            {/* Conta */}
+            <div className="col-span-4">
+              <input
+                type="number"
+                id="conta"
+                name="conta"
+                placeholder="Conta..."
+                value={conta}
+                onChange={(e) => handleInputChange(e, setConta)}
+                onBlur={handleBlur}
+                className="border border-gray-400 text-black h-16 rounded-lg text-center w-full no-arrows"
+              />
+            </div>
+
+            {/* Digito Conta */}
+            <div className="col-span-2">
+              <input
+                type="number"
+                id="digitoConta"
+                name="digitoConta"
+                placeholder="Digito..."
+                value={digitoConta}
+                onChange={(e) => handleInputChange(e, setDigitoConta)}
+                onBlur={handleBlur}
+                className="border border-gray-400 text-black h-16 rounded-lg text-center w-full no-arrows"
+              />
+            </div>
+
+            <div className="col-span-12">
+              <p className="text-gray-700 font-josefin text-sm">
+                Obs. O CPF do titular da conta bancária deve ser o mesmo CPF cadastrado em sua conta StayEasy.
+              </p>
+            </div>
+
+            {/* PIX Options */}
+            <div className="col-span-full">
+              <label
+                htmlFor="pix"
+                className="text-gray-600 text-2xl font-bold block mb-[-30px] font-josefin"
+              >
+                Pix
+              </label>
+            </div>
+
+            {/* Pix Options */}
+            <div className="col-span-4">
+              <button
+                type="button"
+                onClick={() => handleButtonClick("celular")}
+                className={`border border-gray-400 text-black h-16 rounded-lg text-center w-full ${selectedOption === "celular" ? "bg-blue-500" : "bg-white"}`}
+              >
+                Celular
+              </button>
+            </div>
+
+            <div className="col-span-4">
+              <button
+                type="button"
+                onClick={() => handleButtonClick("cpf")}
+                className={`border border-gray-400 text-black h-16 rounded-lg text-center w-full ${selectedOption === "cpf" ? "bg-blue-500" : "bg-white"}`}
+              >
+                CPF
+              </button>
+            </div>
+
+            <div className="col-span-4">
+              <button
+                type="button"
+                onClick={() => handleButtonClick("email")}
+                className={`border border-gray-400 text-black h-16 rounded-lg text-center w-full ${selectedOption === "email" ? "bg-blue-500" : "bg-white"}`}
+              >
+                Email
+              </button>
+            </div>
+
+            {/* Chave PIX */}
+            <div className="col-span-12">
+              <input
+                id="chave"
+                name="chave"
+                placeholder="Chave..."
+                value={chave}
+                onChange={(e) => handleInputChange(e, setChave)}
+                onBlur={handleBlur}
+                className="border border-gray-400 text-black h-16 rounded-lg text-center w-full"
+              />
+            </div>
           </div>
 
-          {/* Agência */}
-          <div className="col-span-4">
-            <input
-              id="agencia"
-              name="agencia"
-              placeholder="Agência..."
-              onChange={(e) => handleInputChange(e, setAgencia)}
-              onBlur={handleBlur}
-              className="border border-gray-400 text-black h-16 rounded-lg text-center w-full"
-            />
-          </div>
-
-          {/* Reserva */}
-          <div className="col-span-2">
-            <input
-              type="number"
-              id="digitoAgencia"
-              name="digitoAgencia"
-              placeholder="Digito.."
-              onChange={(e) => handleInputChange(e, setMinDias)}
-              onBlur={handleBlur}
-              className="border border-gray-400 text-black h-16 rounded-lg text-center w-full"
-            />
-          </div>
-
-          <div className="col-span-4">
-            <input
-              type="number"
-              id="maxDias"
-              name="conta"
-              placeholder="Conta..."
-              onChange={(e) => handleInputChange(e, setMaxDias)}
-              onBlur={handleBlur}
-              className="border border-gray-400 text-black h-16 rounded-lg text-center w-full"
-            />
-          </div>
-
-          <div className="col-span-2">
-            <input
-              type="number"
-              id="maxDias"
-              name="digitoConta"
-              placeholder="Digito..."
-              onChange={(e) => handleInputChange(e, setMaxDias)}
-              onBlur={handleBlur}
-              className="border border-gray-400 text-black h-16 rounded-lg text-center w-full"
-            />
-          </div>
-        </div>
-
+          {/* Navegação */}
           <div className="flex justify-between items-center w-full mt-8">
             <IoIosArrowBack
               className="text-6xl cursor-pointer text-black"
               onClick={goToPreviousPage}
             />
-            <IoIosArrowForward
-              className="text-6xl cursor-pointer text-black"
-              onClick={goToNextPage}
-            />
+            <button className="hidden sm:block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+              Salvar e Sair
+            </button>
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .no-arrows {
+          -moz-appearance: textfield; /* Firefox */
+          -webkit-appearance: none; /* Chrome, Safari, Edge */
+          appearance: none; /* Padrão */
+        }
+
+        .no-arrows::-webkit-inner-spin-button,
+        .no-arrows::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+      `}</style>
     </>
   );
 };
 
-export default ValorEreserva;
+export default BancoEpix;
