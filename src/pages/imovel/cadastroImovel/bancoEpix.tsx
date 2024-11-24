@@ -1,63 +1,62 @@
 import React, { useState, useEffect } from "react";
 import NavbarCadastro from "@/components/navbarCadastro";
 import useNavigation from "@/hooks/CadImovel";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
 import "@/styles/LayoutCadImovel.module.css";
 import "@fontsource/josefin-sans";
 
 const BancoEpix: React.FC = () => {
-  const { goToPreviousPage, goToNextPage } = useNavigation();
+  const { goToPreviousPage } = useNavigation();
   const [selectedOption, setSelectedOption] = useState<string>("");
-  const [valor, setValor] = useState<string>("0,00");
+  const [banco, setBanco] = useState<string>("");
   const [agencia, setAgencia] = useState<number>(0);
   const [digitoAgencia, setDigitoAgencia] = useState<number>(0);
   const [conta, setConta] = useState<number>(0);
   const [digitoConta, setDigitoConta] = useState<number>(0);
   const [chave, setChave] = useState<string>("");
 
-  const saveToLocalStorage = () => {
-    const data = {
-      valor,
-      agencia,
-      digitoAgencia,
-      conta,
-      digitoConta,
-      chave,
-      selectedOption,
-    };
-    localStorage.setItem("bancoEpix", JSON.stringify(data));
-  };
-
+  // Load from localStorage only on first render
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("bancoEpix") || "{}");
 
-    if (storedData.valor !== undefined) setValor(storedData.valor);
-    if (storedData.agencia !== undefined) setAgencia(storedData.agencia);
-    if (storedData.digitoAgencia !== undefined) setDigitoAgencia(storedData.digitoAgencia);
-    if (storedData.conta !== undefined) setConta(storedData.conta);
-    if (storedData.digitoConta !== undefined) setDigitoConta(storedData.digitoConta);
-    if (storedData.chave !== undefined) setChave(storedData.chave);
-    if (storedData.selectedOption !== undefined) setSelectedOption(storedData.selectedOption);
+    if (storedData.banco) setBanco(storedData.banco);
+    if (storedData.agencia) setAgencia(storedData.agencia);
+    if (storedData.digitoAgencia) setDigitoAgencia(storedData.digitoAgencia);
+    if (storedData.conta) setConta(storedData.conta);
+    if (storedData.digitoConta) setDigitoConta(storedData.digitoConta);
+    if (storedData.chave) setChave(storedData.chave);
+    if (storedData.selectedOption) setSelectedOption(storedData.selectedOption);
   }, []);
 
+  // Save to localStorage whenever the data changes
   useEffect(() => {
+    const saveToLocalStorage = () => {
+      const data = {
+        banco,
+        agencia,
+        digitoAgencia,
+        conta,
+        digitoConta,
+        chave,
+        selectedOption,
+      };
+      localStorage.setItem("bancoEpix", JSON.stringify(data));
+    };
+
     saveToLocalStorage();
-  }, [valor, agencia, digitoAgencia, conta, digitoConta, chave, selectedOption]);
+  }, [banco, agencia, digitoAgencia, conta, digitoConta, chave, selectedOption]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     setter: React.Dispatch<React.SetStateAction<any>>
   ) => {
-    const value = e.target.type === "number" ? parseInt(e.target.value) || 0 : e.target.value;
+    const value =
+      e.target.type === "number" ? parseInt(e.target.value) || 0 : e.target.value;
     setter(value);
   };
 
   const handleButtonClick = (value: string) => {
     setSelectedOption(value);
-  };
-
-  const handleBlur = () => {
-    saveToLocalStorage();
   };
 
   return (
@@ -88,17 +87,20 @@ const BancoEpix: React.FC = () => {
               >
                 Dados Bancários
               </label>
+              <label
+                htmlFor="agencia"
+                className="text-gray-600 text-md mb-2 block font-josefin"
+              >
+                Banco
+              </label>
               <select
                 id="banco"
                 name="banco"
-                onChange={(e) => {
-                  handleInputChange(e, setValor);
-                  saveToLocalStorage();
-                }}
-                value={valor}
-                className="border border-gray-400 text-black h-16 rounded-lg text-center w-full"
+                onChange={(e) => handleInputChange(e, setBanco)}
+                value={banco}
+                className="border rounded-2xl border-gray-400 text-black h-16 text-center w-full"
               >
-                <option value="">Banco...</option>
+                <option value="">Selecione um banco...</option>
                 <option value="itau">Itaú</option>
                 <option value="bradesco">Bradesco</option>
                 <option value="santander">Santander</option>
@@ -109,6 +111,12 @@ const BancoEpix: React.FC = () => {
 
             {/* Agência */}
             <div className="col-span-4">
+              <label
+                htmlFor="agencia"
+                className="text-gray-600 text-md mb-2 block font-josefin"
+              >
+                Agência
+              </label>
               <input
                 type="number"
                 id="agencia"
@@ -116,13 +124,18 @@ const BancoEpix: React.FC = () => {
                 placeholder="Agência..."
                 value={agencia}
                 onChange={(e) => handleInputChange(e, setAgencia)}
-                onBlur={handleBlur}
-                className="border border-gray-400 text-black h-16 rounded-lg text-center w-full no-arrows"
+                className="border border-gray-400 text-black h-16 text-center w-full no-arrows rounded-2xl"
               />
             </div>
 
             {/* Digito Agência */}
             <div className="col-span-2 no-arrows">
+              <label
+                htmlFor="digitoAgencia"
+                className="text-gray-600 text-md mb-2 block font-josefin"
+              >
+                Digito
+              </label>
               <input
                 type="number"
                 id="digitoAgencia"
@@ -130,13 +143,18 @@ const BancoEpix: React.FC = () => {
                 placeholder="Digito.."
                 value={digitoAgencia}
                 onChange={(e) => handleInputChange(e, setDigitoAgencia)}
-                onBlur={handleBlur}
-                className="border border-gray-400 text-black h-16 rounded-lg text-center w-full no-arrows"
+                className="border border-gray-400 text-black h-16 text-center w-full no-arrows rounded-2xl"
               />
             </div>
 
             {/* Conta */}
             <div className="col-span-4">
+              <label
+                htmlFor="agencia"
+                className="text-gray-600 text-md mb-2 block font-josefin"
+              >
+                Conta
+              </label>
               <input
                 type="number"
                 id="conta"
@@ -144,13 +162,18 @@ const BancoEpix: React.FC = () => {
                 placeholder="Conta..."
                 value={conta}
                 onChange={(e) => handleInputChange(e, setConta)}
-                onBlur={handleBlur}
-                className="border border-gray-400 text-black h-16 rounded-lg text-center w-full no-arrows"
+                className="border border-gray-400 text-black h-16 text-center w-full no-arrows rounded-2xl"
               />
             </div>
 
             {/* Digito Conta */}
             <div className="col-span-2">
+              <label
+                htmlFor="agencia"
+                className="text-gray-600 text-md mb-2 block font-josefin"
+              >
+                Digito
+              </label>
               <input
                 type="number"
                 id="digitoConta"
@@ -158,13 +181,12 @@ const BancoEpix: React.FC = () => {
                 placeholder="Digito..."
                 value={digitoConta}
                 onChange={(e) => handleInputChange(e, setDigitoConta)}
-                onBlur={handleBlur}
-                className="border border-gray-400 text-black h-16 rounded-lg text-center w-full no-arrows"
+                className="border border-gray-400 text-black h-16 text-center w-full no-arrows rounded-2xl"
               />
             </div>
 
             <div className="col-span-12">
-              <p className="text-gray-700 font-josefin text-sm">
+              <p className="text-gray-600 font-josefin text-sm mt-[-20px]">
                 Obs. O CPF do titular da conta bancária deve ser o mesmo CPF cadastrado em sua conta StayEasy.
               </p>
             </div>
@@ -184,7 +206,7 @@ const BancoEpix: React.FC = () => {
               <button
                 type="button"
                 onClick={() => handleButtonClick("celular")}
-                className={`border border-gray-400 text-black h-16 rounded-lg text-center w-full ${selectedOption === "celular" ? "bg-blue-500" : "bg-white"}`}
+                className={`border border-gray-400 text-black h-16 rounded-2xl text-center w-full ${selectedOption === "celular" ? "bg-blue-500" : "bg-white"}`}
               >
                 Celular
               </button>
@@ -194,7 +216,7 @@ const BancoEpix: React.FC = () => {
               <button
                 type="button"
                 onClick={() => handleButtonClick("cpf")}
-                className={`border border-gray-400 text-black h-16 rounded-lg text-center w-full ${selectedOption === "cpf" ? "bg-blue-500" : "bg-white"}`}
+                className={`border border-gray-400 text-black h-16 rounded-2xl text-center w-full ${selectedOption === "cpf" ? "bg-blue-500" : "bg-white"}`}
               >
                 CPF
               </button>
@@ -204,7 +226,7 @@ const BancoEpix: React.FC = () => {
               <button
                 type="button"
                 onClick={() => handleButtonClick("email")}
-                className={`border border-gray-400 text-black h-16 rounded-lg text-center w-full ${selectedOption === "email" ? "bg-blue-500" : "bg-white"}`}
+                className={`border border-gray-400 text-black h-16 rounded-2xl text-center w-full ${selectedOption === "email" ? "bg-blue-500" : "bg-white"}`}
               >
                 Email
               </button>
@@ -212,14 +234,19 @@ const BancoEpix: React.FC = () => {
 
             {/* Chave PIX */}
             <div className="col-span-12">
+              <label
+                htmlFor="chave"
+                className="text-gray-600 text-md mb-2 block font-josefin"
+              >
+                Chave
+              </label>
               <input
                 id="chave"
                 name="chave"
                 placeholder="Chave..."
                 value={chave}
                 onChange={(e) => handleInputChange(e, setChave)}
-                onBlur={handleBlur}
-                className="border border-gray-400 text-black h-16 rounded-lg text-center w-full"
+                className="border border-gray-400 text-black h-16 rounded-2xl text-center w-full"
               />
             </div>
           </div>
@@ -230,7 +257,7 @@ const BancoEpix: React.FC = () => {
               className="text-6xl cursor-pointer text-black"
               onClick={goToPreviousPage}
             />
-            <button className="hidden sm:block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+            <button className="hidden sm:block bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600">
               Salvar e Sair
             </button>
           </div>
