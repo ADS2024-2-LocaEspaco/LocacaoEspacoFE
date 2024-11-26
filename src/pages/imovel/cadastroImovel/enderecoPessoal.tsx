@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import NavbarCadastro from '@/components/navbarCadastro';
 import useNavigation from '@/hooks/CadImovel';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
@@ -8,7 +8,6 @@ import 'leaflet/dist/leaflet.css';
 const MapContainer = dynamic(() => import('react-leaflet').then(mod => mod.MapContainer), { ssr: false });
 const TileLayer = dynamic(() => import('react-leaflet').then(mod => mod.TileLayer), { ssr: false });
 const Marker = dynamic(() => import('react-leaflet').then(mod => mod.Marker), { ssr: false });
-
 
 const EnderecoPessoal: React.FC = () => {
   const { goToPreviousPage, goToNextPage } = useNavigation();
@@ -21,6 +20,30 @@ const EnderecoPessoal: React.FC = () => {
   const [numero, setNumero] = useState('');
   const [complemento, setComplemento] = useState('');
   const [coordinates, setCoordinates] = useState<[number, number] | null>(null);
+
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem('cadastroEnderecoPessoal') || '{}');
+    if (storedData) {
+      setCep(storedData.cep || '');
+      setRua(storedData.rua || '');
+      setBairro(storedData.bairro || '');
+      setCidade(storedData.cidade || '');
+      setUf(storedData.uf || '');
+      setNumero(storedData.numero || '');
+      setComplemento(storedData.complemento || '');
+    }
+  }, []);
+
+  const isInitialMount = useRef(true);
+
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    const endereco = { cep, rua, bairro, cidade, uf, numero, complemento };
+    localStorage.setItem('cadastroEnderecoPessoal', JSON.stringify(endereco));
+  }, [cep, rua, bairro, cidade, uf, numero, complemento]);
 
   useEffect(() => {
     if (cidade && rua && numero) {
@@ -39,81 +62,7 @@ const EnderecoPessoal: React.FC = () => {
     }
   }, [cidade, rua, numero, bairro, uf]);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setCep(localStorage.getItem('cep') || '');
-      setRua(localStorage.getItem('rua') || '');
-      setBairro(localStorage.getItem('bairro') || '');
-      setCidade(localStorage.getItem('cidade') || '');
-      setUf(localStorage.getItem('uf') || '');
-      setNumero(localStorage.getItem('numero') || '');
-      setComplemento(localStorage.getItem('complemento') || '');
-    }
-  }, []);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('cep', cep);
-    }
-  }, [cep]);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('rua', rua);
-    }
-  }, [rua]);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('bairro', bairro);
-    }
-  }, [bairro]);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('cidade', cidade);
-    }
-  }, [cidade]);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('uf', uf);
-    }
-  }, [uf]);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('numero', numero);
-    }
-  }, [numero]);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('complemento', complemento);
-    }
-  }, [complemento]);
-
-  const handleCepChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCep(e.target.value);
-  };
-
-  const handleRuaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRua(e.target.value);
-  };
-
-  const handleBairroChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setBairro(e.target.value);
-  };
-
-  const handleCidadeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCidade(e.target.value);
-  };
-
-  const handleUfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUf(e.target.value);
-  };
-
-  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleCepKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       if (cep.length === 8) {
@@ -122,10 +71,10 @@ const EnderecoPessoal: React.FC = () => {
           const data = await response.json();
 
           if (!data.erro) {
-            setRua(data.logradouro);
-            setBairro(data.bairro);
-            setCidade(data.localidade);
-            setUf(data.uf);
+            setRua(data.logradouro || '');
+            setBairro(data.bairro || '');
+            setCidade(data.localidade || '');
+            setUf(data.uf || '');
           } else {
             alert('CEP não encontrado');
           }
@@ -181,8 +130,8 @@ const EnderecoPessoal: React.FC = () => {
                   id="cep"
                   name="CEP"
                   value={cep}
-                  onChange={handleCepChange}
-                  onKeyDown={handleKeyDown}
+                  onChange={(e) => setCep(e.target.value)}
+                  onKeyDown={handleCepKeyDown}
                   className="w-full px-4 py-2 border border-gray-300 rounded-xl text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -193,7 +142,7 @@ const EnderecoPessoal: React.FC = () => {
                   id="rua"
                   name="Rua"
                   value={rua}
-                  onChange={handleRuaChange}
+                  onChange={(e) => setRua(e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-xl bg-gray-200 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -205,7 +154,7 @@ const EnderecoPessoal: React.FC = () => {
                     id="bairro"
                     name="Bairro"
                     value={bairro}
-                    onChange={handleBairroChange}
+                    onChange={(e) => setBairro(e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-xl bg-gray-200 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -216,7 +165,7 @@ const EnderecoPessoal: React.FC = () => {
                     id="cidade"
                     name="Cidade"
                     value={cidade}
-                    onChange={handleCidadeChange}
+                    onChange={(e) => setCidade(e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-xl bg-gray-200 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -229,7 +178,7 @@ const EnderecoPessoal: React.FC = () => {
                     id="uf"
                     name="UF"
                     value={uf}
-                    onChange={handleUfChange}
+                    onChange={(e) => setUf(e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-xl bg-gray-200 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
