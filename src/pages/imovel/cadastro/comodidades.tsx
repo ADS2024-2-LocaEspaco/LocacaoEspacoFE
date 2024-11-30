@@ -1,10 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
-import { useEffect } from 'react';
-import { FaWifi, FaTv, FaCar, FaHammer } from 'react-icons/fa';
-import { TbAirConditioning } from "react-icons/tb";
-import { MdKitchen, MdLocalLaundryService, MdAttachMoney } from "react-icons/md";
-import { PiFanFill } from "react-icons/pi";
+import { useEffect, useState } from 'react';
+import * as FaIcons from 'react-icons/fa';
+import * as MdIcons from 'react-icons/md';
+import * as TbIcons from 'react-icons/tb';
+import * as PiIcons from 'react-icons/pi';
 import styles from '@/styles/LayoutCadImovel.module.css'
 import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -16,39 +16,59 @@ import '@fontsource/josefin-sans';
 interface Amenity {
   name: string;
   value: number;
-  icon: React.ReactNode;
+  icone: string;
 }
-
-const amenities: Amenity[] = [
-  { name: 'Wi-fi', value: 1, icon: <FaWifi size={32} /> },
-  { name: 'TV', value: 2, icon: <FaTv size={32} /> },
-  { name: 'Cozinha', value: 3, icon: <MdKitchen size={32} /> },
-  { name: 'Maquina de Lavar', value: 4, icon: <MdLocalLaundryService size={32} /> },
-  { name: 'Ar-Condicionado', value: 5, icon: <TbAirConditioning size={32} /> },
-  { name: 'Estacionamento', value: 6, icon: <FaCar size={32} /> },
-  { name: 'Estacionamento Pago', value: 7, icon: <MdAttachMoney size={32} /> },
-  { name: 'Espaço de Trabalho', value: 8, icon: <FaHammer size={32} /> },
-  { name: 'Ventilador', value: 9, icon: <PiFanFill size={32} /> },
-];
 
 const Comodidade: React.FC = () => {
   const { goToPreviousPage, goToNextPage } = useNavigation();
   const [selectedItems, setSelectedItems] = React.useState<Amenity[]>([]);
+  const [amenities, setAmenities] = useState<Amenity[]>([]);
 
-  useEffect(() => {
-    const storedAmenities = localStorage.getItem("comodidades");
-    if (storedAmenities) {
-      const parsedAmenities = JSON.parse(storedAmenities);
-      setSelectedItems(parsedAmenities);
+  const resolveIcon = (iconName: string): React.ReactNode => {
+  const iconLibrary = { ...FaIcons, ...MdIcons, ...TbIcons, ...PiIcons };
+  const IconComponent = iconLibrary[iconName];
+  return IconComponent ? <IconComponent size={32} /> : null;
+};
+
+useEffect(() => {
+  const fetchAmenities = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/anuncio/get-comodidades');
+      if (!response.ok) {
+        throw new Error('Erro ao buscar comodidades');
+      }
+      const data: Amenity[] = await response.json();
+      
+      const amenitiesWithIcons = data.map((item) => ({
+        ...item,
+        icone: resolveIcon(item.icone)
+      }));
+
+      setAmenities(amenitiesWithIcons);
+    } catch (error) {
+      console.error('Erro ao buscar comodidades:', error);
     }
-  }, []);
+  };
+
+  fetchAmenities();
+
+  const storedAmenities = localStorage.getItem("comodidades");
+  if (storedAmenities) {
+    const parsedAmenities = JSON.parse(storedAmenities);
+    const resolvedAmenities = parsedAmenities.map((item: Amenity) => ({
+      ...item,
+      icone: resolveIcon(item.icone),
+    }));
+    setSelectedItems(resolvedAmenities);
+  }
+}, []);
 
   function handleSelect(amenity: Amenity) {
-    const isSelected = selectedItems.some(item => item.name === amenity.name);
+    const isSelected = selectedItems.some(item => item.comodidade === amenity.comodidade); // Corrigir comparação
 
     let updatedSelection;
     if (isSelected) {
-      updatedSelection = selectedItems.filter(item => item.name !== amenity.name);
+      updatedSelection = selectedItems.filter(item => item.comodidade !== amenity.comodidade); // Corrigir filtro
     } else {
       updatedSelection = [...selectedItems, amenity];
     }
@@ -83,9 +103,9 @@ const Comodidade: React.FC = () => {
                 <CardSelect
                   key={index}
                   value={amenity.value}
-                  name={amenity.name}
-                  selected={selectedItems.some(item => item.name === amenity.name)} // Verificar se está selecionado
-                  icon={amenity.icon}
+                  name={amenity.comodidade}
+                  selected={selectedItems.some(item => item.comodidade === amenity.comodidade)}
+                  icon={amenity.icone}
                   onSelect={() => handleSelect(amenity)}
                 />
               ))}
