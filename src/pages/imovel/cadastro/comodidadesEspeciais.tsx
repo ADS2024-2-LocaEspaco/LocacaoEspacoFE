@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Image from 'next/image';
 import { FaWifi, FaTv, FaSwimmingPool, FaUmbrellaBeach } from 'react-icons/fa';
 import { TbAirConditioning  } from "react-icons/tb";
 import { MdKitchen, MdLocalLaundryService, MdOutdoorGrill } from "react-icons/md";
@@ -57,9 +58,11 @@ const ComodidadeEspecial: React.FC = () => {
       <NavbarCadastro />
       <div className="flex h-screen">
         <div className="w-1/2">
-          <img
-            src="https://s3-alpha-sig.figma.com/img/5be6/f405/4f3a60aba9e90c098083cce713269dfb?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Q5daj21ZHyeTeqd7EFEkzwqVJfS-p-qWYXr2QjLoQXiCwutsekNhoiIxeHowAjZB6sWQ9W3Uk7NBNpqLY0MWh74ZQvbsMvcnJ07P69uJvk5h5n9cUnSajT18CnvSnG7l6nqjM-hgJ9NQKbZFFowQLV7ZzD3vth9fzi2OvQCgR~lL8ejuz-YB2nEpnjPabvB-yvXYmkXbsywgeUpS1PA77HIpZe5efg1uRYSkKE9Dgwf1gUh47XlAXy5CoBLQyDtangxcTp6JJ7QuUPT0KrN0j~3Ok9pNjUQzZSHlgV0GmTgDHjmWe2BpHqv8JmVnANroOSzJ1qjXx-xiYncgYjlwdw__"
-            alt="Imagem de imóvel"
+          <Image
+            src="/assets/imgs/comodidades-especiais-img.jfif"
+            alt="Imagem de comodidades especiais"
+            width={500}
+            height={500}
             className="w-full h-full object-cover"
           />
         </div>

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Image from 'next/image';
 import styles from '@/styles/LayoutCadImovel.module.css';
 import { PiVideoCameraFill, PiVideoCameraSlashFill } from "react-icons/pi";
 import NavbarCadastro from '@/components/navbarCadastro';
@@ -40,9 +41,11 @@ const Camera: React.FC = () => {
       <div className="flex h-screen">
         {/* Left Side */}
         <div className="w-1/2">
-          <img
-            src="https://s3-alpha-sig.figma.com/img/2ed7/da69/10de204ec39c3164bb375faeadf39d2e?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=FbvvDeLgJnS-88~nJRrtAiEy0oKNmiUQYJ3ENyk1KSUu33FwXtu~LkPSDA2DhOjUF09BuUWy8lY8otQXwe9QUgbp04uIyC4pcUqnPtfa-AL1Wn3crHM9CaZRD3rv5ejjtxTtAv6AWiIuGR6KWVCRop0rs-GBC5W8GU9OD1KyegzVgmqcQz9we8ZvztP0CcVO2zaCcJhelfn8HQIoZW-St4VMJGNKoyCGMdF3j7RjPkSCrdC9LRTidNVEzJr0K0Y9VkQJh28RYHcAhPSN5K4qhtgEYPUHkkf8-ZfUT0yeyjILGmSjYLofqUFNr4VJ3Djg-m-XRcMtEcl2aBQxgQkppw__"
-            alt="Imagem de imóvel"
+          <Image
+            src="/assets/imgs/camera-img.jfif"
+            alt="Imagem de imagens"
+            width={500}
+            height={500}
             className="w-full h-full object-cover"
           />
         </div>
