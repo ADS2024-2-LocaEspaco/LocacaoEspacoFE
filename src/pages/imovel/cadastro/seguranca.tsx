@@ -48,25 +48,15 @@ const Seguranca: React.FC = () => {
   return (
     <>
       <NavbarCadastro />
-<<<<<<< HEAD
-      <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
-        <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
-          <img
-            src="https://s3-alpha-sig.figma.com/img/93b3/4f16/f2c5253605f82e28172c9b981bc02714?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=iuTrDsl1x46bDySs~jMw1qGfRaHqH4FfxnQMZpIiuGp8mUM0fbDsq1L8AGz5zRVhgZnx6Yxxttl0zWS85VjWUrWaQNDj9a4CG9OaUeeyTFyCrs4cwirjgbwI~xJMGV~TrTSM9pbTbEnKJxHRP9kxc-C0QzoxXP54q4ywigzjsNxHEV5hgccaRcmS-HpvMZB3j4jsrD3A0fXSKFKHITRDi5HyPKVnMI3cJ06t3JEurVIE8m6frAGSIbUXpZn8mUbcLCQr75soWan12Yho1UVMyM2kxgct0j6QWuKDc4mfbz~CWFGZOQAV-rirn1TwlWI4yBwM7g6c7JDmxPEEz6YStw__"
-            alt="Imagem de imóvel"
-            className="w-full h-full object-cover"
-          />
-=======
       <div className="flex h-screen">
         <div className="w-1/2">
-        <Image
-          src="/assets/imgs/seguranca-img.jfif"
-          alt="Imagem de seguranca"
-          width={500}
-          height={500}
-          className="w-full h-full object-cover"
-        />
->>>>>>> e2c23574a2229964150297c2dc3b1a09b1276b5e
+          <Image
+            src="/assets/imgs/seguranca-img.jfif"
+            alt="Imagem de seguranca"
+            width={500}
+            height={500}
+            className="w-full h-full object-cover"
+          />
         </div>
 
         {/* Right Side */}

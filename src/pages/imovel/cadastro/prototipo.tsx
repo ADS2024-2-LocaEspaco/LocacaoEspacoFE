@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { CiShare2, CiMap, CiHeart } from "react-icons/ci";
 import { IoBedOutline } from "react-icons/io5";
 import { MdOutlineShower } from "react-icons/md";
@@ -71,9 +72,11 @@ const Prototipo: React.FC = () => {
     <NavbarCadastro />
     <div className="flex h-screen">
       <div className="w-1/2">
-        <img
-          src="https://s3-alpha-sig.figma.com/img/01c3/32f0/973f90c8f0102a640416747c9670c93d?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Z4re3HAUQUjQwzmLumjAGpYfWkW302D6GyiOovusmYwmyrLxiuvPHEKT0wK0IBM6702AtiG21AihiG9hY017Qb6Q0M6~IKo-LH4b3jdIaoq3OBQ4nYLC444gMkyBi9O9oD6hdSzllYh3nh73nkq9M5Qmrk2Ee4422-DAslecZgg3c9mhsaaC9r~O8tXY-TQvz26Qs~G6n2ec1EQvmU8EUci5ZuwnexV~J6Akv8TEna6cPkpGV81K45OuJt5homOUUFiVhrUS22U7pdnX-ffLifiuxidc-hQZo~CBua8qatdx0l1K2go9KzH~g3PFEoKDj797-Qc38ez~fQZ5CjgTlg__"
-          alt="Imagem de imóvel"
+        <Image
+          src="/assets/imgs/prototipo-img.jfif"
+          alt="Imagem de protótipo"
+          width={500}
+          height={500}
           className="w-full h-full object-cover"
         />
       </div>

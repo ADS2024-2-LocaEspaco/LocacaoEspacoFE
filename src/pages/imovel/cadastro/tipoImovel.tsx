@@ -52,8 +52,8 @@ const TipoImovel: React.FC = () => {
       <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
         {/* Left Side */}
         <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
-          <img
-            src="https://s3-alpha-sig.figma.com/img/1501/2279/c79500a00fd6e87220ae2bf5fdd0d5e6?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=as7KjqgiZZKYf9IbGi339EYe5a3SZ5k0GRH9ZOx0GxvtG1ECY2HKbnKeNby0iOYHYNi1cY5TPIvm-~Q8v-Fq7rgMmDb78udBn0pClEfDkAqG8LiBzwikowwRfMMygdPmX-j3W8bri0W57FO-p299eoVb-mw8tOeLN23UzVZsiCjH46g9A5E32nJ6DXaYd9temE5Ku0uEqBOnOiyE4deAbGCOkuM4yMmBqDM-vc0RfgA8LFnSCoaXxhXJKezaMfM~9XNJmR-E4MIX5bFtkQGExbIcGaOpo6~P6F-FwMxxZTXC1~ouW~wkzL687TEwh9keY4TXxUYKn3HcNfs9Qu8n8A__"
+        <Image
+            src="/assets/imgs/tipo-imovel-img.jfif"
             alt="Imagem de imóvel"
             width={500}
             height={500}

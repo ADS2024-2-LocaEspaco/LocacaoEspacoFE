@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Image from 'next/image';
 import NavbarCadastro from "@/components/navbarCadastro";
 import useNavigation from "@/hooks/CadImovel";
 import { IoIosArrowBack } from "react-icons/io";
@@ -65,9 +66,11 @@ const BancoEpix: React.FC = () => {
       <div className="flex flex-col md:flex-row h-screen">
         {/* Left Side */}
         <div className="w-full md:w-1/2">
-          <img
-            src="https://s3-alpha-sig.figma.com/img/06dc/ea0b/4fb5c975d6ac59636c8f410f38489ced?Expires=1733097600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=L2z36sZISbiW93yo2AvfXzJaNM3s2gyT5BjO~PN~DCy9ngRgCAREi~t3cbZcXYh9950DkK9WRx9QCeRTYwv1WfJSAiKJQreKuauPRuPYokLkBEbvUktF6F7xqNZNvymAWnRehC8GNNwUGOPZ8EDNqp-dYmKWXklom2z5wNcNGjCu7wUjgkb1WRo~Eiv23MpF3TM3CvVWQSxO2FdUawb8ozt0uBVbGdAm0BL~rjqxmE43bdMgM8rg9-KZ391rLf8nLzFDjUhiDY4FcBYCZ2d85sDpINUGUQOpkYXxqW6RRJFflPKU513DXpM-MS6amYZJf2H0EGRUFoMLrT7o7uRnaw__"
-            alt="Imagem de imóvel"
+          <Image
+            src="/assets/imgs/pix-img.png"
+            alt="Imagem de banco e pix"
+            width={500}
+            height={500}
             className="w-full h-full object-cover"
           />
         </div>

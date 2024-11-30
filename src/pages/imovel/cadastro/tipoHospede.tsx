@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Image from 'next/image';
 import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import useNavigation from '@/hooks/CadImovel';
@@ -7,21 +8,21 @@ import { FaPerson } from "react-icons/fa6";
 import { PiBabyLight } from "react-icons/pi";
 import { PiBabyCarriageLight } from "react-icons/pi";
 
-interface tiposHospede {
+interface tipoHospede {
     name: string;
     value: number;
     icon: React.ReactNode;
 }
 
-const TiposHospede: tiposHospede[] = [
+const TipoHospede: tipoHospede[] = [
     { name: 'Adultos', value: 1, icon: <FaPerson size={32} /> },
     { name: 'Crainças', value: 2, icon: <PiBabyLight size={32} /> },
     { name: 'Bebês', value: 3, icon: <PiBabyCarriageLight size={32} /> },
 ];
 
-const tiposHospede: React.FC = () => {
+const tipoHospede: React.FC = () => {
     const { goToPreviousPage, goToNextPage } = useNavigation();
-    const [selectedItem, setSelectedItem] = React.useState<tiposHospede | null>(null);
+    const [selectedItem, setSelectedItem] = React.useState<tipoHospede | null>(null);
 
     useEffect(() => {
         const storedTiposHospede = localStorage.getItem('tipos_hospede');
@@ -31,7 +32,7 @@ const tiposHospede: React.FC = () => {
         }
     }, []);
 
-    const handleSelect = (item: tiposHospede) => {
+    const handleSelect = (item: tipoHospede) => {
         setSelectedItem(item);
         localStorage.setItem('tipos_hospede', JSON.stringify(item));
     }
@@ -41,11 +42,13 @@ const tiposHospede: React.FC = () => {
             <NavbarCadastro />
             <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
                 <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
-                    <img
-                        src="https://s3-alpha-sig.figma.com/img/dbc3/7368/b1a08463f573ddb97543b76154339184?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=d0pwqVCDrLuVsGQ1Pe5~RtnzkEry-A~E90kEwD57h77FuPpXEryhcWyCzObl9VpoBvMo6c9xlloA97lSI5-xl7FKgAMKzRK0q1tlVZlPiqQkVY~2vE63OAVYWtEavNxvzctTa7iFI-i1BDDLIkQdFLk3lSxM5QWeBI7ym2rl-~bLRdJ~nAf0SoEiFRFgm3CLaBpx8gexzMmAu1nXeu7lvtn5kqj4sSlYwTyb9giaaZifJQf5m3gnodt7qNcr4yB7V~dr0JMPhF9-gfn8nRoTzu5UxFe~pPC5zWS1AxoULb4k6MJdGMKPpcECfvdffhv8OGWMWAapTiq6hbABOO3XLg__"
-                        alt="Imagem de imóvel"
-                        className="w-full h-full object-cover"
-                    />
+                <Image
+                    src="/assets/imgs/tipo-hospede-img.png"
+                    alt="Imagem de camera"
+                    width={500}
+                    height={500}
+                    className="w-full h-full object-cover"
+                />
                 </div>
 
                 {/* Right Side */}
@@ -56,7 +59,7 @@ const tiposHospede: React.FC = () => {
                         </h1>
                         <p className="block text-gray-600 text-black font-bold mb-4">Selecione o tipo de hóspede que deseja receber:</p>
                         <div className="flex-shrink grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-10 rounded-md mt-4">
-                            {TiposHospede.map((tipoHospede, index) => (
+                            {TipoHospede.map((tipoHospede, index) => (
                                 <CardSelect
                                     key={index}
                                     value={tipoHospede.value}
@@ -79,4 +82,4 @@ const tiposHospede: React.FC = () => {
     )
 }
 
-export default tiposHospede;
+export default tipoHospede;

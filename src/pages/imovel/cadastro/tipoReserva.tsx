@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Image from 'next/image';
 import styles from '@/styles/LayoutCadImovel.module.css';
 import { SlEnergy } from "react-icons/sl";
 import { MdBlock } from "react-icons/md";
@@ -41,9 +42,11 @@ const TipoReserva: React.FC = () => {
       <NavbarCadastro />
       <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
         <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
-          <img
-            src="https://s3-alpha-sig.figma.com/img/bdf8/20d3/1ed24f348c4581a4a1d394d6fa73d1cd?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=cZAGi-ahcSL6ayyq7CVyvVYxf-JrRIRBiSFnVBu-WW15fN8ht8vbZ6unQaZc-jQk-Uc1HmbGh9NHk9-bWlXmR97bXxW4UWiThjfXwhENziaFvOOoozGWZkBBKpRAbUwMVs0sRWfQAXQ~qrVf81NGVkcgidnVQlmE3nWonfkSEVuoAHWvUIHhBUENlrZWXWXkh1M0kF6sA-rOaI0dBWOyVtmZnoJZVUxUIf~ElKvBcZ-sjuKwGbqczbxcx9BKyfBmGCG5BZbX00~EuyBMaPPd9smJOzlZYVROZcooq1FdPkzQGSQAUJNFtGZWW8QqKzNp15MuuJ9A2EcFyPpTHYEIxg__"
-            alt="Imagem de imóvel"
+          <Image
+            src="/assets/imgs/tipo-reserva-img.jfif"
+            alt="Imagem de tipo de reserva"
+            width={500}
+            height={500}
             className="w-full h-full object-cover"
           />
         </div>
