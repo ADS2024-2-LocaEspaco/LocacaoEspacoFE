@@ -59,7 +59,6 @@ const Comodidade: React.FC = () => {
 
   return (
     // Left Side
-<<<<<<< HEAD
     <>
       <NavbarCadastro />
       <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
@@ -70,20 +69,6 @@ const Comodidade: React.FC = () => {
             className="w-full h-full object-cover"
           />
         </div>
-=======
-  <>
-    <NavbarCadastro />
-    <div className="flex h-screen">
-      <div className="w-1/2">
-        <Image
-          src="/assets/imgs/comodidades-img.png"
-          alt="Imagem de comodidades"
-          width={500}
-          height={500}
-          className="w-full h-full object-cover"
-        />
-      </div>
->>>>>>> e2c23574a2229964150297c2dc3b1a09b1276b5e
 
         {/* Right Side */}
         <div className="w-full lg:w-1/2 h-screen flex-1 flex-col flex-shrink-0 justify-between bg-white p-4">
