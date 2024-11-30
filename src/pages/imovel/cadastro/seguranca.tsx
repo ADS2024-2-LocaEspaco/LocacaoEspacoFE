@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Image from 'next/image';
 import { FaCloud, FaFireAlt, FaFirstAid, FaExclamationTriangle } from 'react-icons/fa';
 import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -47,6 +48,7 @@ const Seguranca: React.FC = () => {
   return (
     <>
       <NavbarCadastro />
+<<<<<<< HEAD
       <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
         <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
           <img
@@ -54,6 +56,17 @@ const Seguranca: React.FC = () => {
             alt="Imagem de imóvel"
             className="w-full h-full object-cover"
           />
+=======
+      <div className="flex h-screen">
+        <div className="w-1/2">
+        <Image
+          src="/assets/imgs/seguranca-img.jfif"
+          alt="Imagem de seguranca"
+          width={500}
+          height={500}
+          className="w-full h-full object-cover"
+        />
+>>>>>>> e2c23574a2229964150297c2dc3b1a09b1276b5e
         </div>
 
         {/* Right Side */}

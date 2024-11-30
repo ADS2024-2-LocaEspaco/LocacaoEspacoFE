@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Image from 'next/image';
 import { FaRegBuilding, FaHouseUser } from 'react-icons/fa';
 import { FaHouseChimney, FaTreeCity, FaTent } from "react-icons/fa6";
 import { MdOutlineHouseSiding } from "react-icons/md";
@@ -50,12 +51,20 @@ const TipoImovel: React.FC = () => {
       <NavbarCadastro />
       <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
         {/* Left Side */}
+<<<<<<< HEAD
         <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
           <img
             src="https://s3-alpha-sig.figma.com/img/1501/2279/c79500a00fd6e87220ae2bf5fdd0d5e6?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=as7KjqgiZZKYf9IbGi339EYe5a3SZ5k0GRH9ZOx0GxvtG1ECY2HKbnKeNby0iOYHYNi1cY5TPIvm-~Q8v-Fq7rgMmDb78udBn0pClEfDkAqG8LiBzwikowwRfMMygdPmX-j3W8bri0W57FO-p299eoVb-mw8tOeLN23UzVZsiCjH46g9A5E32nJ6DXaYd9temE5Ku0uEqBOnOiyE4deAbGCOkuM4yMmBqDM-vc0RfgA8LFnSCoaXxhXJKezaMfM~9XNJmR-E4MIX5bFtkQGExbIcGaOpo6~P6F-FwMxxZTXC1~ouW~wkzL687TEwh9keY4TXxUYKn3HcNfs9Qu8n8A__"
+=======
+        <div className="w-1/2 h-full flex-1 flex-shrink-0">
+        <Image
+            src="/assets/imgs/tipo-imovel-img.jfif"
+>>>>>>> e2c23574a2229964150297c2dc3b1a09b1276b5e
             alt="Imagem de imóvel"
+            width={500}
+            height={500}
             className="w-full h-full object-cover"
-          />
+        />
         </div>
 
         {/* Right Side */}

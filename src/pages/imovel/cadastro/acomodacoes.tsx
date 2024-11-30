@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { FaUserFriends, FaBed, FaShower } from 'react-icons/fa';
 import { MdOutlineBedroomChild } from "react-icons/md";
 import NavbarCadastro from '@/components/navbarCadastro';
@@ -48,13 +49,13 @@ const Acomodacoes: React.FC = () => {
   return (
     <>
       <NavbarCadastro />
-      <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
-        <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
+      <div className="flex h-screen">
+        <div className="w-1/2">
           <img
             src="https://s3-alpha-sig.figma.com/img/07ad/7360/ca855784b357b785e6494395ee3d1fd8?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ZH5Pv2UPoHMJoIcpqYOLmYuNUBLkNic38Qq7bgvyO994xzV8zCVcfpKPTPly-d5CO2Gf4dWJUNuZiIeV-zzmVydneDEzM0SmMSc6jmpMBAJOum~7YURj2QmgR06aQduaFuxfNNxEiIr0L7K8DH4AT2tWZBfccD3gEPd6szq51E7EQkVA6Fg1QTOk1egTJL1jSvnMVtJdxfhRIho0tQQhPFsSNzh1O6~IdprewlhEQnJxNi4OwyD1mIeFLZ949Yen6iBeuBFtXVdh5xWv5RjZv2Pe4jAHpmYQPR0qWDG0GlGyTljDavbn~ovEnVTFclml-aWWNSfWjW6q7APXLiNmrA__"
             alt="Imagem de imóvel"
             className="w-full h-full object-cover"
-          />
+        />
         </div>
 
         {/* Right Side */}
