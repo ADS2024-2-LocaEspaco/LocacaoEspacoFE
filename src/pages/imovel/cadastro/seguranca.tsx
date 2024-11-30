@@ -4,7 +4,7 @@ import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import CardSelect from './components/CardSelect';
 import useNavigation from '@/hooks/CadImovel';
-import '@fontsource/josefin-sans'; 
+import '@fontsource/josefin-sans';
 
 interface SafetyItem {
   name: string;
@@ -47,8 +47,8 @@ const Seguranca: React.FC = () => {
   return (
     <>
       <NavbarCadastro />
-      <div className="flex h-screen">
-        <div className="w-1/2">
+      <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
+        <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
           <img
             src="https://s3-alpha-sig.figma.com/img/93b3/4f16/f2c5253605f82e28172c9b981bc02714?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=iuTrDsl1x46bDySs~jMw1qGfRaHqH4FfxnQMZpIiuGp8mUM0fbDsq1L8AGz5zRVhgZnx6Yxxttl0zWS85VjWUrWaQNDj9a4CG9OaUeeyTFyCrs4cwirjgbwI~xJMGV~TrTSM9pbTbEnKJxHRP9kxc-C0QzoxXP54q4ywigzjsNxHEV5hgccaRcmS-HpvMZB3j4jsrD3A0fXSKFKHITRDi5HyPKVnMI3cJ06t3JEurVIE8m6frAGSIbUXpZn8mUbcLCQr75soWan12Yho1UVMyM2kxgct0j6QWuKDc4mfbz~CWFGZOQAV-rirn1TwlWI4yBwM7g6c7JDmxPEEz6YStw__"
             alt="Imagem de imóvel"
@@ -57,21 +57,24 @@ const Seguranca: React.FC = () => {
         </div>
 
         {/* Right Side */}
-        <div className="w-1/2 flex flex-col justify-center items-center p-4 bg-white">
-          <h1 className="mb-4 text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
-            Segurança
-          </h1>
-          <div className="grid grid-cols-2 gap-10 rounded-md mt-20">
-            {safetyItems.map((safetyItem, index) => (
-              <CardSelect
-                key={index}
-                name={safetyItem.name}
-                icon={safetyItem.icon}
-                selected={selectedItems.some(item => item.name === safetyItem.name)}
-                onSelect={() => handleSelect(safetyItem)}
-              />
-            ))}
+        <div className="w-full lg:w-1/2 h-screen flex-1 flex-col flex-shrink-0 justify-between bg-white p-4">
+          <div className="flex flex-col items-center">
+            <h1 className="mb-4 text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
+              Segurança
+            </h1>
+            <div className="flex-shrink grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-10 rounded-md mt-40 mb-40">
+              {safetyItems.map((safetyItem, index) => (
+                <CardSelect
+                  key={index}
+                  name={safetyItem.name}
+                  icon={safetyItem.icon}
+                  selected={selectedItems.some(item => item.name === safetyItem.name)}
+                  onSelect={() => handleSelect(safetyItem)}
+                />
+              ))}
+            </div>
           </div>
+
           <div className="flex justify-between items-center w-full mt-4">
             <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage} />
             <IoIosArrowForward className="text-6xl cursor-pointer text-black" onClick={goToNextPage} />

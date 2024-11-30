@@ -6,7 +6,7 @@ import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import useNavigation from '@/hooks/CadImovel';
 import CardSelect from './components/CardSelect';
-import '@fontsource/josefin-sans'; 
+import '@fontsource/josefin-sans';
 
 interface TipoReserva {
   name: string;
@@ -39,8 +39,8 @@ const TipoReserva: React.FC = () => {
   return (
     <>
       <NavbarCadastro />
-      <div className="flex h-screen">
-        <div className="w-1/2">
+      <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
+        <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
           <img
             src="https://s3-alpha-sig.figma.com/img/bdf8/20d3/1ed24f348c4581a4a1d394d6fa73d1cd?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=cZAGi-ahcSL6ayyq7CVyvVYxf-JrRIRBiSFnVBu-WW15fN8ht8vbZ6unQaZc-jQk-Uc1HmbGh9NHk9-bWlXmR97bXxW4UWiThjfXwhENziaFvOOoozGWZkBBKpRAbUwMVs0sRWfQAXQ~qrVf81NGVkcgidnVQlmE3nWonfkSEVuoAHWvUIHhBUENlrZWXWXkh1M0kF6sA-rOaI0dBWOyVtmZnoJZVUxUIf~ElKvBcZ-sjuKwGbqczbxcx9BKyfBmGCG5BZbX00~EuyBMaPPd9smJOzlZYVROZcooq1FdPkzQGSQAUJNFtGZWW8QqKzNp15MuuJ9A2EcFyPpTHYEIxg__"
             alt="Imagem de imóvel"
@@ -49,23 +49,25 @@ const TipoReserva: React.FC = () => {
         </div>
 
         {/* Right Side */}
-        <div className="w-1/2 flex flex-col justify-center items-center p-4 bg-white">
-          <div className="text-gray-700 font-semibold text-center font-josefin">
+        <div className="w-full lg:w-1/2 h-screen flex-1 flex-col flex-shrink-0 justify-between bg-white p-4">
+          <div className="flex flex-col items-center">
             <h1 className="mb-40 text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
               Tipo de Reserva
             </h1>
+
+            <div className="flex-shrink grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-10 rounded-md mb-60 mt-20">
+              {tipoReservas.map((tipoReserva, index) => (
+                <CardSelect
+                  key={index}
+                  name={tipoReserva.name}
+                  selected={selectedItem?.value === tipoReserva.value}
+                  icon={tipoReserva.icon}
+                  onSelect={() => handleSelect(tipoReserva)}
+                />
+              ))}
+            </div>
           </div>
-          <div className="grid grid-cols-2 gap-10 rounded-md mb-40">
-            {tipoReservas.map((tipoReserva, index) => (
-              <CardSelect
-                key={index}
-                name={tipoReserva.name}
-                selected={selectedItem?.value === tipoReserva.value} 
-                icon={tipoReserva.icon}
-                onSelect={() => handleSelect(tipoReserva)}
-              />
-            ))}
-          </div>
+
           <div className="flex justify-between items-center w-full mt-4">
             <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage} />
             <IoIosArrowForward className="text-6xl cursor-pointer text-black" onClick={goToNextPage} />

@@ -4,7 +4,7 @@ import { MdOutlineBedroomChild } from "react-icons/md";
 import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import useNavigation from '@/hooks/CadImovel';
-import '@fontsource/josefin-sans'; 
+import '@fontsource/josefin-sans';
 
 interface Acomodacao {
   name: string;
@@ -48,8 +48,8 @@ const Acomodacoes: React.FC = () => {
   return (
     <>
       <NavbarCadastro />
-      <div className="flex h-screen">
-        <div className="w-1/2">
+      <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
+        <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
           <img
             src="https://s3-alpha-sig.figma.com/img/07ad/7360/ca855784b357b785e6494395ee3d1fd8?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ZH5Pv2UPoHMJoIcpqYOLmYuNUBLkNic38Qq7bgvyO994xzV8zCVcfpKPTPly-d5CO2Gf4dWJUNuZiIeV-zzmVydneDEzM0SmMSc6jmpMBAJOum~7YURj2QmgR06aQduaFuxfNNxEiIr0L7K8DH4AT2tWZBfccD3gEPd6szq51E7EQkVA6Fg1QTOk1egTJL1jSvnMVtJdxfhRIho0tQQhPFsSNzh1O6~IdprewlhEQnJxNi4OwyD1mIeFLZ949Yen6iBeuBFtXVdh5xWv5RjZv2Pe4jAHpmYQPR0qWDG0GlGyTljDavbn~ovEnVTFclml-aWWNSfWjW6q7APXLiNmrA__"
             alt="Imagem de imóvel"
@@ -58,34 +58,37 @@ const Acomodacoes: React.FC = () => {
         </div>
 
         {/* Right Side */}
-        <div className="w-1/2 flex flex-col justify-center items-center p-4 bg-white">
-          <h1 className="mb-4 text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
-            Acomodações e Hóspedes
-          </h1>
-          <div className="grid grid-cols-2 gap-10 rounded-md mt-20">
-            {acomodacoes.map((acomodacao, index) => (
-              <div
-                key={index}
-                className="flex flex-col items-center border border-gray-400 justify-center bg-white p-4 h-40 w-40 rounded-lg"
-              >
-                <p className="text-gray-700">{acomodacao.icon}</p>
-                <p className="mt-2 text-center font-josefin text-gray-700">{acomodacao.label}</p>
-                <div>
-                  <input
-                    type="number"
-                    min="0"
-                    value={values[acomodacao.name] || 0}
-                    onChange={(e) => handleInputChange(acomodacao.name, parseInt(e.target.value))}
-                    className="mt-2 ml-2 w-full text-center p-1 text-black font-josefin"
-                    placeholder="0"
-                  />
+        <div className="w-full lg:w-1/2 h-screen flex-1 flex-col flex-shrink-0 justify-between bg-white p-4">
+          <div className="flex flex-col items-center">
+            <h1 className="mb-4 text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
+              Acomodações e Hóspedes
+            </h1>
+            <div className="flex-shrink grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-10 rounded-md mt-20 mb-40">
+              {acomodacoes.map((acomodacao, index) => (
+                <div
+                  key={index}
+                  className="flex flex-col items-center border border-gray-400 justify-center bg-white p-4 h-40 w-40 rounded-lg"
+                >
+                  <p className="text-gray-700">{acomodacao.icon}</p>
+                  <p className="mt-2 text-center font-josefin text-gray-700">{acomodacao.label}</p>
+                  <div>
+                    <input
+                      type="number"
+                      min="0"
+                      value={values[acomodacao.name] || 0}
+                      onChange={(e) => handleInputChange(acomodacao.name, parseInt(e.target.value))}
+                      className="mt-2 ml-2 w-full text-center p-1 text-black font-josefin"
+                      placeholder="0"
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+
           <div className="flex justify-between items-center w-full mt-4">
-            <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage}/>
-            <IoIosArrowForward className="text-6xl cursor-pointer text-black" onClick={goToNextPage}/>
+            <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage} />
+            <IoIosArrowForward className="text-6xl cursor-pointer text-black" onClick={goToNextPage} />
           </div>
         </div>
       </div>
