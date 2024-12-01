@@ -7,21 +7,31 @@ import CardSelect from './components/CardSelect';
 import '@fontsource/josefin-sans';
 
 interface Room {
-  name: string;
-  value: number;
+  espaco: string;
+  id: number;
 }
-
-const rooms: Room[] = [
-  { name: 'Espaço Inteiro', value: 1 },
-  { name: 'Quarto Privativo', value: 2 },
-  { name: 'Quarto Compartilhado', value: 3 },
-];
 
 const TipoEspaco: React.FC = () => {
   const { goToPreviousPage, goToNextPage } = useNavigation();
   const [selectedItem, setSelectedItem] = React.useState<Room | null>(null);
+  const [rooms, setRooms] = React.useState<Room[]>([]);
 
   useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/anuncio/get-tipo-espaco');
+        if (!response.ok) {
+          throw new Error('Erro ao buscar tipos de espaço');
+        }
+        const data: Room[] = await response.json();
+        setRooms(data);
+      } catch (error) {
+        console.error('Erro ao buscar tipos de espaço:', error);
+      }
+    };
+
+    fetchRooms();
+
     const storedSelection = localStorage.getItem("tipo_espaco");
     if (storedSelection) {
       const parsedSelection = JSON.parse(storedSelection);
@@ -40,13 +50,13 @@ const TipoEspaco: React.FC = () => {
       <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
         {/* Left Side */}
         <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
-        <Image
+          <Image
             src="/assets/imgs/tipo-espaco-img.png"
             alt="Imagem de tipo espaço"
             width={500}
             height={500}
             className="w-full h-full object-cover"
-        />
+          />
         </div>
 
         {/* Right Side */}
@@ -57,11 +67,11 @@ const TipoEspaco: React.FC = () => {
             </h1>
 
             <div className="flex-shrink grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 flex-1 flex-grow-0 gap-10 rounded-md place-self-center mt-60 mb-60">
-              {rooms.map((room, index) => (
+              {rooms.map((room) => (
                 <CardSelect
-                  key={index}
-                  name={room.name}
-                  selected={selectedItem?.value === room.value}
+                  key={room.id}
+                  name={room.espaco}
+                  selected={selectedItem?.id === room.id}
                   onSelect={() => handleSelect(room)}
                   value=""
                 />

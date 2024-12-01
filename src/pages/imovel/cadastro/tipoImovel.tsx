@@ -1,49 +1,78 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { FaRegBuilding, FaHouseUser } from 'react-icons/fa';
-import { FaHouseChimney, FaTreeCity, FaTent } from "react-icons/fa6";
-import { MdOutlineHouseSiding } from "react-icons/md";
-import { PiShippingContainerFill, PiFarm } from "react-icons/pi";
-import { GiEcology } from "react-icons/gi";
 import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import useNavigation from '@/hooks/CadImovel';
 import CardSelect from './components/CardSelect';
 import '@fontsource/josefin-sans';
+import * as FaIcons from 'react-icons/fa';
+import * as Fa6Icons from 'react-icons/fa6';
+import * as MdIcons from 'react-icons/md';
+import * as PiIcons from 'react-icons/pi';
+import * as GiIcons from 'react-icons/gi';
+import * as IoIcons from 'react-icons/io';
 
 interface Categoria {
-  name: string;
-  value: number;
-  icon: React.ReactNode;
+  imovel: string;
+  id: number;
+  icone: React.ReactNode;
 }
-
-const categorias: Categoria[] = [
-  { name: 'Casa', value: 1, icon: <FaHouseChimney size={32} /> },
-  { name: 'Apartamento', value: 2, icon: <FaRegBuilding size={32} /> },
-  { name: 'Cabana', value: 3, icon: <MdOutlineHouseSiding size={32} /> },
-  { name: 'Contêiner', value: 4, icon: <PiShippingContainerFill size={32} /> },
-  { name: 'Fazenda', value: 5, icon: <PiFarm size={32} /> },
-  { name: 'Casa Ecológica', value: 6, icon: <GiEcology size={32} /> },
-  { name: 'Casa de Hóspedes', value: 7, icon: <FaHouseUser size={32} /> },
-  { name: 'Casa de Árvore', value: 8, icon: <FaTreeCity size={32} /> },
-  { name: 'Tenda', value: 9, icon: <FaTent size={32} /> },
-];
 
 const TipoImovel: React.FC = () => {
   const { goToPreviousPage, goToNextPage } = useNavigation();
-  const [selectedCategory, setSelectedCategory] = React.useState<Categoria | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<Categoria | null>(null);
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
+
+  const resolveIcon = (iconName: string): React.ReactNode => {
+    const iconLibrary = { ...FaIcons, ...Fa6Icons, ...MdIcons, ...PiIcons, ...GiIcons, ...IoIcons };
+    const IconComponent = iconLibrary[iconName as keyof typeof iconLibrary];
+    return IconComponent ? <IconComponent size={32} /> : null;
+  };
 
   useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/anuncio/get-tipo-imovel');
+        if (!response.ok) {
+          throw new Error('Erro ao buscar tipos de imóveis');
+        }
+        const data: Categoria[] = await response.json();
+  
+        const categoriasWithIcons = data.map((item) => ({
+          ...item,
+          icone: resolveIcon(item.icone), // Resolva o ícone aqui
+        }));
+  
+        setCategorias(categoriasWithIcons);
+      } catch (error) {
+        console.error('Erro ao buscar tipos de imóveis:', error);
+      }
+    };
+  
+    fetchCategorias();
+  
     const storedSelection = localStorage.getItem("tipo_imovel");
     if (storedSelection) {
       const parsedSelection: Categoria = JSON.parse(storedSelection);
-      setSelectedCategory(parsedSelection);
+      const resolvedIcon = resolveIcon(parsedSelection.icone); // Use parsedSelection em vez de category
+      setSelectedCategory({
+        ...parsedSelection,
+        icone: resolvedIcon,
+      });
     }
   }, []);
 
   const handleSelect = (category: Categoria) => {
-    setSelectedCategory(category);
-    localStorage.setItem("tipo_imovel", JSON.stringify(category));
+    const resolvedIcon = resolveIcon(category.icone);
+    setSelectedCategory({
+      ...category,
+      icone: resolvedIcon,
+    });
+
+    localStorage.setItem("tipo_imovel", JSON.stringify({
+      ...category,
+      icone: category.icone,
+    }));
   };
 
   return (
@@ -52,13 +81,13 @@ const TipoImovel: React.FC = () => {
       <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
         {/* Left Side */}
         <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
-        <Image
+          <Image
             src="/assets/imgs/tipo-imovel-img.jfif"
             alt="Imagem de imóvel"
             width={500}
             height={500}
             className="w-full h-full object-cover"
-        />
+          />
         </div>
 
         {/* Right Side */}
@@ -68,14 +97,14 @@ const TipoImovel: React.FC = () => {
               Tipo de Imóvel
             </h1>
             <div className="flex-shrink grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-6 rounded-md mt-20">
-              {categorias.map((categoria, index) => (
+              {categorias.map((categoria) => (
                 <CardSelect
-                  key={index}
-                  name={categoria.name}
-                  icon={categoria.icon}
-                  selected={selectedCategory?.value === categoria.value}
+                  key={categoria.id}
+                  value={categoria.id}
+                  name={categoria.imovel}
+                  selected={selectedCategory?.id === categoria.id}
+                  icon={categoria.icone}
                   onSelect={() => handleSelect(categoria)}
-                  value={''}
                 />
               ))}
             </div>
@@ -88,8 +117,6 @@ const TipoImovel: React.FC = () => {
         </div>
       </div>
     </>
-
-
   );
 };
 

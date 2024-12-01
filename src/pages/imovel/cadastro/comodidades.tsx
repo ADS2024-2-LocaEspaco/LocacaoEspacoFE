@@ -64,11 +64,11 @@ useEffect(() => {
 }, []);
 
   function handleSelect(amenity: Amenity) {
-    const isSelected = selectedItems.some(item => item.comodidade === amenity.comodidade); // Corrigir comparação
+    const isSelected = selectedItems.some(item => item.comodidade === amenity.comodidade);
 
     let updatedSelection;
     if (isSelected) {
-      updatedSelection = selectedItems.filter(item => item.comodidade !== amenity.comodidade); // Corrigir filtro
+      updatedSelection = selectedItems.filter(item => item.comodidade !== amenity.comodidade);
     } else {
       updatedSelection = [...selectedItems, amenity];
     }
