@@ -40,7 +40,7 @@ const TipoImovel: React.FC = () => {
   
         const categoriasWithIcons = data.map((item) => ({
           ...item,
-          icone: resolveIcon(item.icone), // Resolva o ícone aqui
+          icone: resolveIcon(item.icone),
         }));
   
         setCategorias(categoriasWithIcons);
@@ -54,7 +54,7 @@ const TipoImovel: React.FC = () => {
     const storedSelection = localStorage.getItem("tipo_imovel");
     if (storedSelection) {
       const parsedSelection: Categoria = JSON.parse(storedSelection);
-      const resolvedIcon = resolveIcon(parsedSelection.icone); // Use parsedSelection em vez de category
+      const resolvedIcon = resolveIcon(parsedSelection.icone);
       setSelectedCategory({
         ...parsedSelection,
         icone: resolvedIcon,

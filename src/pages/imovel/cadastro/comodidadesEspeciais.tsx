@@ -1,14 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { FaWifi, FaTv, FaSwimmingPool, FaUmbrellaBeach } from 'react-icons/fa';
-import { TbAirConditioning } from "react-icons/tb";
-import { MdKitchen, MdLocalLaundryService, MdOutdoorGrill } from "react-icons/md";
-import { RiBilliardsFill } from "react-icons/ri";
-import { PiFanFill } from "react-icons/pi";
-import styles from '@/styles/LayoutCadImovel.module.css'
 import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { useRouter } from 'next/router';
+import * as FaIcons from 'react-icons/fa';
+import * as MdIcons from 'react-icons/md';
+import * as TbIcons from 'react-icons/tb';
+import * as PiIcons from 'react-icons/pi';
 import CardSelect from './components/CardSelect';
 import useNavigation from '@/hooks/CadImovel';
 import '@fontsource/josefin-sans';
@@ -19,31 +16,54 @@ interface SpecialAmenity {
   icon: React.ReactNode;
 }
 
-const specialAmenities: SpecialAmenity[] = [
-  { name: 'Piscina', value: 1, icon: <FaSwimmingPool size={32} /> },
-  { name: 'Churrasqueira', value: 2, icon: <MdOutdoorGrill size={32} /> },
-  { name: 'Acesso à Praia', value: 3, icon: <FaUmbrellaBeach size={32} /> },
-  { name: 'Mesa de bilhar', value: 4, icon: <RiBilliardsFill size={32} /> },
-];
-
 const ComodidadeEspecial: React.FC = () => {
   const { goToPreviousPage, goToNextPage } = useNavigation();
-  const [selectedItems, setSelectedItems] = React.useState<SpecialAmenity[]>([]);
+  const [specialAmenities, setSpecialAmenities] = useState<SpecialAmenity[]>([]);
+  const [selectedItems, setSelectedItems] = useState<SpecialAmenity[]>([]);
+
+  const resolveIcon = (iconName: string): React.ReactNode => {
+    const iconLibrary = { ...FaIcons, ...MdIcons, ...TbIcons, ...PiIcons };
+    const IconComponent = iconLibrary[iconName as keyof typeof iconLibrary];
+    return IconComponent ? <IconComponent size={32} /> : null;
+  };
 
   useEffect(() => {
-    const storedSpecialAmenities = localStorage.getItem('comodidades_especiais');
-    if (storedSpecialAmenities) {
-      const parsedSpecialAmenities = JSON.parse(storedSpecialAmenities);
-      setSelectedItems(parsedSpecialAmenities);
+    const fetchSpecialAmenities = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/anuncio/get-comodidades');
+        if (!response.ok) {
+          throw new Error('Erro ao buscar comodidades especiais');
+        }
+        const data = await response.json();
+
+        const filteredAmenities = data.filter((item: any) => item.especial == 1);
+
+        const amenitiesWithIcons = filteredAmenities.map((item: any) => ({
+          ...item,
+          icon: resolveIcon(item.icone),
+        }));
+
+        setSpecialAmenities(amenitiesWithIcons);
+      } catch (error) {
+        console.error('Erro ao buscar comodidades especiais:', error);
+      }
+    };
+
+    fetchSpecialAmenities();
+
+    const storedSelection = localStorage.getItem('comodidades_especiais');
+    if (storedSelection) {
+      const parsedSelection = JSON.parse(storedSelection);
+      setSelectedItems(parsedSelection);
     }
   }, []);
 
   const handleSelect = (specialAmenity: SpecialAmenity) => {
-    const isSelected = selectedItems.some(item => item.name === specialAmenity.name);
+    const isSelected = selectedItems.some(item => item.comodidade === specialAmenity.comodidade);
 
     let updatedSelection;
     if (isSelected) {
-      updatedSelection = selectedItems.filter(item => item.name !== specialAmenity.name);
+      updatedSelection = selectedItems.filter(item => item.comodidade !== specialAmenity.comodidade);
     } else {
       updatedSelection = [...selectedItems, specialAmenity];
     }
@@ -53,17 +73,17 @@ const ComodidadeEspecial: React.FC = () => {
   };
 
   return (
-    // Left Side
     <>
       <NavbarCadastro />
       <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
+        {/* Left Side */}
         <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
           <Image
-              src="/assets/imgs/comodidades-especiais-img.jfif"
-              alt="Imagem de comodidades especiais"
-              width={500}
-              height={500}
-              className="w-full h-full object-cover"
+            src="/assets/imgs/comodidades-especiais-img.jfif"
+            alt="Imagem de comodidades especiais"
+            width={500}
+            height={500}
+            className="w-full h-full object-cover"
           />
         </div>
 
@@ -78,8 +98,8 @@ const ComodidadeEspecial: React.FC = () => {
                 <CardSelect
                   key={index}
                   value={specialAmenity.value}
-                  name={specialAmenity.name}
-                  selected={selectedItems.some(item => item.name === specialAmenity.name)}
+                  name={specialAmenity.comodidade}
+                  selected={selectedItems.some(item => item.comodidade === specialAmenity.comodidade)}
                   icon={specialAmenity.icon}
                   onSelect={() => handleSelect(specialAmenity)}
                 />

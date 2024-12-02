@@ -17,6 +17,7 @@ interface Amenity {
   name: string;
   value: number;
   icone: string;
+  especial: number;
 }
 
 const Comodidade: React.FC = () => {
@@ -38,10 +39,12 @@ useEffect(() => {
         throw new Error('Erro ao buscar comodidades');
       }
       const data: Amenity[] = await response.json();
+
+      const filteredAmenities = data.filter(item => item.especial == 0);
       
-      const amenitiesWithIcons = data.map((item) => ({
+      const amenitiesWithIcons = filteredAmenities.map(item => ({
         ...item,
-        icone: resolveIcon(item.icone)
+        icone: resolveIcon(item.icone),
       }));
 
       setAmenities(amenitiesWithIcons);
