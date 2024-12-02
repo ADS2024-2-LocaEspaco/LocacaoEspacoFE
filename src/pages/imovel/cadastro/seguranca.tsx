@@ -19,14 +19,12 @@ const Seguranca: React.FC = () => {
   const [selectedItems, setSelectedItems] = useState<SafetyItem[]>([]);
   const [safetyItems, setSafetyItems] = useState<SafetyItem[]>([]);
 
-  // Resolução de ícones
   const resolveIcon = (iconName: string): React.ReactNode => {
     const iconLibrary = { ...FaIcons };
     const IconComponent = iconLibrary[iconName];
     return IconComponent ? <IconComponent size={32} /> : null;
   };
 
-  // Busca de dados da API
   useEffect(() => {
     const fetchSafetyItems = async () => {
       try {
@@ -56,7 +54,6 @@ const Seguranca: React.FC = () => {
     }
   }, []);
 
-  // Manipulação de seleção
   const handleSelect = (item: SafetyItem) => {
     const isSelected = selectedItems.some(selected => selected.item_seguranca === item.item_seguranca);
 
