@@ -1,21 +1,21 @@
 import { useRouter } from 'next/router';
 
 const pages = [
-  '/imovel/cadastroImovel/tipoImovel',
-  '/imovel/cadastroImovel/tipoEspaco',
-  '/imovel/cadastroImovel/endereco',
-  '/imovel/cadastroImovel/acomodacoes',
-  '/imovel/cadastroImovel/comodidades',
-  '/imovel/cadastroImovel/comodidadesEspeciais',
-  '/imovel/cadastroImovel/seguranca',
-  '/imovel/cadastroImovel/imagem',
-  '/imovel/cadastroImovel/tituloEdescricao',
-  '/imovel/cadastroImovel/cameraAviso',
-  '/imovel/cadastroImovel/camera',
-  '/imovel/cadastroImovel/tipoReserva',
-  '/imovel/cadastroImovel/tiposHospede',
-  '/imovel/cadastroImovel/valorEreserva',
-  '/imovel/cadastroImovel/prototipo',
+  '/imovel/cadastro/tipoImovel',
+  '/imovel/cadastro/tipoEspaco',
+  '/imovel/cadastro/endereco',
+  '/imovel/cadastro/acomodacoes',
+  '/imovel/cadastro/comodidades',
+  '/imovel/cadastro/comodidadesEspeciais',
+  '/imovel/cadastro/seguranca',
+  '/imovel/cadastro/imagem',
+  '/imovel/cadastro/tituloEdescricao',
+  '/imovel/cadastro/cameraAviso',
+  '/imovel/cadastro/camera',
+  '/imovel/cadastro/tipoReserva',
+  '/imovel/cadastro/tiposHospede',
+  '/imovel/cadastro/valorEreserva',
+  '/imovel/cadastro/prototipo',
 ];
 
 const useNavigation = () => {
