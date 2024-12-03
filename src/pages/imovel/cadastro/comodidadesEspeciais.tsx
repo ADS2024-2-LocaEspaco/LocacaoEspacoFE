@@ -51,7 +51,7 @@ const ComodidadeEspecial: React.FC = () => {
 
     fetchSpecialAmenities();
 
-    const storedSelection = localStorage.getItem('comodidades_especiais');
+    const storedSelection = localStorage.getItem('comodidades');
     if (storedSelection) {
       const parsedSelection = JSON.parse(storedSelection);
       setSelectedItems(parsedSelection);
@@ -69,7 +69,7 @@ const ComodidadeEspecial: React.FC = () => {
     }
 
     setSelectedItems(updatedSelection);
-    localStorage.setItem('comodidades_especiais', JSON.stringify(updatedSelection));
+    localStorage.setItem('comodidades', JSON.stringify(updatedSelection));
   };
 
   return (

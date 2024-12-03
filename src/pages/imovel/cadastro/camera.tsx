@@ -10,13 +10,13 @@ import '@fontsource/josefin-sans';
 
 interface Camera {
   name: string;
-  value: number;
+  value: boolean;
   icon: React.ReactNode;
 }
 
 const cameras: Camera[] = [
-  { name: 'Sim', value: 1, icon: <PiVideoCameraFill size={32} /> },
-  { name: 'Não', value: 0, icon: <PiVideoCameraSlashFill size={32} /> }
+  { name: 'Sim', value: true, icon: <PiVideoCameraFill size={32} /> },
+  { name: 'Não', value: false, icon: <PiVideoCameraSlashFill size={32} /> }
 ];
 
 const Camera: React.FC = () => {

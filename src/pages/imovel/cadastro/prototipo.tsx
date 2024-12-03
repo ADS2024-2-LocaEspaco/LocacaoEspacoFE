@@ -56,7 +56,92 @@ const Prototipo: React.FC = () => {
     });
   }, []);
 
-  console.log(dados);
+  const handleSubmit = async () => {
+    try {
+      // Extrair os dados do localStorage
+      const tituloEdescricao = JSON.parse(localStorage.getItem('tituloEdescricao') || '{}');
+      const acomodacoes = JSON.parse(localStorage.getItem('acomodacoes') || '{}');
+      const comodidades = JSON.parse(localStorage.getItem('comodidades') || '[]');
+      const tipoImovel = JSON.parse(localStorage.getItem('tipo_imovel') || '{}');
+      const tipoReservaAtual = JSON.parse(localStorage.getItem('tipo_reserva') || '{}');
+      const fotos = JSON.parse(localStorage.getItem('fotos') || '[]'); // Assumindo que fotos já estão como URL strings
+      const seguranca = JSON.parse(localStorage.getItem('seguranca') || '[]');
+
+      const opcaoCameraRaw = localStorage.getItem('opcao_camera');
+      let cameras = false;
+
+      // Só pra pegar "cameras"
+      if (opcaoCameraRaw) {
+        try {
+          const opcaoCamera = JSON.parse(opcaoCameraRaw);
+          if (Array.isArray(opcaoCamera) && opcaoCamera.length > 0) {
+            cameras = opcaoCamera[0]?.value ?? false;
+          }
+        } catch (error) {
+          console.error('Erro ao parsear opcao_camera:', error);
+        }
+      }
+      
+      const enderecoKeys = ['cep', 'rua', 'numero', 'bairro', 'cidade', 'uf', 'complemento'];
+      const endereco = enderecoKeys.reduce((acc, key) => {
+        const value = localStorage.getItem(key);
+        if (value) acc[key] = value;
+        return acc;
+      }, {} as Record<string, string>);
+      
+      // Montar o payload para a API
+      const payload = {
+        titulo: tituloEdescricao.titulo,
+        descricao: tituloEdescricao.descricao,
+        tipo_imovel_id: tipoImovel.id,
+        tipo_espaco_id: 1,
+        quartos: acomodacoes.quartos,
+        camas: acomodacoes.camas,
+        banheiros: acomodacoes.banheiros,
+        hospedes: acomodacoes.hospedes,
+        comodidades: comodidades.map((item: { id: number }) => item.id),
+        seguranca: seguranca.map((item: { id: number }) => item.id),
+        fotos, // Assumindo que fotos são strings (URLs)
+        cameras: cameras, // Ajustar conforme sua lógica
+        tipo_reserva_atual: tipoReservaAtual.name,
+        tipo_hospede_id: 1, // Exemplo, substituir pelo valor correto
+        valor_diaria: 300, // Exemplo, substituir pelo valor correto
+        dias_minimo_antecedencia: 2, // Exemplo
+        dias_minimo_duracao: 1, // Exemplo
+        dias_maximo_duracao: 15, // Exemplo
+        endereco: {
+          cep: endereco.cep,
+          estado: endereco.uf,
+          cidade: endereco.cidade,
+          bairro: endereco.bairro,
+          rua: endereco.rua,
+          numero: endereco.numero,
+          complemento: endereco.complemento,
+        },
+      };
+  
+      console.log('Payload a ser enviado:', payload);
+  
+      // Fazer a requisição para o backend
+      const response = await fetch('/api/anuncios', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Erro na requisição: ${response.statusText}`);
+      }
+  
+      const responseData = await response.json();
+      console.log('Dados enviados com sucesso:', responseData);
+  
+      alert('Cadastro realizado com sucesso!');
+    } catch (error) {
+      console.error('Erro ao enviar os dados:', error);
+      alert('Erro ao enviar os dados. Tente novamente.');
+    }
+  };
 
   const acomodacoesArray = [
     { icon: <FiUsers size={20} />, label: 'Hóspedes', amount: dados.acomodacoes.hospedes },
@@ -158,7 +243,8 @@ const Prototipo: React.FC = () => {
           </label>
         </div>
         <div className="w-full mt-4 flex justify-end">
-          <button className="px-12 py-4 mt-4 text-white bg-blue-500 border rounded-3xl hover:bg-blue-600 focus:outline-none font-josefin">
+          <button className="px-12 py-4 mt-4 text-white bg-blue-500 border rounded-3xl hover:bg-blue-600 focus:outline-none font-josefin"
+          onClick={handleSubmit}>
               Cadastrar
           </button>
         </div>
