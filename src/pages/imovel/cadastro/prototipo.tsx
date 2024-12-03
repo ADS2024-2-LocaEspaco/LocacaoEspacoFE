@@ -168,7 +168,7 @@ const Prototipo: React.FC = () => {
 
       {/* Right Side */}
       <div className="w-full lg:w-1/2 h-screen flex-1 flex-col flex-shrink-0 justify-between bg-white p-4">
-        <h1 className="mb-20 text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
+        <h1 className=" text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
           Protótipo
         </h1>
         <div className="flex flex-col border border-gray-500 p-10 w-full h-auto rounded-2xl font-black text-gray-800">
@@ -236,14 +236,14 @@ const Prototipo: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="w-full mt-4">
+        <div className="w-full mt-2">
           <label className="inline-flex">
             <input type="checkbox" className="form-checkbox h-5 w-5 text-blue-600" />
             <p className="ml-2 text-gray-700 font-josefin">Eu li e concordo com os termos da <span className='text-blue-800'>Política e Privacidade</span></p>
           </label>
         </div>
-        <div className="w-full mt-4 flex justify-end">
-          <button className="px-12 py-4 mt-4 text-white bg-blue-500 border rounded-3xl hover:bg-blue-600 focus:outline-none font-josefin"
+        <div className="w-full mt-2 flex justify-end">
+          <button className="px-12 py-4 mt-2 text-white bg-blue-500 border rounded-3xl hover:bg-blue-600 focus:outline-none font-josefin"
           onClick={handleSubmit}>
               Cadastrar
           </button>

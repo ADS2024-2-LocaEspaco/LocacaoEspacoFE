@@ -16,6 +16,9 @@ const pages = [
   '/imovel/cadastro/tiposHospede',
   '/imovel/cadastro/valorEreserva',
   '/imovel/cadastro/prototipo',
+  '/imovel/cadastro/enderecoPessoal',
+  '/imovel/cadastro/bancoEpix',
+
 ];
 
 const useNavigation = () => {
