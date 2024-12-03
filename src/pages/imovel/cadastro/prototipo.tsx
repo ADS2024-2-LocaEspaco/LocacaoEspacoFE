@@ -155,8 +155,8 @@ const Prototipo: React.FC = () => {
     // Left Side
   <>
     <NavbarCadastro />
-    <div className="flex h-screen">
-      <div className="w-1/2">
+    <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
+      <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
         <Image
           src="/assets/imgs/prototipo-img.jfif"
           alt="Imagem de protótipo"
@@ -167,7 +167,7 @@ const Prototipo: React.FC = () => {
       </div>
 
       {/* Right Side */}
-      <div className="w-1/2 flex flex-col justify-center items-center p-4 bg-white">
+      <div className="w-full lg:w-1/2 h-screen flex-1 flex-col flex-shrink-0 justify-between bg-white p-4">
         <h1 className="mb-20 text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
           Protótipo
         </h1>

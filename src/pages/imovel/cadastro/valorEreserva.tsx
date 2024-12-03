@@ -128,9 +128,9 @@ const ValorEreserva: React.FC = () => {
     <>
       <NavbarCadastro />
       {/* Main Container */}
-      <div className="flex flex-col md:flex-row h-screen">
+      <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
         {/* Left Side */}
-        <div className="w-full md:w-1/2">
+        <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
           <Image
             src="/assets/imgs/valor-renda-img.jfif"
             alt="Imagem de valor"
@@ -141,8 +141,8 @@ const ValorEreserva: React.FC = () => {
         </div>
 
         {/* Right Side */}
-        <div className="w-full md:w-1/2 flex flex-col justify-start items-center p-4 bg-white">
-          <h1 className="mb-4 text-4xl text-gray-700 font-semibold font-josefin">Valor e Reserva</h1>
+        <div className="w-full lg:w-1/2 h-screen flex-1 flex-col flex-shrink-0 justify-between bg-white p-4">
+          <h1 className="mb-4 text-4xl text-gray-700 text-center font-semibold font-josefin">Valor e Reserva</h1>
           <div className="w-full px-8">
 
             {/* 1st input */}

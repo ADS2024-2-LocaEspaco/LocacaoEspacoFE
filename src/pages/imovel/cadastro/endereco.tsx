@@ -90,8 +90,8 @@ const Endereco: React.FC = () => {
   return (
     <>
       <NavbarCadastro />
-      <div className="flex flex-col md:flex-row h-screen">
-        <div className="w-full md:w-1/2 h-full">
+      <div className="flex h-screen overflow-hidden flex-col-reverse lg:flex-row">
+        <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0">
           {coordinates ? (
             <MapContainer
               center={coordinates}
@@ -113,7 +113,8 @@ const Endereco: React.FC = () => {
           )}
         </div>
 
-        <div className="w-1/2 h-screen flex-1 flex-col justify-between bg-white p-4">
+        {/* Right Side */}
+        <div className="w-full lg:w-1/2 h-screen flex-1 flex-col flex-shrink-0 justify-between bg-white p-4">
           <h1 className="text-[42px] font-semibold text-center text-gray-700">Endereço</h1>
           <form className="bg-white p-6 rounded-lg w-full">
             <div className="mb-4">

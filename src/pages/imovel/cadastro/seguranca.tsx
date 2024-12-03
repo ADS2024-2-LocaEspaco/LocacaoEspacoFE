@@ -71,8 +71,8 @@ const Seguranca: React.FC = () => {
   return (
     <>
       <NavbarCadastro />
-      <div className="flex h-screen">
-        <div className="w-1/2">
+      <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
+        <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
           <Image
             src="/assets/imgs/seguranca-img.jfif"
             alt="Imagem de segurança"

@@ -91,9 +91,9 @@ const EnderecoPessoal: React.FC = () => {
     <>
       <NavbarCadastro />
       {/* Main Container */}
-      <div className="flex flex-col md:flex-row h-screen">
+      <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
         {/* Left Side */}
-        <div className="w-full md:w-1/2 h-full">
+        <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
           {coordinates ? (
             <MapContainer
               center={coordinates}
@@ -116,7 +116,7 @@ const EnderecoPessoal: React.FC = () => {
         </div>
 
         {/* Right Side */}
-        <div className="w-1/2 h-screen flex-1 flex-col flex-shrink-0 justify-between bg-white p-4">
+        <div className="w-full lg:w-1/2 h-screen flex-1 flex-col flex-shrink-0 justify-between bg-white p-4">
           <h1 className="text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">Endereço Pessoal</h1>
           <div className="w-full px-8">
             <form className="bg-white p-6 rounded-lg w-full">
