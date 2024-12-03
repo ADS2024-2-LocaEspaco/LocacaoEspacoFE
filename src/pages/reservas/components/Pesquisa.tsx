@@ -9,6 +9,7 @@ const Pesquisa: React.FC<{ onFilter: (filters: any) => void }> = ({ onFilter }) 
         periodo: false,
         periodoInicio: '',
         periodoFim: '',
+        palavraChave: '',  
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,6 +27,18 @@ const Pesquisa: React.FC<{ onFilter: (filters: any) => void }> = ({ onFilter }) 
     return (
         <div className="flex flex-col p-4 bg-gray-100 rounded-md">
             <h2 className="text-xl font-bold mb-2">Pesquisar</h2>
+            
+                        <div className="mb-4">
+                    <input
+                    type="text"
+                    name="palavraChave"
+                    value={filters.palavraChave}
+                    onChange={handleChange}
+                    className="border px-2 py-1 w-full"
+                    
+                />
+            </div>
+
             <div className="flex flex-col p-4 mb-2">
                 <label className="block font-semibold">Filtros:</label>
                 <label>
@@ -49,6 +62,7 @@ const Pesquisa: React.FC<{ onFilter: (filters: any) => void }> = ({ onFilter }) 
                     Período de Reserva
                 </label>
             </div>
+            
             <div className="mb-2">
                 <label className="block font-semibold">Pesquisar por Período:</label>
                 <input
@@ -67,6 +81,7 @@ const Pesquisa: React.FC<{ onFilter: (filters: any) => void }> = ({ onFilter }) 
                     className="border px-2 py-1 ml-2"
                 />
             </div>
+            
             <button onClick={handleSubmit} className="bg-blue-500 text-white px-4 py-2 rounded">
                 Pesquisar
             </button>
@@ -75,4 +90,3 @@ const Pesquisa: React.FC<{ onFilter: (filters: any) => void }> = ({ onFilter }) 
 };
 
 export default Pesquisa;
-

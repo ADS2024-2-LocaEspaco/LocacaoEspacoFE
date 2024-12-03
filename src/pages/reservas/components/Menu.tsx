@@ -6,10 +6,11 @@ const Menu: React.FC = () => {
     const toggleSubmenu = () => {
         setSubmenuOpen(!submenuOpen);
     };
+    
 
     return (
-        <nav className="flex justify-between bg-white p-4 shadow-md">
-            <ul className="flex space-x-6 text-black">
+        <nav className="color_auto flex justify-between p-4 shadow-md">
+            <ul className="flex space-x-6">
                 <li>Reservas atuais</li>
                 <li>Histórico de reservas</li>
                 <li>Reservas futuras</li>
@@ -37,6 +38,25 @@ const Menu: React.FC = () => {
                     )}
                 </li>
             </ul>
+<style jsx>{`
+  /* Estilo para tema claro */
+  .color_auto {
+    background-color: white;
+    color: black;
+  }
+
+  /* Estilo para tema escuro */
+  @media (prefers-color-scheme: dark) {
+    .color_auto {
+      background-color: #1c1c1c;
+      color: white;
+      border black;
+    }
+  }
+
+      
+`}</style>
+            
         </nav>
     );
 };
