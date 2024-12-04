@@ -13,6 +13,9 @@ const ValorEreserva: React.FC = () => {
   const [minDias, setMinDias] = useState<number>(0);
   const [maxDias, setMaxDias] = useState<number>(0);
   const [antecedencia, setAntecedencia] = useState<number>(0);
+  const [error, setError] = useState<string>(""); 
+
+  const [isValid, setIsValid] = useState<boolean>(false); 
 
   const saveToLocalStorage = () => {
     const data = {
@@ -121,6 +124,15 @@ const ValorEreserva: React.FC = () => {
       const valorEreserva = JSON.parse(localStorage.getItem('valorEreserva') || '{}');
       valorEreserva.maxDias = newMaxDias;
       localStorage.setItem('valorEreserva', JSON.stringify(valorEreserva));
+    }
+  };
+
+  const handleNext = () => {
+    if (!isValid) {
+      setError("Por favor, preencha todos os campos corretamente.");
+    } else {
+      setError("");
+      goToNextPage();
     }
   };
 
@@ -264,9 +276,13 @@ const ValorEreserva: React.FC = () => {
               </div>
             </div>
           </div>
+          {error && <p className="text-red-500 mt-2">{error}</p>}
           <div className="flex justify-between items-center w-full mt-4">
             <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage} />
-            <IoIosArrowForward className="text-6xl cursor-pointer text-black" onClick={goToNextPage} />
+            <IoIosArrowForward
+                className="text-6xl cursor-pointer text-black"
+                onClick={handleNext}
+              />
           </div>
         </div>
       </div>

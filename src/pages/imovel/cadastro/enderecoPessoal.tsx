@@ -20,6 +20,14 @@ const EnderecoPessoal: React.FC = () => {
   const [numero, setNumero] = useState('');
   const [complemento, setComplemento] = useState('');
   const [coordinates, setCoordinates] = useState<[number, number] | null>(null);
+  const [errors, setErrors] = useState({
+    cep: '',
+    rua: '',
+    bairro: '',
+    cidade: '',
+    uf: '',
+    numero: '',
+  });
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem('cadastroEnderecoPessoal') || '{}');
@@ -87,23 +95,21 @@ const EnderecoPessoal: React.FC = () => {
     }
   };
 
-  const [isDirty, setIsDirty] = useState(false);
-
   const validateFields = () => {
-    if (!isDirty) {
-      alert('Por favor, preencha ou confirme os campos antes de continuar.');
-      return false;
-    }
-    
-    if (!cep || !rua || !bairro || !cidade || !uf || !numero) {
-      alert('Por favor, preencha todos os campos obrigatórios.');
-      return false;
-    }
-    
-    return true;
+    const newErrors = {
+      cep: cep ? '' : 'CEP é obrigatório',
+      rua: rua ? '' : 'Rua é obrigatória',
+      bairro: bairro ? '' : 'Bairro é obrigatório',
+      cidade: cidade ? '' : 'Cidade é obrigatória',
+      uf: uf ? '' : 'UF é obrigatório',
+      numero: numero ? '' : 'Número é obrigatório',
+    };
+    setErrors(newErrors);
+
+    return Object.values(newErrors).every((error) => !error);
   };
 
-  const handleNextPage = () => {
+  const handleNext = () => {
     if (validateFields()) {
       goToNextPage();
     }
@@ -154,7 +160,6 @@ const EnderecoPessoal: React.FC = () => {
                   value={cep}
                   onChange={(e) => {
                     setCep(e.target.value);
-                    setIsDirty(true);
                   }}
                   onKeyDown={handleCepKeyDown}
                   className="w-full px-4 py-2 border border-gray-300 rounded-xl text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -230,6 +235,17 @@ const EnderecoPessoal: React.FC = () => {
                   />
                 </div>
               </div>
+              {Object.values(errors).some((error) => error) && (
+              <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded-lg">
+                <ul>
+                  {Object.entries(errors)
+                    .filter(([_, error]) => error) 
+                    .map(([field, error]) => (
+                      <li key={field}>{error}</li>
+                    ))}
+                </ul>
+              </div>
+            )}
             </form>
           </div>
           <div className="flex justify-between items-center w-full mt-4">
@@ -238,9 +254,8 @@ const EnderecoPessoal: React.FC = () => {
               onClick={goToPreviousPage}
             />
             <IoIosArrowForward
-              className={`text-6xl cursor-pointer ${validateFields() ? 'text-black' : 'text-gray-400'
-                }`}
-              onClick={() => validateFields() && handleNextPage()}
+              className="text-6xl cursor-pointer text-black"
+              onClick={handleNext}
             />
           </div>
         </div>

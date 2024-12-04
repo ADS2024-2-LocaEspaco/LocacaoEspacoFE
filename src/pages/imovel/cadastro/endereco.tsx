@@ -20,6 +20,14 @@ const Endereco: React.FC = () => {
   const [numero, setNumero] = useState('');
   const [complemento, setComplemento] = useState('');
   const [coordinates, setCoordinates] = useState<[number, number] | null>(null);
+  const [errors, setErrors] = useState({
+    cep: '',
+    rua: '',
+    bairro: '',
+    cidade: '',
+    uf: '',
+    numero: '',
+  });
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem('cadastroEndereco') || '{}');
@@ -39,7 +47,7 @@ const Endereco: React.FC = () => {
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
-      return; 
+      return;
     }
     const endereco = { cep, rua, bairro, cidade, uf, numero, complemento };
     localStorage.setItem('cadastroEndereco', JSON.stringify(endereco));
@@ -84,6 +92,26 @@ const Endereco: React.FC = () => {
       } else {
         alert('CEP inválido');
       }
+    }
+  };
+
+  const validateFields = () => {
+    const newErrors = {
+      cep: cep ? '' : 'CEP é obrigatório',
+      rua: rua ? '' : 'Rua é obrigatória',
+      bairro: bairro ? '' : 'Bairro é obrigatório',
+      cidade: cidade ? '' : 'Cidade é obrigatória',
+      uf: uf ? '' : 'UF é obrigatório',
+      numero: numero ? '' : 'Número é obrigatório',
+    };
+    setErrors(newErrors);
+
+    return Object.values(newErrors).every((error) => !error);
+  };
+
+  const handleNext = () => {
+    if (validateFields()) {
+      goToNextPage();
     }
   };
 
@@ -194,10 +222,24 @@ const Endereco: React.FC = () => {
                 />
               </div>
             </div>
+            {Object.values(errors).some((error) => error) && (
+              <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded-lg">
+                <ul>
+                  {Object.entries(errors)
+                    .filter(([_, error]) => error) 
+                    .map(([field, error]) => (
+                      <li key={field}>{error}</li>
+                    ))}
+                </ul>
+              </div>
+            )}
           </form>
           <div className="flex justify-between items-center mt-4">
             <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage} />
-            <IoIosArrowForward className="text-6xl cursor-pointer text-black" onClick={goToNextPage} />
+            <IoIosArrowForward
+              className="text-6xl cursor-pointer text-black"
+              onClick={handleNext}
+            />
           </div>
         </div>
       </div>

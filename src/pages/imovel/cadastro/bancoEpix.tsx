@@ -15,6 +15,7 @@ const BancoEpix: React.FC = () => {
   const [conta, setConta] = useState<number>(0);
   const [digitoConta, setDigitoConta] = useState<number>(0);
   const [chave, setChave] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   // Load from localStorage only on first render
   useEffect(() => {
@@ -59,6 +60,24 @@ const BancoEpix: React.FC = () => {
   const handleButtonClick = (value: string) => {
     setSelectedOption(value);
   };
+
+    
+    const validateFields = () => {
+      if (!banco || !agencia || !digitoAgencia || !conta || !digitoConta || !chave || !selectedOption) {
+        setError("Todos os campos precisam ser preenchidos!"); 
+        return false;
+      }
+      setError(""); 
+      return true;
+    };
+  
+    
+    const handleSaveAndExit = () => {
+      if (validateFields()) {
+        
+        alert("Dados salvos com sucesso!"); 
+      }
+    };
 
   return (
     <>
@@ -254,13 +273,18 @@ const BancoEpix: React.FC = () => {
             </div>
           </div>
 
+          {error && <p className="text-red-500 mt-2">{error}</p>}
+
           {/* Navegação */}
           <div className="flex justify-between items-center w-full mt-8">
             <IoIosArrowBack
               className="text-6xl cursor-pointer text-black"
               onClick={goToPreviousPage}
             />
-            <button className="hidden sm:block bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600">
+            <button 
+              onClick={handleSaveAndExit} 
+              className="hidden sm:block bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600"
+            >
               Salvar e Sair
             </button>
           </div>

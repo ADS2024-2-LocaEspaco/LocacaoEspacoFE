@@ -9,6 +9,7 @@ const tituloEdescricao: React.FC = () => {
 
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
+  const [error, setError] = useState<string>('');
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem('tituloEdescricao') || '{}');
@@ -27,6 +28,22 @@ const tituloEdescricao: React.FC = () => {
     tituloEdescricao.descricao = descricao;
     localStorage.setItem('tituloEdescricao', JSON.stringify(tituloEdescricao));
   };
+
+  const validateFields = () => {
+    if (!titulo || !descricao) {
+      setError("Título e descrição são obrigatórios!"); 
+      return false;
+    }
+    setError(""); 
+    return true;
+  };
+
+  const handleNext = () => {
+    if (validateFields()) {
+      goToNextPage();
+    }
+  };
+
 
   return (
     <>
@@ -78,9 +95,13 @@ const tituloEdescricao: React.FC = () => {
               </div>
             </form>
           </div>
+          {error && <p className="text-red-500 mt-2">{error}</p>}
           <div className="flex justify-between items-center w-full mt-4">
             <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage} />
-            <IoIosArrowForward className="text-6xl cursor-pointer text-black" onClick={goToNextPage} />
+            <IoIosArrowForward 
+              className="text-6xl cursor-pointer text-black" 
+              onClick={handleNext} 
+            />
           </div>
         </div>
       </div>
