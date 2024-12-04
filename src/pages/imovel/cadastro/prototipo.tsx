@@ -63,9 +63,11 @@ const Prototipo: React.FC = () => {
       const acomodacoes = JSON.parse(localStorage.getItem('acomodacoes') || '{}');
       const comodidades = JSON.parse(localStorage.getItem('comodidades') || '[]');
       const tipoImovel = JSON.parse(localStorage.getItem('tipo_imovel') || '{}');
+      const tipoEspaco = JSON.parse(localStorage.getItem('tipo_espaco') || '{}');
       const tipoReservaAtual = JSON.parse(localStorage.getItem('tipo_reserva') || '{}');
       const fotos = JSON.parse(localStorage.getItem('fotos') || '[]'); // Assumindo que fotos já estão como URL strings
       const seguranca = JSON.parse(localStorage.getItem('seguranca') || '[]');
+      const cadastroEndereco = JSON.parse(localStorage.getItem('cadastroEndereco') || '{}');
 
       const opcaoCameraRaw = localStorage.getItem('opcao_camera');
       let cameras = false;
@@ -94,14 +96,14 @@ const Prototipo: React.FC = () => {
         titulo: tituloEdescricao.titulo,
         descricao: tituloEdescricao.descricao,
         tipo_imovel_id: tipoImovel.id,
-        tipo_espaco_id: 1,
+        tipo_espaco_id: tipoEspaco.id,
         quartos: acomodacoes.quartos,
         camas: acomodacoes.camas,
         banheiros: acomodacoes.banheiros,
         hospedes: acomodacoes.hospedes,
         comodidades: comodidades.map((item: { id: number }) => item.id),
         seguranca: seguranca.map((item: { id: number }) => item.id),
-        fotos, // Assumindo que fotos são strings (URLs)
+        fotos: ["https://via.placeholder.com/300", "https://via.placeholder.com/300"], // Assumindo que fotos são strings (URLs)
         cameras: cameras, // Ajustar conforme sua lógica
         tipo_reserva_atual: tipoReservaAtual.name,
         tipo_hospede_id: 1, // Exemplo, substituir pelo valor correto
@@ -109,21 +111,21 @@ const Prototipo: React.FC = () => {
         dias_minimo_antecedencia: 2, // Exemplo
         dias_minimo_duracao: 1, // Exemplo
         dias_maximo_duracao: 15, // Exemplo
-        endereco: {
-          cep: endereco.cep,
-          estado: endereco.uf,
-          cidade: endereco.cidade,
-          bairro: endereco.bairro,
-          rua: endereco.rua,
-          numero: endereco.numero,
-          complemento: endereco.complemento,
+        cadastroEndereco: {
+          cep: cadastroEndereco.cep,
+          estado: cadastroEndereco.uf,
+          cidade: cadastroEndereco.cidade,
+          bairro: cadastroEndereco.bairro,
+          rua: cadastroEndereco.rua,
+          numero: cadastroEndereco.numero,
+          complemento: cadastroEndereco.complemento,
         },
       };
   
       console.log('Payload a ser enviado:', payload);
   
       // Fazer a requisição para o backend
-      const response = await fetch('/api/anuncios', {
+      const response = await fetch('http://localhost:3000/anuncio/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -155,8 +157,8 @@ const Prototipo: React.FC = () => {
     // Left Side
   <>
     <NavbarCadastro />
-    <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
-      <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
+    <div className="flex h-screen">
+      <div className="w-1/2">
         <Image
           src="/assets/imgs/prototipo-img.jfif"
           alt="Imagem de protótipo"
@@ -167,8 +169,8 @@ const Prototipo: React.FC = () => {
       </div>
 
       {/* Right Side */}
-      <div className="w-full lg:w-1/2 h-screen flex-1 flex-col flex-shrink-0 justify-between bg-white p-4">
-        <h1 className=" text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
+      <div className="w-1/2 flex flex-col justify-center items-center p-4 bg-white">
+        <h1 className="mb-20 text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
           Protótipo
         </h1>
         <div className="flex flex-col border border-gray-500 p-10 w-full h-auto rounded-2xl font-black text-gray-800">
@@ -236,14 +238,14 @@ const Prototipo: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="w-full mt-2">
+        <div className="w-full mt-4">
           <label className="inline-flex">
             <input type="checkbox" className="form-checkbox h-5 w-5 text-blue-600" />
             <p className="ml-2 text-gray-700 font-josefin">Eu li e concordo com os termos da <span className='text-blue-800'>Política e Privacidade</span></p>
           </label>
         </div>
-        <div className="w-full mt-2 flex justify-end">
-          <button className="px-12 py-4 mt-2 text-white bg-blue-500 border rounded-3xl hover:bg-blue-600 focus:outline-none font-josefin"
+        <div className="w-full mt-4 flex justify-end">
+          <button className="px-12 py-4 mt-4 text-white bg-blue-500 border rounded-3xl hover:bg-blue-600 focus:outline-none font-josefin"
           onClick={handleSubmit}>
               Cadastrar
           </button>
