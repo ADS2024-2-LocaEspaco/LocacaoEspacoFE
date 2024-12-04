@@ -18,6 +18,7 @@ const Seguranca: React.FC = () => {
   const { goToPreviousPage, goToNextPage } = useNavigation();
   const [selectedItems, setSelectedItems] = useState<SafetyItem[]>([]);
   const [safetyItems, setSafetyItems] = useState<SafetyItem[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const resolveIcon = (iconName: string): React.ReactNode => {
     const iconLibrary = { ...FaIcons };
@@ -65,7 +66,22 @@ const Seguranca: React.FC = () => {
     }
 
     setSelectedItems(updatedSelection);
+    setError(null); 
     localStorage.setItem('seguranca', JSON.stringify(updatedSelection));
+  };
+
+  const validateFields = () => {
+    if (!selectedItems) {
+      setError('Por favor, selecione uma opção antes de continuar.');
+      return false;
+    }
+    return true;
+  };
+
+  const handleNext = () => {
+    if (validateFields()) {
+      goToNextPage();
+    }
   };
 
   return (
@@ -99,11 +115,15 @@ const Seguranca: React.FC = () => {
                 />
               ))}
             </div>
+            {error && <p className="text-red-500">{error}</p>}
           </div>
 
           <div className="flex justify-between items-center w-full mt-4">
             <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage} />
-            <IoIosArrowForward className="text-6xl cursor-pointer text-black" onClick={goToNextPage} />
+            <IoIosArrowForward 
+              className="text-6xl cursor-pointer text-black" 
+              onClick={handleNext} 
+            />
           </div>
         </div>
       </div>

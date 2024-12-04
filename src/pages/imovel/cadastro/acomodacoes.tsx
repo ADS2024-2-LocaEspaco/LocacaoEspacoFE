@@ -24,6 +24,7 @@ const Acomodacoes: React.FC = () => {
   const { goToPreviousPage, goToNextPage } = useNavigation();
 
   const [values, setValues] = useState<{ [key: string]: number }>({});
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const savedValues = localStorage.getItem('acomodacoes');
@@ -42,8 +43,24 @@ const Acomodacoes: React.FC = () => {
   const handleInputChange = (name: string, value: number) => {
     const newValues = { ...values, [name]: value };
     setValues(newValues);
-
+    setError(null); 
     localStorage.setItem('acomodacoes', JSON.stringify(newValues));
+  };
+
+  const validateFields = () => {
+    console.log("Valores atuais:", values);
+    const hasValidValue = Object.values(values).some((value) => value > 0);
+    if (!hasValidValue) {
+      setError('Por favor, preencha pelo menos um campo antes de continuar.');
+      return false;
+    }
+    return true;
+  };
+
+  const handleNextPage = () => {
+    if (validateFields()) {
+      goToNextPage();
+    }
   };
 
   return (
@@ -51,13 +68,13 @@ const Acomodacoes: React.FC = () => {
       <NavbarCadastro />
       <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
         <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
-        <Image
+          <Image
             src="/assets/imgs/acomodacoes-img.jfif"
             alt="Imagem de imóvel"
             width={500}
             height={500}
             className="w-full h-full object-cover"
-        />
+          />
         </div>
 
         {/* Right Side */}
@@ -89,9 +106,17 @@ const Acomodacoes: React.FC = () => {
             </div>
           </div>
 
+          {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
           <div className="flex justify-between items-center w-full mt-4">
             <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage} />
-            <IoIosArrowForward className="text-6xl cursor-pointer text-black" onClick={goToNextPage} />
+            <IoIosArrowForward
+              className="text-6xl cursor-pointer text-black"
+              onClick={() => {
+                console.log("Tentando avançar...");
+                handleNextPage();
+              }}
+            />
           </div>
         </div>
       </div>

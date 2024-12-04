@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import styles from '@/styles/LayoutCadImovel.module.css';
 import { SlEnergy } from "react-icons/sl";
@@ -23,6 +23,7 @@ const tipoReservas: TipoReserva[] = [
 const TipoReserva: React.FC = () => {
   const { goToPreviousPage, goToNextPage } = useNavigation();
   const [selectedItem, setSelectedItem] = React.useState<TipoReserva | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const storedSelection = localStorage.getItem("tipo_reserva");
@@ -34,7 +35,22 @@ const TipoReserva: React.FC = () => {
 
   const handleSelect = (item: TipoReserva) => {
     setSelectedItem(item);
+    setError(null);
     localStorage.setItem("tipo_reserva", JSON.stringify(item));
+  };
+
+  const validateFields = () => {
+    if (!selectedItem) {
+      setError('Por favor, selecione uma opção antes de continuar.');
+      return false;
+    }
+    return true;
+  };
+
+  const handleNext = () => {
+    if (validateFields()) {
+      goToNextPage();
+    }
   };
 
   return (
@@ -69,11 +85,15 @@ const TipoReserva: React.FC = () => {
                 />
               ))}
             </div>
+            {error && <p className="text-red-500">{error}</p>}
           </div>
 
           <div className="flex justify-between items-center w-full mt-4">
             <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage} />
-            <IoIosArrowForward className="text-6xl cursor-pointer text-black" onClick={goToNextPage} />
+            <IoIosArrowForward
+              className="text-6xl cursor-pointer text-black"
+              onClick={handleNext}
+            />
           </div>
         </div>
       </div>

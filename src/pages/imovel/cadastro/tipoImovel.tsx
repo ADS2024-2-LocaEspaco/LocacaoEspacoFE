@@ -22,6 +22,7 @@ const TipoImovel: React.FC = () => {
   const { goToPreviousPage, goToNextPage } = useNavigation();
   const [selectedCategory, setSelectedCategory] = useState<Categoria | null>(null);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const resolveIcon = (iconName: string): React.ReactNode => {
     const iconLibrary = { ...FaIcons, ...Fa6Icons, ...MdIcons, ...PiIcons, ...GiIcons, ...IoIcons };
@@ -37,20 +38,20 @@ const TipoImovel: React.FC = () => {
           throw new Error('Erro ao buscar tipos de imóveis');
         }
         const data: Categoria[] = await response.json();
-  
+
         const categoriasWithIcons = data.map((item) => ({
           ...item,
           icone: resolveIcon(item.icone),
         }));
-  
+
         setCategorias(categoriasWithIcons);
       } catch (error) {
         console.error('Erro ao buscar tipos de imóveis:', error);
       }
     };
-  
+
     fetchCategorias();
-  
+
     const storedSelection = localStorage.getItem("tipo_imovel");
     if (storedSelection) {
       const parsedSelection: Categoria = JSON.parse(storedSelection);
@@ -68,11 +69,25 @@ const TipoImovel: React.FC = () => {
       ...category,
       icone: resolvedIcon,
     });
-
+    setError(null);
     localStorage.setItem("tipo_imovel", JSON.stringify({
       ...category,
       icone: category.icone,
     }));
+  };
+
+  const validateFields = () => {
+    if (!selectedCategory) {
+      setError('Por favor, selecione uma opção antes de continuar.');
+      return false;
+    }
+    return true;
+  };
+
+  const handleNext = () => {
+    if (validateFields()) {
+      goToNextPage();
+    }
   };
 
   return (
@@ -108,11 +123,15 @@ const TipoImovel: React.FC = () => {
                 />
               ))}
             </div>
+            {error && <p className="text-red-500">{error}</p>}
           </div>
 
           <div className="flex justify-between items-center w-full mt-4">
             <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage} />
-            <IoIosArrowForward className="text-6xl cursor-pointer text-black" onClick={goToNextPage} />
+            <IoIosArrowForward
+              className="text-6xl cursor-pointer text-black"
+              onClick={handleNext}
+            />
           </div>
         </div>
       </div>

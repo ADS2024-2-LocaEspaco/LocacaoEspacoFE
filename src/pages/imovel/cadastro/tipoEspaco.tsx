@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -15,6 +15,7 @@ const TipoEspaco: React.FC = () => {
   const { goToPreviousPage, goToNextPage } = useNavigation();
   const [selectedItem, setSelectedItem] = React.useState<Room | null>(null);
   const [rooms, setRooms] = React.useState<Room[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -41,7 +42,22 @@ const TipoEspaco: React.FC = () => {
 
   const handleSelect = (item: Room) => {
     setSelectedItem(item);
+    setError(null); 
     localStorage.setItem("tipo_espaco", JSON.stringify(item));
+  };
+
+  const validateFields = () => {
+    if (!selectedItem) {
+      setError('Por favor, selecione uma opção antes de continuar.');
+      return false;
+    }
+    return true;
+  };
+
+  const handleNext = () => {
+    if (validateFields()) {
+      goToNextPage();
+    }
   };
 
   return (
@@ -77,6 +93,7 @@ const TipoEspaco: React.FC = () => {
                 />
               ))}
             </div>
+            {error && <p className="text-red-500">{error}</p>}
           </div>
 
           <div className="flex justify-between items-center w-full mt-4">
@@ -84,9 +101,9 @@ const TipoEspaco: React.FC = () => {
               className="text-6xl cursor-pointer text-black"
               onClick={goToPreviousPage}
             />
-            <IoIosArrowForward
-              className="text-6xl cursor-pointer text-black"
-              onClick={goToNextPage}
+            <IoIosArrowForward 
+              className="text-6xl cursor-pointer text-black" 
+              onClick={handleNext} 
             />
           </div>
         </div>

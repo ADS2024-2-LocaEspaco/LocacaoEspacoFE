@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import styles from '@/styles/LayoutCadImovel.module.css';
 import { PiVideoCameraFill, PiVideoCameraSlashFill } from "react-icons/pi";
@@ -22,7 +22,8 @@ const cameras: Camera[] = [
 const Camera: React.FC = () => {
   const { goToPreviousPage, goToNextPage } = useNavigation();
   const [selectedItem, setSelectedItem] = React.useState<Camera | null>(null);
-
+  const [error, setError] = useState<string | null>(null);
+  
   useEffect(() => {
     const selectedOption = localStorage.getItem('opcao_camera');
     if (selectedOption) {
@@ -32,7 +33,22 @@ const Camera: React.FC = () => {
 
   const handleSelect = (item: Camera) => {
     setSelectedItem(item);
+    setError(null); 
     localStorage.setItem('opcao_camera', JSON.stringify([item]));
+  };
+
+  const validateFields = () => {
+    if (!selectedItem) {
+      setError('Por favor, selecione uma opção antes de continuar.');
+      return false;
+    }
+    return true;
+  };
+
+  const handleNext = () => {
+    if (validateFields()) {
+      goToNextPage();
+    }
   };
 
   return (
@@ -70,11 +86,15 @@ const Camera: React.FC = () => {
                 />
               ))}
             </div>
+            {error && <p className="text-red-500">{error}</p>}
           </div>
 
           <div className="flex justify-between items-center w-full mt-4">
             <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage} />
-            <IoIosArrowForward className="text-6xl cursor-pointer text-black" onClick={goToNextPage} />
+            <IoIosArrowForward 
+              className="text-6xl cursor-pointer text-black" 
+              onClick={handleNext} 
+            />
           </div>
         </div>
       </div>

@@ -13,7 +13,7 @@ const pages = [
   '/imovel/cadastro/cameraAviso',
   '/imovel/cadastro/camera',
   '/imovel/cadastro/tipoReserva',
-  '/imovel/cadastro/tiposHospede',
+  '/imovel/cadastro/tipoHospede',
   '/imovel/cadastro/valorEreserva',
   '/imovel/cadastro/prototipo',
   '/imovel/cadastro/enderecoPessoal',
