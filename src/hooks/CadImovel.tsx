@@ -16,8 +16,14 @@ const pages = [
   '/imovel/cadastro/tipoHospede',
   '/imovel/cadastro/valorEreserva',
   '/imovel/cadastro/prototipo',
+  '/imovel/cadastro/comodidadesExtra',
+  '/imovel/cadastro/regrasExtra',
+  '/imovel/cadastro/cancelamentoExtra',
+
+
+  /*
   '/imovel/cadastro/enderecoPessoal',
-  '/imovel/cadastro/bancoEpix',
+  '/imovel/cadastro/bancoEpix',*/
 
 ];
 
