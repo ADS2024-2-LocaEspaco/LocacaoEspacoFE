@@ -113,6 +113,13 @@ const CancelamentoExtra: React.FC = () => {
             {error && <p className="text-red-500 mt-4">{error}</p>}
           </div>
 
+          <div className="w-full mt-4 flex justify-end">
+            <button className="px-12 py-4 mt-10 text-white bg-blue-500 border rounded-3xl hover:bg-blue-600 focus:outline-none font-josefin"
+            >
+                Salvar e Sair
+            </button>
+          </div>
+
           {/* Navegação */}
           <div className="flex justify-between items-center w-full mt-4">
             <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage} />
