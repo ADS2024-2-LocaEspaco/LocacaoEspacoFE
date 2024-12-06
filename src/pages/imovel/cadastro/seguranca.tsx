@@ -7,6 +7,7 @@ import CardSelect from './components/CardSelect';
 import useNavigation from '@/hooks/CadImovel';
 import '@fontsource/josefin-sans';
 
+
 interface SafetyItem {
   item_seguranca: string;
   icon: React.ReactNode;
@@ -14,17 +15,20 @@ interface SafetyItem {
   especial: number;
 }
 
+
 const Seguranca: React.FC = () => {
   const { goToPreviousPage, goToNextPage } = useNavigation();
-  const [selectedItems, setSelectedItems] = useState<SafetyItem[]>([]);
+  const [selectedItem, setSelectedItem] = useState<SafetyItem | null>(null);
   const [safetyItems, setSafetyItems] = useState<SafetyItem[]>([]);
   const [error, setError] = useState<string | null>(null);
+
 
   const resolveIcon = (iconName: string): React.ReactNode => {
     const iconLibrary = { ...FaIcons };
     const IconComponent = iconLibrary[iconName];
     return IconComponent ? <IconComponent size={32} /> : null;
   };
+
 
   useEffect(() => {
     const fetchSafetyItems = async () => {
@@ -35,10 +39,12 @@ const Seguranca: React.FC = () => {
         }
         const data = await response.json();
 
+
         const itemsWithIcons = data.map((item: SafetyItem) => ({
           ...item,
           icon: resolveIcon(item.icon),
         }));
+
 
         setSafetyItems(itemsWithIcons);
       } catch (error) {
@@ -46,43 +52,45 @@ const Seguranca: React.FC = () => {
       }
     };
 
+
     fetchSafetyItems();
+
 
     const storedSelection = localStorage.getItem('seguranca');
     if (storedSelection) {
-      const parsedSelection: SafetyItem[] = JSON.parse(storedSelection);
-      setSelectedItems(parsedSelection);
+      const parsedSelection: SafetyItem = JSON.parse(storedSelection);
+      setSelectedItem(parsedSelection);
     }
   }, []);
 
+
   const handleSelect = (item: SafetyItem) => {
-    const isSelected = selectedItems.some(selected => selected.item_seguranca === item.item_seguranca);
-
-    let updatedSelection: SafetyItem[];
-    if (isSelected) {
-      updatedSelection = selectedItems.filter(selected => selected.item_seguranca !== item.item_seguranca);
+    if (selectedItem?.item_seguranca === item.item_seguranca) {
+      setSelectedItem(null);
+      localStorage.removeItem('seguranca');
     } else {
-      updatedSelection = [...selectedItems, item];
+      setSelectedItem(item);
+      setError(null);
+      localStorage.setItem('seguranca', JSON.stringify(item));
     }
-
-    setSelectedItems(updatedSelection);
-    setError(null); 
-    localStorage.setItem('seguranca', JSON.stringify(updatedSelection));
   };
 
+
   const validateFields = () => {
-    if (!selectedItems) {
+    if (!selectedItem) {
       setError('Por favor, selecione uma opção antes de continuar.');
       return false;
     }
     return true;
   };
 
+
   const handleNext = () => {
     if (validateFields()) {
       goToNextPage();
     }
   };
+
 
   return (
     <>
@@ -98,6 +106,7 @@ const Seguranca: React.FC = () => {
           />
         </div>
 
+
         {/* Lado direito */}
         <div className="w-full lg:w-1/2 h-screen flex-1 flex-col flex-shrink-0 justify-between bg-white p-4">
           <div className="flex flex-col items-center">
@@ -110,7 +119,7 @@ const Seguranca: React.FC = () => {
                   key={index}
                   name={item.item_seguranca}
                   icon={item.icon}
-                  selected={selectedItems.some(selected => selected.item_seguranca === item.item_seguranca)}
+                  selected={selectedItem?.item_seguranca === item.item_seguranca}
                   onSelect={() => handleSelect(item)}
                 />
               ))}
@@ -118,11 +127,12 @@ const Seguranca: React.FC = () => {
             {error && <p className="text-red-500">{error}</p>}
           </div>
 
+
           <div className="flex justify-between items-center w-full mt-4">
             <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage} />
-            <IoIosArrowForward 
-              className="text-6xl cursor-pointer text-black" 
-              onClick={handleNext} 
+            <IoIosArrowForward
+              className="text-6xl cursor-pointer text-black"
+              onClick={handleNext}
             />
           </div>
         </div>
@@ -130,5 +140,6 @@ const Seguranca: React.FC = () => {
     </>
   );
 };
+
 
 export default Seguranca;

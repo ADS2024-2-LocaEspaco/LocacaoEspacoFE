@@ -9,8 +9,9 @@ import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useRouter } from 'next/router';
 import useNavigation from '@/hooks/CadImovel';
-import '@fontsource/josefin-sans'; 
+import '@fontsource/josefin-sans';
 import tituloEdescricao from './tituloEdescricao';
+
 
 interface Prototipo {
   name: string;
@@ -18,8 +19,9 @@ interface Prototipo {
   icon: React.ReactNode;
 }
 
+
 const Prototipo: React.FC = () => {
-  
+ 
   const [dados, setDados] = useState({
     tituloEdescricao: {titulo: '', descricao: ''},
     acomodacoes: { quartos: 0, camas: 0, banheiros: 0, hospedes: 0 },
@@ -28,21 +30,21 @@ const Prototipo: React.FC = () => {
     valorReserva: { valor: 0, minDias: 0, maxDias: 0, antecedencia: 0 },
     endereco: [] as any[]
   });
-  
+ 
   useEffect(() => {
     const tituloEdescricao = JSON.parse(localStorage.getItem('tituloEdescricao') || '{}');
     const acomodacoes = JSON.parse(localStorage.getItem('acomodacoes') || '{}');
     const comodidades = JSON.parse(localStorage.getItem('comodidades') || '[]');
     const comodidadesEspciais = JSON.parse(localStorage.getItem('comodidadesEspciais') || '[]');
     const valorReserva = JSON.parse(localStorage.getItem('valorEreserva') || '{}');
-    
+   
     const enderecoKeys = ['cep', 'rua', 'numero', 'bairro', 'cidade', 'uf', 'complemento'];
     const endereco = enderecoKeys.reduce((acc, key) => {
       const value = localStorage.getItem(key);
       if (value) acc[key] = value;
       return acc;
     }, {} as Record<string, string>);
-    
+   
     setDados({
       tituloEdescricao: {
         titulo: tituloEdescricao.titulo || '',
@@ -56,6 +58,7 @@ const Prototipo: React.FC = () => {
     });
   }, []);
 
+
   const handleSubmit = async () => {
     try {
       // Extrair os dados do localStorage
@@ -66,11 +69,13 @@ const Prototipo: React.FC = () => {
       const tipoEspaco = JSON.parse(localStorage.getItem('tipo_espaco') || '{}');
       const tipoReservaAtual = JSON.parse(localStorage.getItem('tipo_reserva') || '{}');
       const fotos = JSON.parse(localStorage.getItem('fotos') || '[]'); // Assumindo que fotos já estão como URL strings
-      const seguranca = JSON.parse(localStorage.getItem('seguranca') || '[]');
+      const seguranca = JSON.parse(localStorage.getItem('seguranca') || '{}');
       const cadastroEndereco = JSON.parse(localStorage.getItem('cadastroEndereco') || '{}');
+
 
       const opcaoCameraRaw = localStorage.getItem('opcao_camera');
       let cameras = false;
+
 
       // Só pra pegar "cameras"
       if (opcaoCameraRaw) {
@@ -83,14 +88,14 @@ const Prototipo: React.FC = () => {
           console.error('Erro ao parsear opcao_camera:', error);
         }
       }
-      
+     
       const enderecoKeys = ['cep', 'rua', 'numero', 'bairro', 'cidade', 'uf', 'complemento'];
       const endereco = enderecoKeys.reduce((acc, key) => {
         const value = localStorage.getItem(key);
         if (value) acc[key] = value;
         return acc;
       }, {} as Record<string, string>);
-      
+     
       // Montar o payload para a API
       const payload = {
         titulo: tituloEdescricao.titulo,
@@ -102,7 +107,7 @@ const Prototipo: React.FC = () => {
         banheiros: acomodacoes.banheiros,
         hospedes: acomodacoes.hospedes,
         comodidades: comodidades.map((item: { id: number }) => item.id),
-        seguranca: seguranca.map((item: { id: number }) => item.id),
+        seguranca_id: seguranca.id,
         fotos: ["https://via.placeholder.com/300", "https://via.placeholder.com/300"], // Assumindo que fotos são strings (URLs)
         cameras: cameras, // Ajustar conforme sua lógica
         tipo_reserva_atual: tipoReservaAtual.name,
@@ -121,23 +126,23 @@ const Prototipo: React.FC = () => {
           complemento: cadastroEndereco.complemento,
         },
       };
-  
+ 
       console.log('Payload a ser enviado:', payload);
-  
+ 
       // Fazer a requisição para o backend
       const response = await fetch('http://localhost:3000/anuncio/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-  
+ 
       if (!response.ok) {
         throw new Error(`Erro na requisição: ${response.statusText}`);
       }
-  
+ 
       const responseData = await response.json();
       console.log('Dados enviados com sucesso:', responseData);
-  
+ 
       alert('Cadastro realizado com sucesso!');
     } catch (error) {
       console.error('Erro ao enviar os dados:', error);
@@ -145,20 +150,22 @@ const Prototipo: React.FC = () => {
     }
   };
 
+
   const acomodacoesArray = [
     { icon: <FiUsers size={20} />, label: 'Hóspedes', amount: dados.acomodacoes.hospedes },
     { icon: <IoBedOutline size={20} />, label: 'Camas', amount: dados.acomodacoes.camas },
     { icon: <MdOutlineShower size={20} />, label: 'Banheiros', amount: dados.acomodacoes.banheiros },
   ];
-  
+ 
   const { goToPreviousPage, goToNextPage } = useNavigation();
+
 
   return (
     // Left Side
   <>
     <NavbarCadastro />
-    <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
-      <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
+    <div className="flex h-screen">
+      <div className="w-1/2">
         <Image
           src="/assets/imgs/prototipo-img.jfif"
           alt="Imagem de protótipo"
@@ -168,9 +175,10 @@ const Prototipo: React.FC = () => {
         />
       </div>
 
+
       {/* Right Side */}
-      <div className="w-full lg:w-1/2 h-screen flex-1 flex-col flex-shrink-0 justify-between bg-white p-4">
-        <h1 className="text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
+      <div className="w-1/2 flex flex-col justify-center items-center p-4 bg-white">
+        <h1 className="mb-20 text-[42px] font-semibold leading-[42px] text-center font-josefin text-gray-700">
           Protótipo
         </h1>
         <div className="flex flex-col border border-gray-500 p-10 w-full h-auto rounded-2xl font-black text-gray-800">
@@ -245,12 +253,12 @@ const Prototipo: React.FC = () => {
           </label>
         </div>
         <div className="w-full mt-4 flex justify-end">
-          <button className="px-12 py-4 text-white bg-blue-500 border rounded-3xl hover:bg-blue-600 focus:outline-none font-josefin"
+          <button className="px-12 py-4 mt-4 text-white bg-blue-500 border rounded-3xl hover:bg-blue-600 focus:outline-none font-josefin"
           onClick={handleSubmit}>
               Cadastrar
           </button>
         </div>
-        <div className="flex justify-between items-center w-full">
+        <div className="flex justify-between items-center w-full mt-4">
           <IoIosArrowBack className="text-6xl cursor-pointer text-black" onClick={goToPreviousPage}/>
           <IoIosArrowForward className="text-6xl cursor-pointer text-black" onClick={goToNextPage}/>
         </div>
@@ -259,5 +267,6 @@ const Prototipo: React.FC = () => {
     </>
   );
 };
+
 
 export default Prototipo;
