@@ -1,7 +1,8 @@
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
 import Calendar from "../calendar";
+import Checkbox from "./checkbox";
 
 import SearchIcon from '../../../public/icons/search_icon.svg';
 import CalendarIcon from '../../../public/icons/calendar_icon.svg'
@@ -9,7 +10,6 @@ import DestinyIcon from '../../../public/icons/destiny_icon.svg'
 import PersonIcon from '../../../public/icons/person_icon.svg'
 import PlusIcon from '../../../public/icons/plus_circle_icon.svg'
 import MinusIcon from '../../../public/icons/dash_circle_icon.svg'
-import Checkbox from "./checkbox";
 
 interface Guests {
     adults: number

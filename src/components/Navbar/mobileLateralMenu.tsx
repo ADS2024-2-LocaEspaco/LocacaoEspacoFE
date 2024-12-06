@@ -1,12 +1,14 @@
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image"
 import Link from "next/link"
 
 import Logo from '../../../public/icons/logo.svg';
+
+import ModalLogin from "../ModalLogin";
+
 import { useUserStore } from "@/lib/store/userStore";
 import { useSession } from "@/hooks/useSession";
-import { useRouter } from "next/navigation";
-import ModalLogin from "../ModalLogin";
-import { useState } from "react";
 
 interface MobileLateralMenuProps {
     closeLateralmenu: () => void
@@ -21,6 +23,7 @@ export default function MobileLateralMenu({ closeLateralmenu }: MobileLateralMen
 
     const handleLogout = () => {
         session.deleteSession()
+        
         router.push('/')
     }
 

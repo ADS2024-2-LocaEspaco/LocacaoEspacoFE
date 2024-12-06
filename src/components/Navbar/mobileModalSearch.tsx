@@ -7,6 +7,7 @@ import CloseIcon from '../../../public/icons/x.svg';
 import PlusIcon from '../../../public/icons/plus_circle_icon.svg'
 import MinusIcon from '../../../public/icons/dash_circle_icon.svg';
 import CalendarIcon from '../../../public/icons/calendar_icon.svg';
+
 import Calendar from "../calendar";
 import Checkbox from "./checkbox";
 
@@ -90,7 +91,7 @@ export default function MobileModalSearch({ closeModalSearch }: MobileModalSearc
     }, [isCheckedCheckIn, isCheckedCheckOut, isCheckedGuests])
 
     return (
-        <div className='fixed inset-0 overflow-hidden flex flex-col jus bg-white h-screen w-full min-[1300px]:hidden py-2 px-4 gap-6'>
+        <div className='fixed inset-0 overflow-hidden flex flex-col jus bg-white h-screen w-full min-[1400px]:hidden py-2 px-4 gap-6'>
             <div className="flex justify-between">
                 <Image
                     src={Logo}

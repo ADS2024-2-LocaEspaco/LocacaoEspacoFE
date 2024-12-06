@@ -1,4 +1,4 @@
-import { Dispatch } from "react"
+import { Dispatch } from "react";
 
 interface CheckboxProps {
     isChecked: boolean

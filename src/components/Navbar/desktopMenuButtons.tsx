@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-
-import { useSession } from "@/hooks/useSession";
+import Image from "next/image";
 import { useRouter } from "next/router";
 
 import ArrowDropDownIcon from '../../../public/icons/arrow_drop_down.svg'
-import Image from "next/image";
+
+import { useSession } from "@/hooks/useSession";
 
 interface DesktopMenuButtonsProps {
     username: string
@@ -25,13 +25,13 @@ export default function DesktopMenuButtons({ username, picture }: DesktopMenuBut
 
     const handleLogout = () => {
         session.deleteSession()
+
         router.push('/')
     }
 
     useEffect(() => {
         const handleClickOutsideDropdownMenu = (event: MouseEvent) => {
             if (dropdownMenuRef.current && (event.target instanceof Node && !dropdownMenuRef.current.contains(event.target))) {
-                console.log('to aq')
                 setIsOpenDropdownMenu(false)
             }
         }
@@ -79,6 +79,7 @@ export default function DesktopMenuButtons({ username, picture }: DesktopMenuBut
                         <div className="border border-b-gray-100 opacity-30" />
 
                         <Link href={'/editar-perfil'} className='pl-7 py-2 hover:opacity-80'>Editar Perfil</Link>
+                        
                         <button onClick={handleLogout} className='pl-7 py-2 self-start hover:opacity-80 text-red-500'>Sair</button>
                     </nav>
                 )
