@@ -1,24 +1,50 @@
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const estrelaAtiva = "/icons/avaliacao_estrela_ativa.svg";
 const estrelaInativa = "/icons/avaliacao_estrela_inativa.svg";
 
-// Componente de Avaliação
-type AvaliacaoProps = {
-  nota: number;
-  qtd_avaliacoes?: number;
-  exibirNotaMedia?: boolean; // Determina se mostra a nota média ou quantidade de avaliações
-};
+interface AvaliacaoProps {
+  anuncioId: string;
+}
 
-const Avaliacao: React.FC<AvaliacaoProps> = ({
-  nota,
-  qtd_avaliacoes = 0,
-  exibirNotaMedia = false,
-}) => {
+const Avaliacao: React.FC<AvaliacaoProps> = ({ anuncioId }) => {
+  const [notaMedia, setNotaMedia] = useState<number>(0);
+  const [quantAvaliacoes, setQuantAvaliacoes] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchMediaAvaliacao = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/anuncio/media-avaliacao/data-reservas`, {
+          params: { id_Anuncio: anuncioId },
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        const result = response.data;
+
+        if (result.media_notas) {
+          const mediaNotas = result.media_notas;
+          const totalNotas = Object.values(mediaNotas).map(Number);
+          const somaNotas = totalNotas.reduce((acc, curr) => acc + curr, 0);
+          const notaMediaCalculada = somaNotas / totalNotas.length;
+          setNotaMedia(notaMediaCalculada);
+        }
+
+        setQuantAvaliacoes(result.quant_hospedes || 0);
+      } catch (error) {
+        console.error('Erro ao buscar a Média das Avaliações:', error);
+      }
+
+    }
+
+
+    fetchMediaAvaliacao();
+  }, [anuncioId]);
+
   const estrelasTotais = 5;
-  const estrelasCheias = Math.floor(nota);
-  const ehMeiaEstrela = nota % 1 >= 0.5;
+  const estrelasCheias = Math.floor(notaMedia);
+  const ehMeiaEstrela = notaMedia % 1 >= 0.5;
   const estrelasVazias = estrelasTotais - estrelasCheias - (ehMeiaEstrela ? 1 : 0);
 
   const meiaEstrela = (
@@ -45,7 +71,6 @@ const Avaliacao: React.FC<AvaliacaoProps> = ({
           key={index}
           src={estrelaAtiva}
           alt={`estrela ativa ${index + 1}`}
-          data-testid="estrela-ativa"
           className="w-[19px] h-[17px]"
         />
       ))}
@@ -57,20 +82,13 @@ const Avaliacao: React.FC<AvaliacaoProps> = ({
           key={index}
           src={estrelaInativa}
           alt={`estrela inativa ${index + 1}`}
-          data-testid="estrela-inativa"
           className="w-[19px] h-[17px]"
         />
       ))}
 
-      {exibirNotaMedia ? (
-        <p className="text-[#F37216] text-avaliacaol pt-1" data-testid="nota-media">
-          {nota.toFixed(1)}
-        </p>
-      ) : (
-        <p className="text-[#F37216] text-avaliacaol pt-1" data-testid="qtd-avaliacoes">
-          ({qtd_avaliacoes})
-        </p>
-      )}
+      <p className="text-[#F37216] text-avaliacaol pt-1">
+        {notaMedia.toFixed(1)} ({quantAvaliacoes})
+      </p>
     </div>
   );
 };

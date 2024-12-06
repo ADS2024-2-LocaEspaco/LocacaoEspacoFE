@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import CalendarModal from './calendarSolicitar';
 import { format } from 'date-fns';
 import HospedeModal from './hospedeCompo';
-import { Anuncio } from '../../../types/types';
+import { AnuncioProps } from '@/types/types';
 import { hospedeCategory } from './hospedeCompo';
 
 export default function SolicitarReserva({ regras }: any) {
@@ -15,14 +15,14 @@ export default function SolicitarReserva({ regras }: any) {
   const [hospSummary, setHospSummary] = useState('2 hóspedes');
   const [checkIn, setCheckIn] = useState<string | null>(null);
   const [checkOut, setCheckOut] = useState<string | null>(null);
-  const [anuncio, setAnuncio] = useState<Anuncio | null>(null);
+  const [anuncio, setAnuncio] = useState<AnuncioProps | null>(null);
   const [bebesCount, setBebesCount] = useState(0);
   const [animaisCount, setAnimaisCount] = useState(0);
 
   useEffect(() => {
     const { id_anuncio } = router.query;
     if (id_anuncio) {
-      fetch(`http://localhost:3000/api/anuncio/${id_anuncio}`)
+      fetch(`http://localhost:3001/anuncio/${id_anuncio}`)
         .then((res) => res.json())
         .then((data) => {
           setAnuncio(data);
@@ -34,7 +34,7 @@ export default function SolicitarReserva({ regras }: any) {
         setCheckOut(formatDateForDisplay(endDate as string));
       }
     }
-  }, [anuncioId, startDate, endDate]);
+  }, [anuncioId, startDate, endDate, router.query]);
 
   const formatDateForDisplay = (dateString: string) => {
     const date = new Date(dateString);
@@ -93,7 +93,7 @@ export default function SolicitarReserva({ regras }: any) {
 
   const nights = calculateNights();
   const isBookingAllowed = nights >= regras.quant_diaria_min && nights <= regras.quant_diaria_max;
-  const subtotal = anuncio.valorDiaria * nights;
+  const subtotal = anuncio.valor_diaria * nights;
   const taxaPlataforma = subtotal * 0.1;
   const total = subtotal + taxaPlataforma;
 

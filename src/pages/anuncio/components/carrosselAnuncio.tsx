@@ -105,7 +105,7 @@ const Carrossel: React.FC<CarrosselProps> = ({ imagens }) => {
           style={{ aspectRatio: "16/9" }}
         >
           {/* Carrossel para mobile */}
-          <div className="flex justify-stretch items-stretch">
+          {/* <div className="flex justify-stretch items-stretch">
             {imagens.map((imagem, index) => (
               <div key={index} className="flex-[0_0_100%]">
                 <img
@@ -115,12 +115,12 @@ const Carrossel: React.FC<CarrosselProps> = ({ imagens }) => {
                 />
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       )}
 
       {/* Indicadores de navegação do carrossel (dots) */}
-      {!isDesktop && (
+      {/* {!isDesktop && (
         <div className="absolute bottom-[22px] left-0 right-0 flex justify-center items-center space-x-2">
           {imagens.map((_, index) => (
             <button
@@ -136,14 +136,14 @@ const Carrossel: React.FC<CarrosselProps> = ({ imagens }) => {
             />
           ))}
         </div>
-      )}
+      )} */}
 
       {/* Exibição do índice atual e total de imagens */}
-      {!isDesktop && (
+      {/* {!isDesktop && (
         <div className="absolute bottom-[16px] right-[32px] text-white text-sm bg-black-100 bg-opacity-[.7] px-1 py-[2px] rounded">
           {`${selectedIndex + 1}/${imagens.length}`}
         </div>
-      )}
+      )} */}
 
       {/* Modal com o carrossel */}
       <Modal
@@ -160,7 +160,7 @@ const Carrossel: React.FC<CarrosselProps> = ({ imagens }) => {
             ref={emblaRefModal}
             style={{ aspectRatio: "16/9" }}
           >
-            <div className="flex">
+            {/* <div className="flex">
               {imagens.map((imagem, index) => (
                 <div key={index} className="z-10 flex-[0_0_100%]">
                   <img
@@ -170,11 +170,11 @@ const Carrossel: React.FC<CarrosselProps> = ({ imagens }) => {
                   />
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
 
           {/* Indicadores de navegação do modal (dots) */}
-          <div className="absolute bottom-[16%] left-0 right-0 flex justify-center items-center space-x-2">
+          {/* <div className="absolute bottom-[16%] left-0 right-0 flex justify-center items-center space-x-2">
             {imagens.map((_, index) => (
               <button
                 title="Dot"
@@ -188,12 +188,12 @@ const Carrossel: React.FC<CarrosselProps> = ({ imagens }) => {
                 }}
               />
             ))}
-          </div>
+          </div> */}
 
           {/* Exibição do índice atual e total de imagens */}
-          <div className="z-50 absolute bottom-[15%] right-[8%] text-white bg-black-100 bg-opacity-[.7] px-2 py-1 rounded">
+          {/* <div className="z-50 absolute bottom-[15%] right-[8%] text-white bg-black-100 bg-opacity-[.7] px-2 py-1 rounded">
             {`${selectedIndex + 1}/${imagens.length}`}
-          </div>
+          </div> */}
 
           <button
             onClick={closeModal}

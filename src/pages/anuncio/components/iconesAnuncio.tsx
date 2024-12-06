@@ -1,6 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
-
 const banheiros = "/icons/shower_icon.svg";
 const hospedes = "/icons/group_icon.svg";
 const camas = "/icons/bed_icon.svg";
@@ -9,9 +7,9 @@ const favoritar = "/icons/favorite_icon.svg";
 const mapa = "/icons/map_icon.svg";
 
 type IconesProps = {
-  qtd_hospedes: number;
-  qtd_camas: number;
-  qtd_banheiros: number;
+  quant_hospedes: number;
+  quant_camas: number;
+  quant_banheiros: number;
   onOpenMapModal: () => void;
   onOpenFavoritosModal: () => void;
   onOpenShareModal: () => void;
@@ -21,22 +19,22 @@ const estiloIcone = "flex justify-center items-center rounded-full";
 const estiloTexto = 'text-[#333333] font-opensans text-[14px] p-0 pl-1 ';
 
 
-const IconesAnuncio: React.FC<IconesProps> = ({ qtd_hospedes, qtd_camas, qtd_banheiros, onOpenMapModal, onOpenFavoritosModal, onOpenShareModal }) => {
+const IconesAnuncio: React.FC<IconesProps> = ({ quant_hospedes, quant_camas, quant_banheiros, onOpenMapModal, onOpenFavoritosModal, onOpenShareModal }) => {
   return (
     <div className="flex flew-row justify-between h-4 mt-2 w-[95%] md:w-full">
       {/* Ícones de comodidades */}
       <div className="hidden md:flex flew-row gap-4" data-testid="icones-comodidades">
         <div className={`${estiloIcone} bg-[#FFD7B8] w-[60px] h-[32px]`}>
           <img src={camas} alt="ícone quantidade de camas" />
-          <p className={estiloTexto}>{qtd_camas}</p>
+          <p className={estiloTexto}>{quant_camas}</p>
         </div>
         <div className={`${estiloIcone} bg-[#FFD7B8] w-[60px] h-[32px]`} data-testid="icone-camas">
           <img src={hospedes} alt="ícone quantidade de hóspedes" data-testid="icone-hospedes" />
-          <p className={estiloTexto}>{qtd_hospedes}</p>
+          <p className={estiloTexto}>{quant_hospedes}</p>
         </div>
         <div className={`${estiloIcone} bg-[#FFD7B8] w-[60px] h-[32px]`}>
           <img src={banheiros} alt="ícone quantidade de banheiros" data-testid="icone-banheiros" />
-          <p className={estiloTexto}>{qtd_banheiros}</p>
+          <p className={estiloTexto}>{quant_banheiros}</p>
         </div>
       </div>
 
