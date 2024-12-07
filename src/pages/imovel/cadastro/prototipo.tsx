@@ -70,14 +70,13 @@ const Prototipo: React.FC = () => {
       const tipoReservaAtual = JSON.parse(localStorage.getItem('tipo_reserva') || '{}');
       // const fotos = JSON.parse(localStorage.getItem('fotos') || '[]');
       const seguranca = JSON.parse(localStorage.getItem('seguranca') || '{}');
-      const endereco = JSON.parse(localStorage.getItem('endereco') || '{}');
+      const endereco = JSON.parse(localStorage.getItem('cadastroEndereco') || '{}');
       const valorEreserva = JSON.parse(localStorage.getItem('valorEreserva') || '[]');
-      const tipoHospede = JSON.parse(localStorage.getItem('tipoHospede') || '{}')
+      const tipoHospede = JSON.parse(localStorage.getItem('tipos_hospede') || '{}')
 
 
       const opcaoCameraRaw = localStorage.getItem('opcao_camera');
       let cameras = false;
-
 
       // Só pra pegar "cameras"
       if (opcaoCameraRaw) {
@@ -111,9 +110,9 @@ const Prototipo: React.FC = () => {
         comodidades: comodidades.map((item: { id: number }) => item.id),
         seguranca_id: seguranca.id,
         // fotos: ["https://via.placeholder.com/300", "https://via.placeholder.com/300"], // Assumindo que fotos são strings (URLs)
-        cameras: cameras, // Ajustar conforme sua lógica
+        cameras: cameras,
         tipo_reserva_atual: tipoReservaAtual.name,
-        tipo_hospede_id: tipoHospede.id,
+        tipo_hospede_id: tipoHospede.value,
         valor_diaria: valorEreserva.valor, 
         dias_minimo_antecedencia: valorEreserva.antecedencia,
         dias_minimo_duracao: valorEreserva.minDias,

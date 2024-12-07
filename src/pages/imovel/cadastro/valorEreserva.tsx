@@ -58,17 +58,23 @@ const ValorEreserva: React.FC = () => {
   };
 
   const handleBlurValor = () => {
+    // Remover pontos e substituir vírgula por ponto para conversão
     const valorNumerico = parseFloat(valor.replace(/\./g, '').replace(',', '.'));
+    
     if (!isNaN(valorNumerico)) {
-      setValor(formatCurrency(valorNumerico));
-
+      // Salvar o valor como inteiro em centavos no localStorage
+      const valorInteiro = Math.round(valorNumerico * 100); // Exemplo: 123,45 -> 12345
+      
       const valorEreserva = JSON.parse(localStorage.getItem('valorEreserva') || '{}');
-      valorEreserva.valor = formatCurrency(valorNumerico);
+      valorEreserva.valor = valorInteiro; // Armazena como inteiro
       localStorage.setItem('valorEreserva', JSON.stringify(valorEreserva));
+      
+      // Atualizar o valor exibido no campo (formatação para exibição)
+      setValor(formatCurrency(valorNumerico));
     } else {
       setValor("0,00");
     }
-  };
+  };  
   
   const handleAntecedenciaChange = (newAntecedencia: number) => {
     setAntecedencia(newAntecedencia);
