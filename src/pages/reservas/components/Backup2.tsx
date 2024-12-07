@@ -24,183 +24,65 @@
 //   };
 // }
 
-// const CalendarComponent: React.FC = () => {
+// interface CalendarComponentProps {
+//   idUsuario: string;
+// }
+
+// const CalendarComponent: React.FC<CalendarComponentProps> = ({ idUsuario }) => {
 //   const [events, setEvents] = useState<CalendarEvent[]>([]);
-//   const [isModalOpen, setIsModalOpen] = useState(false);
-//   const [isYearModalOpen, setIsYearModalOpen] = useState(false);
-//   const [selectedDate, setSelectedDate] = useState(new Date());
-//   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-//   const lastDateRef = useRef<{ month: number; year: number } | null>(null);
-//   const calendarRef = useRef<FullCalendar | null>(null);
+//   const [logs, setLogs] = useState<string[]>([]); // Para exibir logs na página
 
-//   const months = [
-//     "Jan.", "Fev.", "Mar.", "Abr.",
-//     "Mai.", "Jun.", "Jul.", "Ago.",
-//     "Set.", "Out.", "Nov.", "Dez.",
-//   ];
+//   const addLog = (message: string) => {
+//     setLogs((prevLogs) => [...prevLogs, message]);
+//   };
 
-//   const fetchReservations = async (month: number, year: number) => {
+//   const fetchReservations = async (idUsuario: string) => {
+//     addLog(`Buscando reservas para o ID do usuário: ${idUsuario}`);
 //     try {
 //       const response = await axios.get("http://localhost:4000/reservas", {
-//         params: { id_usuario: 1 },
+//         params: { id_usuario: idUsuario },
 //       });
+
+//       addLog(`Dados recebidos da API: ${JSON.stringify(response.data)}`);
 
 //       if (Array.isArray(response.data)) {
 //         const mappedEvents = response.data.flatMap((reserva) => {
 //           const startDate = new Date(reserva.data_inicial);
 //           const endDate = new Date(reserva.data_final);
-//           const monthStart = new Date(year, month, 1);
-//           const monthEnd = new Date(year, month + 1, 0);
 //           const events: CalendarEvent[] = [];
 
-//           for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
-//             if (date >= monthStart && date <= monthEnd) {
-//               events.push({
-//                 title: "Reserva",
-//                 start: date.toISOString().split("T")[0],
-//                 end: date.toISOString().split("T")[0],
-//                 extendedProps: {
-//                   status: reserva.status_aceite,
-//                 },
-//               });
-//             }
+//           for (
+//             let date = new Date(startDate);
+//             date <= endDate;
+//             date.setDate(date.getDate() + 1)
+//           ) {
+//             events.push({
+//               title: "Reserva",
+//               start: date.toISOString().split("T")[0],
+//               end: date.toISOString().split("T")[0],
+//               extendedProps: {
+//                 status: reserva.status_aceite,
+//               },
+//             });
 //           }
 
 //           return events;
 //         });
 
 //         setEvents(mappedEvents);
+//         addLog("Eventos mapeados para o calendário");
 //       } else {
-//         console.error("Resposta do backend não é um array:", response.data);
+//         addLog("Erro: A resposta da API não é um array");
 //       }
 //     } catch (error) {
-//       console.error("Erro ao buscar reservas:", error);
+//       addLog(`Erro ao buscar reservas: ${error}`);
 //     }
-//   };
-
-//   const handleDatesSet = (dateInfo: any) => {
-//     const month = dateInfo.start.getMonth();
-//     const year = dateInfo.start.getFullYear();
-
-//     if (lastDateRef.current?.month === month && lastDateRef.current?.year === year) return;
-
-//     lastDateRef.current = { month, year };
-//     fetchReservations(month, year);
-//   };
-
-//   const handleMonthClick = () => {
-//     setIsModalOpen(true);
-//   };
-
-//   const handleYearClick = () => {
-//     setIsYearModalOpen(true);
-//   };
-
-//   const handleMonthSelect = (month: number) => {
-//     const newDate = new Date(selectedYear, month, 1);
-//     setSelectedDate(newDate);
-//     setIsModalOpen(false);
-
-//     if (calendarRef.current) {
-//       const calendarApi = calendarRef.current.getApi();
-//       calendarApi.gotoDate(newDate);
-//       fetchReservations(month, selectedYear);
-//     }
-//   };
-
-//   const handleYearSelect = (year: number) => {
-//     setSelectedYear(year);
-//     setSelectedDate(new Date(year, selectedDate.getMonth(), 1));
-//     setIsYearModalOpen(false);
-//   };
-
-//   const eventDidMount = (info: any) => {
-//     const dot = document.createElement("span");
-//     dot.style.height = "10px";
-//     dot.style.width = "10px";
-//     dot.style.borderRadius = "50%";
-//     dot.style.display = "inline-block";
-//     dot.style.marginRight = "8px";
-
-//     switch (info.event.extendedProps.status) {
-//       case "Aguardando_resposta_anfitiao":
-//         dot.style.backgroundColor = "yellow";
-//         break;
-//       case "Aceita":
-//         dot.style.backgroundColor = "green";
-//         break;
-//       case "Negada":
-//         dot.style.backgroundColor = "red";
-//         break;
-//       default:
-//         dot.style.backgroundColor = "gray";
-//     }
-
-//     const titleElement = info.el.querySelector(".fc-event-title");
-//     if (titleElement) {
-//       titleElement.prepend(dot);
-//       titleElement.style.color = "black";
-//     }
-
-//     info.el.style.backgroundColor = "transparent";
-//     info.el.style.border = "none";
 //   };
 
 //   useEffect(() => {
-//     fetchReservations(new Date().getMonth(), new Date().getFullYear());
+//     fetchReservations(idUsuario);
+//   }, [idUsuario]);
 
-//     const updateToolbarClickHandler = () => {
-//       const toolbarTitle = document.querySelector(".fc-toolbar-title") as HTMLElement;
-//       if (toolbarTitle) {
-//         toolbarTitle.style.cursor = "pointer";
-//         toolbarTitle.onclick = handleMonthClick; // Adiciona o clique no mês
-//       }
-//     };
-
-//     updateToolbarClickHandler();
-
-//     return () => {
-//       const toolbarTitle = document.querySelector(".fc-toolbar-title") as HTMLElement;
-//       if (toolbarTitle) {
-//         toolbarTitle.onclick = null; // Remove o clique no mês ao desmontar
-//       }
-//     };
-//   }, []);
-
-//   const addGrayBackground = (date: any) => {
-//     const dateInstance = new Date(date.date);
-//     const displayedMonth = date.view.currentStart.getMonth();
-//     const displayedYear = date.view.currentStart.getFullYear();
-//     const today = new Date();
-  
-//     if (
-//       dateInstance.getMonth() !== displayedMonth ||
-//       dateInstance.getFullYear() !== displayedYear
-//     ) {
-//       return "bg-gray-400 text-transparent"; // Fora do mês exibido
-//     }
-  
-//     if (
-//       dateInstance.getFullYear() === today.getFullYear() &&
-//       dateInstance.getMonth() === today.getMonth() &&
-//       dateInstance <= today
-//     ) {
-//       return "bg-gray-100 text-black"; // Dias passados
-//     }
-
-//       // Dia atual
-//     if (
-//       dateInstance.getFullYear() === today.getFullYear() &&
-//       dateInstance.getMonth() === today.getMonth() &&
-//       dateInstance.getDate() === today.getDate()
-//     ) {
-//       return "bg-blue-100 text-black border border-blue-500"; // Fundo azul claro, texto preto e borda azul
-//     }
-      
-  
-//     return "bg-white text-black"; // Dias do mês exibido
-//   };
-  
 //   return (
 //     <div className="container mx-auto p-4">
 //       <FullCalendar
@@ -209,154 +91,22 @@
 //         events={events}
 //         locales={[ptBr]}
 //         locale="pt-br"
-//         headerToolbar={{
-//           left: "title",
-//           center: "",
-//           right: "",
-//         }}
-//         dayCellClassNames={(date) => addGrayBackground(date)}
-//         ref={calendarRef}
-//         datesSet={handleDatesSet}
-//         eventDidMount={eventDidMount}
 //       />
-//       <Modal
-//         isOpen={isModalOpen}
-//         onRequestClose={() => setIsModalOpen(false)}
-//         className="modal-content"
-//         overlayClassName="modal-overlay"
-//       >
-//         <div className="calendar p-4">
-//           <h2 className="text-center text-xl mb-2 cursor-pointer" onClick={handleYearClick}>
-//             {selectedYear}
-//           </h2>
-//           <div className="grid grid-cols-4 gap-2">
-//             {months.map((month, index) => (
-//               <div
-//                 key={index}
-//                 className="p-1 text-center text-xl cursor-pointer hover:bg-blue-500"
-//                 onClick={() => handleMonthSelect(index)}
-//               >
-//                 {month}
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       </Modal>
-//       <Modal
-//         isOpen={isYearModalOpen}
-//         onRequestClose={() => setIsYearModalOpen(false)}
-//         className="modal-content"
-//         overlayClassName="modal-overlay"
-//       >
-//         <div className="p-4">
-//           <div className="grid grid-cols-2 gap-2">
-//             {[...Array(4)].map((_, i) => (
-//               <div
-//                 key={i}
-//                 className="p-2 border rounded mt-6 text-center text-2xl cursor-pointer hover:bg-blue-500"
-//                 onClick={() => handleYearSelect(selectedDate.getFullYear() - 1 + i)}
-//               >
-//                 {selectedDate.getFullYear() - 1 + i}
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       </Modal>
-//       <style jsx>{`
-//   .container {
-//     transition: background-color 0.3s, color 0.3s;
-//   }
-
-//   /* Estilo para tema claro */
-//   .container {
-//     background-color: white;
-//     color: black;
-//     :global(.fc .fc-toolbar-title) {
-//       color: black; /* Texto branco no tema escuro */
-//     }
-//   }
-
-//   /* Estilo para tema escuro */
-//   @media (prefers-color-scheme: dark) {
-//     .container {
-//       background-color: #4f4f4f;
-//       color: white;
-//       :global(.fc .fc-toolbar-title) {
-//       color: white; /* Texto branco no tema escuro */
-//     }
-//     }
-//   }
-
-//   /* Estilo padrão para os modais */
-//   :global(.modal-content) {
-//     position: absolute;
-//     top: 250px;
-//     left: 100px;
-//     background: white; /* Fundo padrão para tema claro */
-//     color: black; /* Texto preto no tema claro */
-//     border-radius: 5px;
-//     width: 300px;
-//     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-//     z-index: 1050;
-//     transition: background-color 0.3s, color 0.3s;
-//   }
-
-//   /* Modais no tema escuro */
-//   @media (prefers-color-scheme: dark) {
-//     :global(.modal-content) {
-//       background: #4f4f4f;
-//       color: white;
-//     }
-//   }
-
-//   :global(.modal-overlay) {
-//     background: rgba(0, 0, 0, 0.5);
-//     position: fixed;
-//     top: 0;
-//     left: 0;
-//     right: 0;
-//     bottom: 0;
-//     z-index: 1040;
-//   }
-
-//   /* Estilo do dia atual */
-//   :global(.fc-day-today) {
-//     background-color: #ececec !important; /* Azul claro */
-//     border: 2px solid #cccccc !important; /* Borda azul */
-//     color: black !important; /* Texto preto */
-//   }
-
-//   :global(.fc-daygrid-day:hover) {
-//   border: 4px solid #00bfff !important; /* Borda azul */
-//   transition: border-color 0.3s ease;
-// }
-
-
-//    :global(.fc .fc-col-header-cell) {
-//     background-color: white; /* Fundo branco */
-//     color: black; /* Texto preto */
-//     font-weight: bold;
-//     border: 1px solid #ddd; /* Adiciona borda clara para separação */
-//   }
-
-//   :global(.fc .fc-toolbar-title) {
-//     cursor: pointer;
-//     font-weight: bold;
-//     color: black;
-//   }
-
-//   :global(.fc .fc-toolbar-title:hover) {
-//     color: #007bff; /* Azul ao passar o mouse */
-//   }
-
-//   :global(.fc-daygrid-day) {
-//     transition: background-color 0.3s;
-//   }
-// `}</style>
-
-
+//       {/* Sessão para exibir os logs */}
+//       <div className="mt-4 p-2 border rounded bg-gray-100">
+//         <h2 className="font-bold">Logs:</h2>
+//         <ul className="text-sm">
+//           {logs.map((log, index) => (
+//             <li key={index}>{log}</li>
+//           ))}
+//         </ul>
+//       </div>
 //     </div>
 //   );
 // };
 
 // export default CalendarComponent;
+
+
+
+// //novo

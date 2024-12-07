@@ -6,14 +6,20 @@ import ptBr from "@fullcalendar/core/locales/pt-br";
 import Modal from "react-modal";
 import axios from "axios";
 
+
 Modal.setAppElement("#root");
 
 interface Reserva {
+  id: number;
+  id_anuncio: number;
   data_inicial: string;
   data_final: string;
-  status_reserva: string;
-  id_anuncio: number;
+  criado_em: string;
+  status_aceite: string;
 }
+
+
+
 
 interface CalendarEvent {
   title: string;
@@ -24,7 +30,19 @@ interface CalendarEvent {
   };
 }
 
-const CalendarComponent: React.FC = () => {
+interface Anuncio {
+  id: number;
+  titulo: string;
+}
+
+
+
+interface CalendarComponentProps {
+  idUsuario: string;
+}
+
+const CalendarComponent: React.FC<CalendarComponentProps> = ({ idUsuario }) => {
+  console.log("ID do usuário recebido:", idUsuario);
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [selectedCell, setSelectedCell] = useState<string | null>(null); // Novo estado para destacar célula clicada
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,50 +52,91 @@ const CalendarComponent: React.FC = () => {
   const lastDateRef = useRef<{ month: number; year: number } | null>(null);
   const calendarRef = useRef<FullCalendar | null>(null);
 
+  const [debugLogs, setDebugLogs] = useState<string[]>([]); //wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+  const addLog = (message: string) => {
+    setDebugLogs((prevLogs) => [...prevLogs, message]);
+  };
+  
+
   const months = [
     "Jan.", "Fev.", "Mar.", "Abr.",
     "Mai.", "Jun.", "Jul.", "Ago.",
     "Set.", "Out.", "Nov.", "Dez.",
   ];
+//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  
+const fetchReservations = async () => {
+  try {
+    const response = await axios.get("http://localhost:4000/reservas/dados", {
+      params: { id_usuario: idUsuario },
+    });
 
-  const fetchReservations = async (month: number, year: number) => {
-    try {
-      const response = await axios.get("http://localhost:4000/reservas", {
-        params: { id_usuario: 1 },
-      });
+    const { Reservas, Anuncio } = response.data;
 
-      if (Array.isArray(response.data)) {
-        const mappedEvents = response.data.flatMap((reserva) => {
-          const startDate = new Date(reserva.data_inicial);
-          const endDate = new Date(reserva.data_final);
-          const monthStart = new Date(year, month, 1);
-          const monthEnd = new Date(year, month + 1, 0);
-          const events: CalendarEvent[] = [];
-
-          for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
-            if (date >= monthStart && date <= monthEnd) {
-              events.push({
-                title: "Reserva",
-                start: date.toISOString().split("T")[0],
-                end: date.toISOString().split("T")[0],
-                extendedProps: {
-                  status: reserva.status_aceite,
-                },
-              });
-            }
-          }
-
-          return events;
-        });
-
-        setEvents(mappedEvents);
-      } else {
-        console.error("Resposta do backend não é um array:", response.data);
-      }
-    } catch (error) {
-      console.error("Erro ao buscar reservas:", error);
+    if (!Reservas || !Reservas.reserva || !Anuncio || !Anuncio.anuncio) {
+      addLog("Erro: Dados incompletos retornados da API.");
+      return;
     }
-  };
+
+    const reservas = Reservas.reserva;
+    const anuncios = Array.isArray(Anuncio.anuncio) ? Anuncio.anuncio : [Anuncio.anuncio];
+
+    addLog("Anúncios disponíveis:");
+    anuncios.forEach((anuncio: Anuncio) => addLog(JSON.stringify(anuncio)));
+
+    const mappedEvents = reservas.flatMap((reserva: Reserva) => {
+      // Encontra o anúncio correspondente para cada reserva
+      const anuncioCorrespondente = anuncios.find(
+        (anuncio: Anuncio) => anuncio.id === reserva.id_anuncio
+      );
+
+      // Verifica se um anúncio correspondente foi encontrado
+      const tituloAnuncio = anuncioCorrespondente
+        ? anuncioCorrespondente.titulo
+        : "Sem título";
+
+      addLog(`Título do anúncio para reserva ${reserva.id}: ${tituloAnuncio}`);
+
+      const startDate = new Date(reserva.data_inicial);
+      const endDate = new Date(reserva.data_final);
+
+      const events: CalendarEvent[] = [];
+
+      // Cria eventos para cada dia da reserva
+      for (
+        let date = new Date(startDate);
+        date <= endDate;
+        date.setDate(date.getDate() + 1)
+      ) {
+        events.push({
+          title: `${tituloAnuncio} - ${new Date(reserva.criado_em).toLocaleDateString()}`,
+          start: date.toISOString().split("T")[0],
+          end: date.toISOString().split("T")[0],
+          extendedProps: {
+            status: reserva.status_aceite,
+          },
+        });
+      }
+
+      return events;
+    });
+
+    // Atualiza o estado com os eventos mapeados
+    setEvents(mappedEvents);
+  } catch (error) {
+    if (error instanceof Error) {
+      addLog(`Erro ao buscar dados: ${error.message}`);
+    } else {
+      addLog("Erro desconhecido ao buscar dados.");
+    }
+  }
+};
+
+
+
+  
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  
 
   const handleDatesSet = (dateInfo: any) => {
     const month = dateInfo.start.getMonth();
@@ -86,8 +145,10 @@ const CalendarComponent: React.FC = () => {
     if (lastDateRef.current?.month === month && lastDateRef.current?.year === year) return;
 
     lastDateRef.current = { month, year };
-    fetchReservations(month, year);
+    fetchReservations();
   };
+
+
 
   const handleDayClick = (dateInfo: any) => {
     const dateInstance = new Date(dateInfo.date);
@@ -109,13 +170,16 @@ const CalendarComponent: React.FC = () => {
   };
   
 
+
   const handleMonthClick = () => {
     setIsModalOpen(true);
   };
 
+
   const handleYearClick = () => {
     setIsYearModalOpen(true);
   };
+  
 
   const handleMonthSelect = (month: number) => {
     const newDate = new Date(selectedYear, month, 1);
@@ -125,7 +189,7 @@ const CalendarComponent: React.FC = () => {
     if (calendarRef.current) {
       const calendarApi = calendarRef.current.getApi();
       calendarApi.gotoDate(newDate);
-      fetchReservations(month, selectedYear);
+      fetchReservations();
     }
   };
 
@@ -142,8 +206,9 @@ const CalendarComponent: React.FC = () => {
     dot.style.borderRadius = "50%";
     dot.style.display = "inline-block";
     dot.style.marginRight = "8px";
-
-    switch (info.event.extendedProps.status) {
+  
+    const status = info.event.extendedProps?.status || "Desconhecido";
+    switch (status) {
       case "Aguardando_resposta_anfitiao":
         dot.style.backgroundColor = "yellow";
         break;
@@ -156,20 +221,25 @@ const CalendarComponent: React.FC = () => {
       default:
         dot.style.backgroundColor = "gray";
     }
-
+  
     const titleElement = info.el.querySelector(".fc-event-title");
     if (titleElement) {
       titleElement.prepend(dot);
       titleElement.style.color = "black";
     }
-
+  
     info.el.style.backgroundColor = "transparent";
     info.el.style.border = "none";
   };
+  
+
+  //const [anuncios, setAnuncios] = useState<Anuncio[]>([]);
+
 
   useEffect(() => {
-    fetchReservations(new Date().getMonth(), new Date().getFullYear());
-
+    fetchReservations();
+  
+  
     const updateToolbarClickHandler = () => {
       const toolbarTitle = document.querySelector(".fc-toolbar-title") as HTMLElement;
       if (toolbarTitle) {
@@ -186,45 +256,39 @@ const CalendarComponent: React.FC = () => {
         toolbarTitle.onclick = null; // Remove o clique no mês ao desmontar
       }
     };
-  }, []);
+  }, [idUsuario]);
 
-  const addGrayBackground = (date: any) => {
+  function addGrayBackground(date: any) {
     const dateInstance = new Date(date.date);
     const displayedMonth = date.view.currentStart.getMonth();
     const displayedYear = date.view.currentStart.getFullYear();
     const today = new Date();
-  
+
     if (selectedCell === date.date.toISOString().split("T")[0]) {
       return "bg-blue-500 text-white"; // Estilo para a célula clicada
     }
-    
-    if (
-      dateInstance.getMonth() !== displayedMonth ||
-      dateInstance.getFullYear() !== displayedYear
-    ) {
+
+    if (dateInstance.getMonth() !== displayedMonth ||
+      dateInstance.getFullYear() !== displayedYear) {
       return "bg-gray-400 text-transparent"; // Fora do mês exibido
     }
-  
-    if (
-      dateInstance.getFullYear() === today.getFullYear() &&
+
+    if (dateInstance.getFullYear() === today.getFullYear() &&
       dateInstance.getMonth() === today.getMonth() &&
-      dateInstance <= today
-    ) {
+      dateInstance <= today) {
       return "bg-gray-100 text-black"; // Dias passados
     }
 
-      // Dia atual
-    if (
-      dateInstance.getFullYear() === today.getFullYear() &&
+    // Dia atual
+    if (dateInstance.getFullYear() === today.getFullYear() &&
       dateInstance.getMonth() === today.getMonth() &&
-      dateInstance.getDate() === today.getDate()
-    ) {
+      dateInstance.getDate() === today.getDate()) {
       return "bg-blue-100 text-black border border-blue-500"; // Fundo azul claro, texto preto e borda azul
     }
-      
-  
+
+
     return "bg-white text-black"; // Dias do mês exibido
-  };
+  }
   
   return (
     <div className="container mx-auto p-4">
@@ -288,97 +352,89 @@ const CalendarComponent: React.FC = () => {
           </div>
         </div>
       </Modal>
+      <div className="debug-logs">
+  <h3>Debug Logs</h3>
+  <div style={{ maxHeight: '200px', overflowY: 'scroll', backgroundColor: '#f5f5f5', padding: '10px' }}>
+    {debugLogs.map((log, index) => (
+      <p key={index} style={{ fontSize: '12px', margin: '0', fontFamily: 'monospace' }}>
+        {log}
+      </p>
+    ))}
+  </div>
+</div>
+
       <style jsx>{`
-  .container {
-    transition: background-color 0.3s, color 0.3s;
-  }
+        .container {
+          transition: background-color 0.3s, color 0.3s;
+        }
 
-  /* Estilo para tema claro */
-  .container {
-    background-color: white;
-    color: black;
-    :global(.fc .fc-toolbar-title) {
-      color: black; /* Texto branco no tema escuro */
-    }
-  }
+        @media (prefers-color-scheme: dark) {
+          .container {
+            background-color: #4f4f4f;
+            color: white;
+          }
+        }
 
-  /* Estilo para tema escuro */
-  @media (prefers-color-scheme: dark) {
-    .container {
-      background-color: #4f4f4f;
-      color: white;
-      :global(.fc .fc-toolbar-title) {
-      color: white; /* Texto branco no tema escuro */
-    }
-    }
-  }
-
-  /* Estilo padrão para os modais */
-  :global(.modal-content) {
-    position: absolute;
-    top: 250px;
-    left: 100px;
-    background: white; /* Fundo padrão para tema claro */
-    color: black; /* Texto preto no tema claro */
+        .debug-logs {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    width: 300px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1050;
-    transition: background-color 0.3s, color 0.3s;
   }
 
-  /* Modais no tema escuro */
-  @media (prefers-color-scheme: dark) {
-    :global(.modal-content) {
-      background: #4f4f4f;
-      color: white;
-    }
-  }
+          :global(.fc-event) {
+           display: block !important;
+          color: black !important;
+         }
 
-  :global(.modal-overlay) {
-    background: rgba(0, 0, 0, 0.5);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1040;
-  }
+        :global(.modal-content) {
+          position: absolute;
+          top: 250px;
+          left: 100px;
+          background: white;
+          color: black;
+          border-radius: 5px;
+          width: 300px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          z-index: 1050;
+          transition: background-color 0.3s, color 0.3s;
+        }
 
-  /* Estilo do dia atual */
-  :global(.fc-day-today) {
-    background-color: #ececec !important; /* Azul claro */
-    border: 2px solid #cccccc !important; /* Borda azul */
-    color: black !important; /* Texto preto */
-  }
+        @media (prefers-color-scheme: dark) {
+          :global(.modal-content) {
+            background: #4f4f4f;
+            color: white;
+          }
+        }
 
-  :global(.fc-daygrid-day:hover) {
-  border: 4px solid #00bfff !important; /* Borda azul */
-  transition: border-color 0.3s ease;
-}
+        :global(.modal-overlay) {
+          background: rgba(0, 0, 0, 0.5);
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 1040;
+        }
 
+        :global(.fc-day-today) {
+          background-color: #ececec !important;
+          border: 2px solid #cccccc !important;
+          color: black !important;
+        }
 
-   :global(.fc .fc-col-header-cell) {
-    background-color: white; /* Fundo branco */
-    color: black; /* Texto preto */
-    font-weight: bold;
-    border: 1px solid #ddd; /* Adiciona borda clara para separação */
-  }
+        :global(.fc-daygrid-day:hover) {
+          border: 4px solid #00bfff !important;
+          transition: border-color 0.3s ease;
+        }
 
-  :global(.fc .fc-toolbar-title) {
-    cursor: pointer;
-    font-weight: bold;
-    color: black;
-  }
-
-  :global(.fc .fc-toolbar-title:hover) {
-    color: #007bff; /* Azul ao passar o mouse */
-  }
-
-  :global(.fc-daygrid-day) {
-    transition: background-color 0.3s;
-  }
-`}</style>
+        :global(.fc .fc-col-header-cell) {
+          background-color: white;
+          color: black;
+          font-weight: bold;
+          border: 1px solid #ddd;
+        }
+      `}</style>
 
 
     </div>
@@ -386,3 +442,5 @@ const CalendarComponent: React.FC = () => {
 };
 
 export default CalendarComponent;
+
+

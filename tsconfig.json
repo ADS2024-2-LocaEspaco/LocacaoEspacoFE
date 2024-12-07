@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "typeRoots": ["node_modules/@types"],
+    "types": ["react", "react-dom", "react-router-dom"],
     "lib": [
       "dom",
       "dom.iterable",
