@@ -1,4 +1,3 @@
-
 export type Anuncio = {
   id: string;
   foto_id: number;
@@ -45,7 +44,6 @@ export type Comentario = {
 };
 
 export type Fotos = {
-  map(arg0: (foto: any) => any): string[];
   id: number;
   url: string;
   anuncio: Anuncio[];

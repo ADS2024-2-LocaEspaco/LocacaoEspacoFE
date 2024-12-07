@@ -83,16 +83,17 @@ export const getComentarios = async (id_anuncio: string): Promise<Comentario | u
 
 export const GetDadosAvaliacao = async (id_anuncio: string): Promise<MediaAvaliacaoResponse | undefined> => {
   try {
-    const response = await axios.get(`http://localhost:3000/anuncio/media-avaliacao/data-reservas/${id_anuncio}`, {
+    const response = await fetch(`http://localhost:3000/anuncio/media-avaliacao/data-reservas/${id_anuncio}`, {
       headers: { 'Content-Type': 'application/json' },
     });
+    const data = await response.json()
     if (response.status !== 200) {
       throw new Error('Erro ao buscar os comentários');
     }
 
     console.log(`Dados Avaliação encontrados: ${JSON.stringify(response)}`);
 
-    return response.data;
+    return data;
 
   } catch (error) {
     console.error('Erro ao buscar os dados da avaliação:', error);

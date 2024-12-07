@@ -1,8 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { GetDadosAvaliacao } from '@/utils/api';
+
+interface ReservaData {
+  id: number;
+  id_usuario: number;
+  id_anuncio: number;
+  status_reserva: string;
+  data_inicial: string;
+  data_final: string;
+  criado_em: string;
+}
+
 interface CalendarProps {
   valorDiaria: number;
   anuncioId: string;
+  // onDateChange: (startDate: Date | null, endDate: Date | null) => void;
+
 }
 
 export default function Calendar({ valorDiaria, anuncioId }: CalendarProps) {
@@ -10,7 +24,7 @@ export default function Calendar({ valorDiaria, anuncioId }: CalendarProps) {
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
-  const [reservedDates, setReservedDates] = useState<{ startDate: Date; endDate: Date }[]>([]);
+  const [reservedDates, setReservedDates] = useState<ReservaData[]>();
   const [daysInMonth, setDaysInMonth] = useState<number[]>([]);
   const [totalValue, setTotalValue] = useState<number>(0);
   const router = useRouter();
@@ -21,6 +35,18 @@ export default function Calendar({ valorDiaria, anuncioId }: CalendarProps) {
   ];
   const years = Array.from({ length: 10 }, (_, i) => 2024 + i);
   const firstDayOfMonth = new Date(selectedYear, selectedMonth, 1).getDay();
+
+  useEffect(() => {
+    const fetchReservaDates = async () => {
+      try{
+        const data = await GetDadosAvaliacao(anuncioId);
+        return data;
+      } catch (error){
+        console.log('Erro ao buscar as datas:', error)
+      }
+    } 
+  fetchReservaDates()
+  },[anuncioId])
 
   useEffect(() => {
     const date = new Date(selectedYear, selectedMonth, 1);
@@ -86,9 +112,11 @@ export default function Calendar({ valorDiaria, anuncioId }: CalendarProps) {
   };
 
   const isDateReserved = (date: Date) => {
-    return reservedDates.some(reserva =>
-      date >= reserva.startDate && date <= reserva.endDate
-    );
+    return reservedDates?.some(reserva =>{
+      const starDate = new Date(reserva.data_inicial);
+      const endDate = new Date(reserva.data_final);
+      console.log( date >= starDate && date <= endDate);
+    });
   };
 
   const storeReservation = () => {

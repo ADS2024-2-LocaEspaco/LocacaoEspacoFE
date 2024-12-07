@@ -18,9 +18,9 @@ function ConfirmarReserva({ anuncio }: { anuncio: any }) {
         </button>
       </header>
 
-      {/* <div className="flex ml-1 lg:w-1/2 justify-center items-center">
-        <AnuncioCard />
-      </div> */}
+     <div className="flex ml-1 lg:w-1/2 justify-center items-center">
+        {/* <AnuncioCard /> */}
+      </div> 
       <div className="flex ml-1">
         <SolicitarReserva regras={anuncio.regras} />
       </div>
