@@ -68,9 +68,11 @@ const Prototipo: React.FC = () => {
       const tipoImovel = JSON.parse(localStorage.getItem('tipo_imovel') || '{}');
       const tipoEspaco = JSON.parse(localStorage.getItem('tipo_espaco') || '{}');
       const tipoReservaAtual = JSON.parse(localStorage.getItem('tipo_reserva') || '{}');
-      const fotos = JSON.parse(localStorage.getItem('fotos') || '[]'); // Assumindo que fotos já estão como URL strings
+      // const fotos = JSON.parse(localStorage.getItem('fotos') || '[]');
       const seguranca = JSON.parse(localStorage.getItem('seguranca') || '{}');
-      const cadastroEndereco = JSON.parse(localStorage.getItem('cadastroEndereco') || '{}');
+      const endereco = JSON.parse(localStorage.getItem('endereco') || '{}');
+      const valorEreserva = JSON.parse(localStorage.getItem('valorEreserva') || '[]');
+      const tipoHospede = JSON.parse(localStorage.getItem('tipoHospede') || '{}')
 
 
       const opcaoCameraRaw = localStorage.getItem('opcao_camera');
@@ -90,7 +92,7 @@ const Prototipo: React.FC = () => {
       }
      
       const enderecoKeys = ['cep', 'rua', 'numero', 'bairro', 'cidade', 'uf', 'complemento'];
-      const endereco = enderecoKeys.reduce((acc, key) => {
+      const enderecoData = enderecoKeys.reduce((acc, key) => {
         const value = localStorage.getItem(key);
         if (value) acc[key] = value;
         return acc;
@@ -108,22 +110,22 @@ const Prototipo: React.FC = () => {
         hospedes: acomodacoes.hospedes,
         comodidades: comodidades.map((item: { id: number }) => item.id),
         seguranca_id: seguranca.id,
-        fotos: ["https://via.placeholder.com/300", "https://via.placeholder.com/300"], // Assumindo que fotos são strings (URLs)
+        // fotos: ["https://via.placeholder.com/300", "https://via.placeholder.com/300"], // Assumindo que fotos são strings (URLs)
         cameras: cameras, // Ajustar conforme sua lógica
         tipo_reserva_atual: tipoReservaAtual.name,
-        tipo_hospede_id: 1, // Exemplo, substituir pelo valor correto
-        valor_diaria: 300, // Exemplo, substituir pelo valor correto
-        dias_minimo_antecedencia: 2, // Exemplo
-        dias_minimo_duracao: 1, // Exemplo
-        dias_maximo_duracao: 15, // Exemplo
-        cadastroEndereco: {
-          cep: cadastroEndereco.cep,
-          estado: cadastroEndereco.uf,
-          cidade: cadastroEndereco.cidade,
-          bairro: cadastroEndereco.bairro,
-          rua: cadastroEndereco.rua,
-          numero: cadastroEndereco.numero,
-          complemento: cadastroEndereco.complemento,
+        tipo_hospede_id: tipoHospede.id,
+        valor_diaria: valorEreserva.valor, 
+        dias_minimo_antecedencia: valorEreserva.antecedencia,
+        dias_minimo_duracao: valorEreserva.minDias,
+        dias_maximo_duracao: valorEreserva.maxDias,
+        endereco: {
+          cep: endereco.cep,
+          estado: endereco.uf,
+          cidade: endereco.cidade,
+          bairro: endereco.bairro,
+          rua: endereco.rua,
+          numero: endereco.numero,
+          complemento: endereco.complemento,
         },
       };
  

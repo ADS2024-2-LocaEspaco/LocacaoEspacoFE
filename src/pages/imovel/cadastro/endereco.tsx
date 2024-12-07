@@ -30,7 +30,7 @@ const Endereco: React.FC = () => {
   });
 
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem('cadastroEndereco') || '{}');
+    const storedData = JSON.parse(localStorage.getItem('endereco') || '{}');
     if (storedData) {
       setCep(storedData.cep || '');
       setRua(storedData.rua || '');
@@ -50,7 +50,7 @@ const Endereco: React.FC = () => {
       return;
     }
     const endereco = { cep, rua, bairro, cidade, uf, numero, complemento };
-    localStorage.setItem('cadastroEndereco', JSON.stringify(endereco));
+    localStorage.setItem('endereco', JSON.stringify(endereco));
   }, [cep, rua, bairro, cidade, uf, numero, complemento]);
 
   useEffect(() => {
