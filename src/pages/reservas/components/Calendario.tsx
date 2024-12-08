@@ -162,26 +162,6 @@ const fetchReservations = async () => {
 
 
 
-  // const handleDayClick = (dateInfo: any) => {
-  //   const dateInstance = new Date(dateInfo.date);
-  //   const displayedMonth = dateInfo.view.currentStart.getMonth(); // Mês do calendário exibido
-  //   const displayedYear = dateInfo.view.currentStart.getFullYear(); // Ano do calendário exibido
-  
-  //   // Verifica se a data pertence ao mês e ano do calendário exibido
-  //   if (
-  //     dateInstance.getMonth() !== displayedMonth ||
-  //     dateInstance.getFullYear() !== displayedYear
-  //   ) {
-  //     console.log("Célula fora do mês exibido. Clique ignorado.");
-  //     return; // Ignora o clique
-  //   }
-  
-  //   const formattedDate = dateInstance.toISOString().split("T")[0];
-  //   setSelectedCell(formattedDate); // Atualiza o estado com a data clicada
-  //   console.log("Data selecionada:", formattedDate);
-  // };
-  
-
 
   const handleMonthClick = () => {
     setIsModalOpen(true);
@@ -365,7 +345,7 @@ const fetchReservations = async () => {
           </div>
         </div>
       </Modal>
-      
+
       {/* <div className="debug-logs">
   <h3>Debug Logs</h3>
   <div style={{ maxHeight: '200px', overflowY: 'scroll', backgroundColor: '#f5f5f5', padding: '10px' }}>

@@ -45,11 +45,10 @@ const ReservasPage = () => {
           </div>
         </div>
         <div>
-        <Gerenciar_reservas
-  reservas={[]} // Aqui serão passadas as reservas reais se disponíveis
-  selectedDate={selectedDate} // Data selecionada
-  idUsuario={idUsuario} // ID do usuário
-/>
+        <Gerenciar_reservas selectedDate={selectedDate} idUsuario={idUsuario} />
+
+  
+
 
         </div>
       </div>

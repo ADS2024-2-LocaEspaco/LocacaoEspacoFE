@@ -16,12 +16,17 @@ interface Reserva {
   status_reserva: string;
   status_pagamento: string;
   criado_em: string;
+  titulo?: string; // Propriedade para armazenar o título do anúncio
 }
 
 interface ReservaProps {
-  reservas: Reserva[];
   selectedDate: string | null;
   idUsuario: string;
+}
+
+interface Anuncio {
+  id: number;
+  titulo: string;
 }
 
 const Gerenciar_reservas: React.FC<ReservaProps> = ({ selectedDate, idUsuario }) => {
@@ -38,8 +43,14 @@ const Gerenciar_reservas: React.FC<ReservaProps> = ({ selectedDate, idUsuario })
         const response = await axios.get("http://localhost:4000/reservas/dados", {
           params: { id_usuario: idUsuario },
         });
-        const allReservas = response.data.Reservas.reserva || [];
 
+        const allReservas = response.data.Reservas.reserva || [];
+        const { Anuncio } = response.data;
+
+        // Lista de anúncios disponíveis
+        const anuncios = Array.isArray(Anuncio.anuncio) ? Anuncio.anuncio : [Anuncio.anuncio];
+
+        // Filtra reservas com base na data
         const filteredReservas = allReservas.filter((reserva: Reserva) => {
           const dataInicial = new Date(reserva.data_inicial);
           const dataFinal = new Date(reserva.data_final);
@@ -47,8 +58,17 @@ const Gerenciar_reservas: React.FC<ReservaProps> = ({ selectedDate, idUsuario })
           return dataSelecionada >= dataInicial && dataSelecionada <= dataFinal;
         });
 
-        setReservas(filteredReservas);
-        setLocalAtivo(filteredReservas.length > 0 ? filteredReservas[0].id : null);
+        // Combina título do anúncio com reservas
+        const reservasComTitulos = filteredReservas.map((reserva: Reserva) => {
+          const anuncio = anuncios.find((a: Anuncio) => a.id === reserva.id_anuncio);
+          return {
+            ...reserva,
+            titulo: anuncio ? anuncio.titulo : "Sem título",
+          };
+        });
+
+        setReservas(reservasComTitulos);
+        setLocalAtivo(reservasComTitulos.length > 0 ? reservasComTitulos[0].id : null);
       } catch (error) {
         console.error("Erro ao buscar reservas:", error);
       } finally {
@@ -87,7 +107,7 @@ const Gerenciar_reservas: React.FC<ReservaProps> = ({ selectedDate, idUsuario })
                 : "bg-gray-200 hover:bg-gray-300"
             } rounded-t-md`}
           >
-            {`Anúncio ${reserva.id_anuncio}`}
+            {reserva.titulo} {/* Exibe o título do anúncio */}
           </button>
         ))}
       </div>
