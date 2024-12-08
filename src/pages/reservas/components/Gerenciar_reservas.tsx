@@ -16,7 +16,7 @@ interface Reserva {
   status_reserva: string;
   status_pagamento: string;
   criado_em: string;
-  titulo?: string; // Propriedade para armazenar o título do anúncio
+  titulo?: string;
 }
 
 interface ReservaProps {
@@ -47,10 +47,8 @@ const Gerenciar_reservas: React.FC<ReservaProps> = ({ selectedDate, idUsuario })
         const allReservas = response.data.Reservas.reserva || [];
         const { Anuncio } = response.data;
 
-        // Lista de anúncios disponíveis
         const anuncios = Array.isArray(Anuncio.anuncio) ? Anuncio.anuncio : [Anuncio.anuncio];
 
-        // Filtra reservas com base na data
         const filteredReservas = allReservas.filter((reserva: Reserva) => {
           const dataInicial = new Date(reserva.data_inicial);
           const dataFinal = new Date(reserva.data_final);
@@ -58,7 +56,6 @@ const Gerenciar_reservas: React.FC<ReservaProps> = ({ selectedDate, idUsuario })
           return dataSelecionada >= dataInicial && dataSelecionada <= dataFinal;
         });
 
-        // Combina título do anúncio com reservas
         const reservasComTitulos = filteredReservas.map((reserva: Reserva) => {
           const anuncio = anuncios.find((a: Anuncio) => a.id === reserva.id_anuncio);
           return {
@@ -79,6 +76,29 @@ const Gerenciar_reservas: React.FC<ReservaProps> = ({ selectedDate, idUsuario })
     fetchReservas();
   }, [selectedDate, idUsuario]);
 
+  const updateStatus = async (idReserva: number, statusAceite: string) => {
+    try {
+      const response = await axios.put("http://localhost:4000/reservas/aceite", null, {
+        params: {
+          status_aceite: statusAceite,
+          id_reserva: idReserva,
+          id_usuario: idUsuario,
+        },
+      });
+
+      if (response.data) {
+        console.log("Status atualizado com sucesso:", response.data);
+        setReservas((prevReservas) =>
+          prevReservas.map((reserva) =>
+            reserva.id === idReserva ? { ...reserva, status_aceite: statusAceite } : reserva
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar o status:", error);
+    }
+  };
+
   const reservaAtiva = reservas.find((reserva) => reserva.id === localAtivo);
 
   if (loading) {
@@ -94,27 +114,25 @@ const Gerenciar_reservas: React.FC<ReservaProps> = ({ selectedDate, idUsuario })
   }
 
   return (
-    <div className="flex flex-col bg-gray-100 p-4 rounded-md shadow-lg w-8/12 m-20">
-      {/* Abas superiores */}
-      <div className="flex space-x-2 border-b border-gray-300 mb-4">
+    <div className="flex flex-col bg-gray-100 p-4 rounded-md shadow-lg w-full m-0">
+      <div className="flex space-x-2 border-b overflow-x-auto">
         {reservas.map((reserva) => (
           <button
             key={reserva.id}
             onClick={() => setLocalAtivo(reserva.id)}
-            className={`px-4 py-2 ${
+            className={`px-4 mx-1 py-2 mt-2 ${
               localAtivo === reserva.id
-                ? "bg-gray-300 font-bold"
-                : "bg-gray-200 hover:bg-gray-300"
-            } rounded-t-md`}
+                ? "bg-gray-200"
+                : "bg-gray-300 hover:bg-gray-300 border-b-2"
+            } rounded-t-md whitespace-nowrap`}
           >
-            {reserva.titulo} {/* Exibe o título do anúncio */}
+            {reserva.titulo}
           </button>
         ))}
       </div>
 
-      {/* Conteúdo da aba ativa */}
       {reservaAtiva && (
-        <div className="bg-white p-4 rounded-md shadow-md w-full">
+        <div className="bg-gray-200 h-1/4 p-4 rounded-md shadow-md w-full">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold">{`Reserva ${reservaAtiva.id}`}</h2>
             <span className="text-sm">{`Data: ${selectedDate}`}</span>
@@ -161,17 +179,30 @@ const Gerenciar_reservas: React.FC<ReservaProps> = ({ selectedDate, idUsuario })
             </div>
           </div>
 
-          {/* Botões de ação */}
           <div className="flex justify-end space-x-4">
-            <button className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
+            <button
+              className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+              onClick={() => updateStatus(reservaAtiva.id, "Aceita")}
+            >
               Aceitar
             </button>
-            <button className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+            <button
+              className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+              onClick={() => updateStatus(reservaAtiva.id, "Negada")}
+            >
               Cancelar
             </button>
           </div>
         </div>
       )}
+
+      <style jsx>{`
+         @media (prefers-color-scheme: dark) {
+          * {
+            color: black !important;
+          }
+        }
+      `}</style>
     </div>
   );
 };

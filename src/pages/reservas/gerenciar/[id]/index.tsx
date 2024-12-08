@@ -32,23 +32,21 @@ const ReservasPage = () => {
       <Menu />
 
       {/* Conteúdo Principal */}
-      <div className="color_auto w-full h-auto p-4">
-        <div className="flex justify-between w-full h-auto mx-auto">
+      <div className="justify-start color_auto w-full h-auto p-4">
+        <div className="flex w-3/4 h-auto mx-auto">
           {/* Calendário */}
-          <div className="w-3/4 h-auto border-black">
+          <div className="w-3/4 justify-items-center h-auto border-black">
             <CalendarComponent idUsuario={idUsuario} onDateClick={handleDateClick} />
+            <Gerenciar_reservas selectedDate={selectedDate} idUsuario={idUsuario} />
           </div>
 
           {/* Pesquisa ou Filtros */}
-          <div className="w-1/4 h-auto ml-4">
+          <div className="w-1/4 h-auto ml-0">
             <ConfigReserva />
           </div>
         </div>
-        <div>
-        <Gerenciar_reservas selectedDate={selectedDate} idUsuario={idUsuario} />
-
-  
-
+        <div className="w-3/4 m-0 p-0">
+        
 
         </div>
       </div>

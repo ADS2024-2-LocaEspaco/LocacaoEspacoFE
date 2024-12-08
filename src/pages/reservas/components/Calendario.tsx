@@ -283,7 +283,7 @@ const fetchReservations = async () => {
   }
   
   return (
-    <div className="container mx-auto p-4">
+    <div className="container w-full mx-0">
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -346,17 +346,7 @@ const fetchReservations = async () => {
         </div>
       </Modal>
 
-      {/* <div className="debug-logs">
-  <h3>Debug Logs</h3>
-  <div style={{ maxHeight: '200px', overflowY: 'scroll', backgroundColor: '#f5f5f5', padding: '10px' }}>
-    {debugLogs.map((log, index) => (
-      <p key={index} style={{ fontSize: '12px', margin: '0', fontFamily: 'monospace' }}>
-        {log}
-      </p>
-    ))}
-  </div>
-</div> */}
-
+   
       <style jsx>{`
         .container {
           transition: background-color 0.3s, color 0.3s;
@@ -368,14 +358,6 @@ const fetchReservations = async () => {
             color: white;
           }
         }
-
-        .debug-logs {
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-
           :global(.fc-event) {
            display: block !important;
           color: black !important;

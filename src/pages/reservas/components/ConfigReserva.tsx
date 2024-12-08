@@ -28,15 +28,15 @@ const ConfigReserva: React.FC = () => {
   };
 
   return (
-    <div className="color_auto p-6 max-w-lg mx-auto shadow-md rounded-md">
-      <h2 className="text-xl font-bold mb-4">Configurações</h2>
-      <p className="text-gray-500 mb-6">
+    <div className="color_auto p-6 max-w-lg h-full mx-auto shadow-md rounded-md">
+      <h2 className="text-xl font-bold mb-6">Configurações</h2>
+      <p className="text-gray-500 mb-10">
         Você pode alterar as definições de reservas para todas as datas.
       </p>
       <hr/>
 
       {/* Bloquear o Dia */}
-      <div className="mb-4">
+      <div className="mb-10">
         <h3 className="font-semibold">Bloquear o Dia</h3>
         <p className="text-sm text-gray-500 mb-2">
           Ao bloquear um dia, nenhuma reserva poderá ser realizada para esta
@@ -54,7 +54,7 @@ const ConfigReserva: React.FC = () => {
       <hr/>
 
       {/* Sobre os Preços */}
-      <div className="mb-4">
+      <div className="mb-">
         <h3 className="font-semibold">Sobre os Preços</h3>
         <label className="block text-sm mb-1">Preço da Diária</label>
         <input
@@ -156,6 +156,11 @@ const ConfigReserva: React.FC = () => {
       background-color: #1c1c1c;
       color: white;
       border black;
+      
+    }
+       input {
+      color: black;
+      border: 1px solid #444; 
     }
   }
 
