@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom"; // Import para capturar o ID da URL
 import { useRouter } from "next/router";
 import Navbar from "../../components/Navbar";
 import Menu from "../../components/Menu";
@@ -6,15 +5,23 @@ import ConfigReserva from "../../components/ConfigReserva";
 import Gerenciar_reservas from "../../components/Gerenciar_reservas";
 import CalendarComponent from "../../components/Calendario";
 import "@toast-ui/calendar/dist/toastui-calendar.min.css";
+import { useState } from "react";
 
 const ReservasPage = () => {
   const router = useRouter();
   const { id } = router.query; // Obtém o ID da URL
   const idUsuario = Array.isArray(id) ? id[0] : id || "";
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   if (!id) {
     return <div>Erro: ID do usuário não foi encontrado na URL.</div>;
   }
+
+  // Função que será passada para o componente Calendário
+  const handleDateClick = (date: string) => {
+    setSelectedDate(date);
+    console.log("Data clicada enviada para Gerenciar_reservas:", date);
+  };
 
   return (
     <div className="w-full h-auto">
@@ -29,8 +36,7 @@ const ReservasPage = () => {
         <div className="flex justify-between w-full h-auto mx-auto">
           {/* Calendário */}
           <div className="w-3/4 h-auto border-black">
-          <CalendarComponent idUsuario={idUsuario} />
-
+            <CalendarComponent idUsuario={idUsuario} onDateClick={handleDateClick} />
           </div>
 
           {/* Pesquisa ou Filtros */}
@@ -39,7 +45,12 @@ const ReservasPage = () => {
           </div>
         </div>
         <div>
-          <Gerenciar_reservas />
+        <Gerenciar_reservas
+  reservas={[]} // Aqui serão passadas as reservas reais se disponíveis
+  selectedDate={selectedDate} // Data selecionada
+  idUsuario={idUsuario} // ID do usuário
+/>
+
         </div>
       </div>
       <style jsx>{`

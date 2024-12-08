@@ -18,9 +18,6 @@ interface Reserva {
   status_aceite: string;
 }
 
-
-
-
 interface CalendarEvent {
   title: string;
   start: string;
@@ -36,12 +33,12 @@ interface Anuncio {
 }
 
 
-
 interface CalendarComponentProps {
   idUsuario: string;
+  onDateClick: (date: string) => void; // Função para passar a data clicada
 }
 
-const CalendarComponent: React.FC<CalendarComponentProps> = ({ idUsuario }) => {
+const CalendarComponent: React.FC<CalendarComponentProps> = ({ idUsuario, onDateClick  }) => {
   console.log("ID do usuário recebido:", idUsuario);
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [selectedCell, setSelectedCell] = useState<string | null>(null); // Novo estado para destacar célula clicada
@@ -56,6 +53,26 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ idUsuario }) => {
   const addLog = (message: string) => {
     setDebugLogs((prevLogs) => [...prevLogs, message]);
   };
+
+  const handleDayClick = (dateInfo: any) => {
+    const dateInstance = new Date(dateInfo.date);
+    const displayedMonth = dateInfo.view.currentStart.getMonth();
+    const displayedYear = dateInfo.view.currentStart.getFullYear();
+
+    if (
+        dateInstance.getMonth() !== displayedMonth ||
+        dateInstance.getFullYear() !== displayedYear
+    ) {
+        console.log("Célula fora do mês exibido. Clique ignorado.");
+        return; // Ignora o clique
+    }
+
+    const formattedDate = dateInstance.toISOString().split("T")[0];
+    setSelectedCell(formattedDate); // Atualiza o estado com a data clicada
+    onDateClick(formattedDate); // Envia a data clicada para o componente pai
+    console.log("Data selecionada:", formattedDate);
+};
+
   
 
   const months = [
@@ -63,7 +80,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ idUsuario }) => {
     "Mai.", "Jun.", "Jul.", "Ago.",
     "Set.", "Out.", "Nov.", "Dez.",
   ];
-//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   
 const fetchReservations = async () => {
   try {
@@ -131,12 +148,7 @@ const fetchReservations = async () => {
     }
   }
 };
-
-
-
-  
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-  
+ 
 
   const handleDatesSet = (dateInfo: any) => {
     const month = dateInfo.start.getMonth();
@@ -150,24 +162,24 @@ const fetchReservations = async () => {
 
 
 
-  const handleDayClick = (dateInfo: any) => {
-    const dateInstance = new Date(dateInfo.date);
-    const displayedMonth = dateInfo.view.currentStart.getMonth(); // Mês do calendário exibido
-    const displayedYear = dateInfo.view.currentStart.getFullYear(); // Ano do calendário exibido
+  // const handleDayClick = (dateInfo: any) => {
+  //   const dateInstance = new Date(dateInfo.date);
+  //   const displayedMonth = dateInfo.view.currentStart.getMonth(); // Mês do calendário exibido
+  //   const displayedYear = dateInfo.view.currentStart.getFullYear(); // Ano do calendário exibido
   
-    // Verifica se a data pertence ao mês e ano do calendário exibido
-    if (
-      dateInstance.getMonth() !== displayedMonth ||
-      dateInstance.getFullYear() !== displayedYear
-    ) {
-      console.log("Célula fora do mês exibido. Clique ignorado.");
-      return; // Ignora o clique
-    }
+  //   // Verifica se a data pertence ao mês e ano do calendário exibido
+  //   if (
+  //     dateInstance.getMonth() !== displayedMonth ||
+  //     dateInstance.getFullYear() !== displayedYear
+  //   ) {
+  //     console.log("Célula fora do mês exibido. Clique ignorado.");
+  //     return; // Ignora o clique
+  //   }
   
-    const formattedDate = dateInstance.toISOString().split("T")[0];
-    setSelectedCell(formattedDate); // Atualiza o estado com a data clicada
-    console.log("Data selecionada:", formattedDate);
-  };
+  //   const formattedDate = dateInstance.toISOString().split("T")[0];
+  //   setSelectedCell(formattedDate); // Atualiza o estado com a data clicada
+  //   console.log("Data selecionada:", formattedDate);
+  // };
   
 
 
@@ -295,6 +307,7 @@ const fetchReservations = async () => {
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
+        dateClick={handleDayClick} // Chama a função ao clicar
         events={events}
         locales={[ptBr]}
         locale="pt-br"
@@ -305,7 +318,7 @@ const fetchReservations = async () => {
         }}
         dayCellClassNames={(date) => addGrayBackground(date)}
         ref={calendarRef}
-        dateClick={handleDayClick} // Incremental: Adiciona clique na célula
+        /// Incremental: Adiciona clique na célula
         datesSet={handleDatesSet}
         eventDidMount={eventDidMount}
       />
@@ -352,7 +365,8 @@ const fetchReservations = async () => {
           </div>
         </div>
       </Modal>
-      <div className="debug-logs">
+      
+      {/* <div className="debug-logs">
   <h3>Debug Logs</h3>
   <div style={{ maxHeight: '200px', overflowY: 'scroll', backgroundColor: '#f5f5f5', padding: '10px' }}>
     {debugLogs.map((log, index) => (
@@ -361,7 +375,7 @@ const fetchReservations = async () => {
       </p>
     ))}
   </div>
-</div>
+</div> */}
 
       <style jsx>{`
         .container {

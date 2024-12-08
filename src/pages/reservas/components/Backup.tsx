@@ -10,11 +10,16 @@
 // Modal.setAppElement("#root");
 
 // interface Reserva {
+//   id: number;
+//   id_anuncio: number;
 //   data_inicial: string;
 //   data_final: string;
-//   status_reserva: string;
-//   id_anuncio: number;
+//   criado_em: string;
+//   status_aceite: string;
 // }
+
+
+
 
 // interface CalendarEvent {
 //   title: string;
@@ -24,6 +29,13 @@
 //     status: string;
 //   };
 // }
+
+// interface Anuncio {
+//   id: number;
+//   titulo: string;
+// }
+
+
 
 // interface CalendarComponentProps {
 //   idUsuario: string;
@@ -40,6 +52,10 @@
 //   const lastDateRef = useRef<{ month: number; year: number } | null>(null);
 //   const calendarRef = useRef<FullCalendar | null>(null);
 
+//   const [debugLogs, setDebugLogs] = useState<string[]>([]); //wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+//   const addLog = (message: string) => {
+//     setDebugLogs((prevLogs) => [...prevLogs, message]);
+//   };
   
 
 //   const months = [
@@ -47,56 +63,80 @@
 //     "Mai.", "Jun.", "Jul.", "Ago.",
 //     "Set.", "Out.", "Nov.", "Dez.",
 //   ];
+// //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  
+// const fetchReservations = async () => {
+//   try {
+//     const response = await axios.get("http://localhost:4000/reservas/dados", {
+//       params: { id_usuario: idUsuario },
+//     });
 
- 
-  
-//   // Utilize idUsuario no componente
+//     const { Reservas, Anuncio } = response.data;
 
-  
-//   const fetchReservations = async (month: number, year: number, idUsuario: string) => {
-//     try {
-//       const response = await axios.get("http://localhost:4000/reservas", {
-//         params: { id_usuario: idUsuario },
-//       });
-  
-//       //console.log("Dados da API de reservas:", response.data);
-  
-//       if (Array.isArray(response.data)) {
-//         const mappedEvents = response.data.flatMap((reserva) => {
-//           const startDate = new Date(reserva.data_inicial);
-//           const endDate = new Date(reserva.data_final);
-  
-//           const events: CalendarEvent[] = [];
-//           for (
-//             let date = new Date(startDate);
-//             date <= endDate;
-//             date.setDate(date.getDate() + 1)
-//           ) {
-//             events.push({
-//               title: "Reserva", // Certifique-se de ajustar conforme necessário
-//               start: date.toISOString().split("T")[0],
-//               end: date.toISOString().split("T")[0],
-//               extendedProps: {
-//                 status: reserva.status_aceite,
-//               },
-//             });
-//           }
-  
-//           return events;
-//         });
-
-
-
-//         setEvents(mappedEvents);
-//       } else {
-//         //console.error("Resposta do backend não é um array:", response.data);
-//       }
-//     } catch (error) {
-//      // console.error("Erro ao buscar reservas:", error);
+//     if (!Reservas || !Reservas.reserva || !Anuncio || !Anuncio.anuncio) {
+//       addLog("Erro: Dados incompletos retornados da API.");
+//       return;
 //     }
-//   };
 
-   
+//     const reservas = Reservas.reserva;
+//     const anuncios = Array.isArray(Anuncio.anuncio) ? Anuncio.anuncio : [Anuncio.anuncio];
+
+//     addLog("Anúncios disponíveis:");
+//     anuncios.forEach((anuncio: Anuncio) => addLog(JSON.stringify(anuncio)));
+
+//     const mappedEvents = reservas.flatMap((reserva: Reserva) => {
+//       // Encontra o anúncio correspondente para cada reserva
+//       const anuncioCorrespondente = anuncios.find(
+//         (anuncio: Anuncio) => anuncio.id === reserva.id_anuncio
+//       );
+
+//       // Verifica se um anúncio correspondente foi encontrado
+//       const tituloAnuncio = anuncioCorrespondente
+//         ? anuncioCorrespondente.titulo
+//         : "Sem título";
+
+//       addLog(`Título do anúncio para reserva ${reserva.id}: ${tituloAnuncio}`);
+
+//       const startDate = new Date(reserva.data_inicial);
+//       const endDate = new Date(reserva.data_final);
+
+//       const events: CalendarEvent[] = [];
+
+//       // Cria eventos para cada dia da reserva
+//       for (
+//         let date = new Date(startDate);
+//         date <= endDate;
+//         date.setDate(date.getDate() + 1)
+//       ) {
+//         events.push({
+//           title: `${tituloAnuncio} - ${new Date(reserva.criado_em).toLocaleDateString()}`,
+//           start: date.toISOString().split("T")[0],
+//           end: date.toISOString().split("T")[0],
+//           extendedProps: {
+//             status: reserva.status_aceite,
+//           },
+//         });
+//       }
+
+//       return events;
+//     });
+
+//     // Atualiza o estado com os eventos mapeados
+//     setEvents(mappedEvents);
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       addLog(`Erro ao buscar dados: ${error.message}`);
+//     } else {
+//       addLog("Erro desconhecido ao buscar dados.");
+//     }
+//   }
+// };
+
+
+
+  
+//   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  
 
 //   const handleDatesSet = (dateInfo: any) => {
 //     const month = dateInfo.start.getMonth();
@@ -105,7 +145,7 @@
 //     if (lastDateRef.current?.month === month && lastDateRef.current?.year === year) return;
 
 //     lastDateRef.current = { month, year };
-//     fetchReservations(month, year,idUsuario);
+//     fetchReservations();
 //   };
 
 
@@ -149,7 +189,7 @@
 //     if (calendarRef.current) {
 //       const calendarApi = calendarRef.current.getApi();
 //       calendarApi.gotoDate(newDate);
-//       fetchReservations(month, selectedYear,idUsuario);
+//       fetchReservations();
 //     }
 //   };
 
@@ -160,7 +200,6 @@
 //   };
 
 //   const eventDidMount = (info: any) => {
-//     console.log("Evento montado:", info.event);
 //     const dot = document.createElement("span");
 //     dot.style.height = "10px";
 //     dot.style.width = "10px";
@@ -168,7 +207,8 @@
 //     dot.style.display = "inline-block";
 //     dot.style.marginRight = "8px";
   
-//     switch (info.event.extendedProps.status) {
+//     const status = info.event.extendedProps?.status || "Desconhecido";
+//     switch (status) {
 //       case "Aguardando_resposta_anfitiao":
 //         dot.style.backgroundColor = "yellow";
 //         break;
@@ -193,12 +233,13 @@
 //   };
   
 
-//   useEffect(() => {
-//     console.log("Chamando fetchReservations...");
-//     fetchReservations(new Date().getMonth(), new Date().getFullYear(), idUsuario);
-  
-  
+//   //const [anuncios, setAnuncios] = useState<Anuncio[]>([]);
 
+
+//   useEffect(() => {
+//     fetchReservations();
+  
+  
 //     const updateToolbarClickHandler = () => {
 //       const toolbarTitle = document.querySelector(".fc-toolbar-title") as HTMLElement;
 //       if (toolbarTitle) {
@@ -311,6 +352,17 @@
 //           </div>
 //         </div>
 //       </Modal>
+//       <div className="debug-logs">
+//   <h3>Debug Logs</h3>
+//   <div style={{ maxHeight: '200px', overflowY: 'scroll', backgroundColor: '#f5f5f5', padding: '10px' }}>
+//     {debugLogs.map((log, index) => (
+//       <p key={index} style={{ fontSize: '12px', margin: '0', fontFamily: 'monospace' }}>
+//         {log}
+//       </p>
+//     ))}
+//   </div>
+// </div>
+
 //       <style jsx>{`
 //         .container {
 //           transition: background-color 0.3s, color 0.3s;
@@ -323,10 +375,17 @@
 //           }
 //         }
 
+//         .debug-logs {
+//     margin-top: 20px;
+//     padding: 10px;
+//     border: 1px solid #ccc;
+//     border-radius: 5px;
+//   }
+
 //           :global(.fc-event) {
 //            display: block !important;
 //           color: black !important;
-//         }
+//          }
 
 //         :global(.modal-content) {
 //           position: absolute;
@@ -385,4 +444,3 @@
 // export default CalendarComponent;
 
 
-// //funcionando xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
