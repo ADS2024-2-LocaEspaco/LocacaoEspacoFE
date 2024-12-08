@@ -4,28 +4,54 @@ import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import useNavigation from '@/hooks/CadImovel';
 import CardSelect from './components/CardSelect';
-import { FaPerson } from "react-icons/fa6";
-import { PiBabyLight } from "react-icons/pi";
-import { PiBabyCarriageLight } from "react-icons/pi";
+import * as FaIcons from 'react-icons/fa';
+import * as MdIcons from 'react-icons/md';
+import * as TbIcons from 'react-icons/tb';
+import * as PiIcons from 'react-icons/pi';
+import * as LiaIcons from 'react-icons/lia';
 
-interface tipoHospede {
-    name: string;
-    value: number;
-    icon: React.ReactNode;
+interface TipoHospede {
+    hospede: string;
+    id: number;
+    icone: string; // Nome do ícone
 }
 
-const TipoHospede: tipoHospede[] = [
-    { name: 'Adultos', value: 1, icon: <FaPerson size={32} /> },
-    { name: 'Crainças', value: 2, icon: <PiBabyLight size={32} /> },
-    { name: 'Bebês', value: 3, icon: <PiBabyCarriageLight size={32} /> },
-];
-
-const tipoHospede: React.FC = () => {
+const TipoHospede: React.FC = () => {
     const { goToPreviousPage, goToNextPage } = useNavigation();
-    const [selectedItem, setSelectedItem] = React.useState<tipoHospede | null>(null);
+    const [selectedItem, setSelectedItem] = React.useState<TipoHospede | null>(null);
+    const [tiposHospede, setTiposHospede] = useState<TipoHospede[]>([]);
     const [error, setError] = useState<string | null>(null);
 
+    const resolveIcon = (iconName: string): React.ReactNode => {
+        const iconLibrary = { ...FaIcons, ...MdIcons, ...TbIcons, ...PiIcons, ...LiaIcons };
+        const IconComponent = iconLibrary[iconName];
+        return IconComponent ? <IconComponent size={32} /> : null;
+    };
+
     useEffect(() => {
+        const fetchTiposHospede = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/anuncio/get-tipo-hospede');
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar tipos de hóspedes');
+                }
+                const data: TipoHospede[] = await response.json();
+
+                // Adicionar os ícones resolvidos
+                const tiposHospedeComIcones = data.map(item => ({
+                    ...item,
+                    iconeComponente: resolveIcon(item.icone),
+                }));
+
+                setTiposHospede(tiposHospedeComIcones);
+            } catch (error) {
+                console.error('Erro ao buscar tipos de hóspedes:', error);
+            }
+        };
+
+        fetchTiposHospede();
+
+        // Carregar seleção do localStorage
         const storedTiposHospede = localStorage.getItem('tipos_hospede');
         if (storedTiposHospede) {
             const parsedTiposHospede = JSON.parse(storedTiposHospede);
@@ -33,11 +59,11 @@ const tipoHospede: React.FC = () => {
         }
     }, []);
 
-    const handleSelect = (item: tipoHospede) => {
+    const handleSelect = (item: TipoHospede) => {
         setSelectedItem(item);
         setError(null);
         localStorage.setItem('tipos_hospede', JSON.stringify(item));
-    }
+    };
 
     const validateFields = () => {
         if (!selectedItem) {
@@ -60,7 +86,7 @@ const tipoHospede: React.FC = () => {
                 <div className="w-full lg:w-1/2 h-full flex-1 flex-shrink-0 lg:block hidden">
                     <Image
                         src="/assets/imgs/tipo-hospede-img.png"
-                        alt="Imagem de camera"
+                        alt="Imagem de tipos de hóspedes"
                         width={500}
                         height={500}
                         className="w-full h-full object-cover"
@@ -75,13 +101,13 @@ const tipoHospede: React.FC = () => {
                         </h1>
                         <p className="block text-gray-600 text-black font-bold mt-4 mb-4">Selecione o tipo de hóspede que deseja receber:</p>
                         <div className="flex-shrink grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-10 rounded-md mt-4">
-                            {TipoHospede.map((tipoHospede, index) => (
+                            {tiposHospede.map((tipoHospede, index) => (
                                 <CardSelect
                                     key={index}
-                                    value={tipoHospede.value}
-                                    name={tipoHospede.name}
-                                    selected={selectedItem?.value == tipoHospede.value}
-                                    icon={tipoHospede.icon}
+                                    value={tipoHospede.id}
+                                    name={tipoHospede.hospede}
+                                    selected={selectedItem?.id === tipoHospede.id}
+                                    icon={tipoHospede.iconeComponente}
                                     onSelect={() => handleSelect(tipoHospede)}
                                 />
                             ))}
@@ -99,7 +125,7 @@ const tipoHospede: React.FC = () => {
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default tipoHospede;
+export default TipoHospede;

@@ -111,7 +111,7 @@ const Prototipo: React.FC = () => {
         // fotos: ["https://via.placeholder.com/300", "https://via.placeholder.com/300"], // Assumindo que fotos são strings (URLs)
         cameras: cameras,
         tipo_reserva_atual: tipoReservaAtual.name,
-        tipo_hospede_id: tipoHospede.value,
+        tipo_hospede_id: tipoHospede.id,
         valor_diaria: valorEreserva.valor, 
         dias_minimo_antecedencia: valorEreserva.antecedencia,
         dias_minimo_duracao: valorEreserva.minDias,
