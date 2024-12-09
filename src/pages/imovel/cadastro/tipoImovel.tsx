@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import NavbarCadastro from '@/components/navbarCadastro';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import useNavigation from '@/hooks/CadImovel';
@@ -20,9 +21,12 @@ interface Categoria {
 
 const TipoImovel: React.FC = () => {
   const { goToPreviousPage, goToNextPage } = useNavigation();
+  const router = useRouter();
+  const { anuncioId } = router.query;
   const [selectedCategory, setSelectedCategory] = useState<Categoria | null>(null);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   const resolveIcon = (iconName: string): React.ReactNode => {
     const iconLibrary = { ...FaIcons, ...Fa6Icons, ...MdIcons, ...PiIcons, ...GiIcons, ...IoIcons };
@@ -31,6 +35,8 @@ const TipoImovel: React.FC = () => {
   };
 
   useEffect(() => {
+    setIsEditMode(!!anuncioId);
+
     const fetchCategorias = async () => {
       try {
         const response = await fetch('http://localhost:3000/anuncio/get-tipo-imovel');
@@ -52,16 +58,53 @@ const TipoImovel: React.FC = () => {
 
     fetchCategorias();
 
-    const storedSelection = localStorage.getItem("tipo_imovel");
-    if (storedSelection) {
-      const parsedSelection: Categoria = JSON.parse(storedSelection);
-      const resolvedIcon = resolveIcon(parsedSelection.icone);
-      setSelectedCategory({
-        ...parsedSelection,
-        icone: resolvedIcon,
-      });
+    if (isEditMode && anuncioId) {
+      console.log('Modo de Edição');
+      const fetchAnuncio = async () => {
+        try {
+          const response = await fetch(`http://localhost:3000/anuncio/${anuncioId}`);
+          if (!response.ok) {
+            throw new Error('Erro ao buscar anúncio');
+          }
+          const anuncio = await response.json();
+          const tipoImovelId = anuncio.tipo_imovel_id;
+
+          if (tipoImovelId) {
+            const tipoImovelResponse = await fetch(`http://localhost:3000/get-tipo-imovel/${tipoImovelId}`);
+            if (!tipoImovelResponse.ok) {
+              throw new Error('Erro ao buscar tipo de imóvel');
+            }
+            const tipoImovel: Categoria = await tipoImovelResponse.json();
+
+            const resolvedIcon = resolveIcon(tipoImovel.icone);
+            setSelectedCategory({
+              ...tipoImovel,
+              icone: resolvedIcon,
+            });
+            localStorage.setItem("tipo_imovel", JSON.stringify({
+              ...tipoImovel,
+              icone: tipoImovel.icone,
+            }));
+          }
+        } catch (error) {
+          console.error('Erro ao buscar o anúncio ou tipo de imóvel:', error);
+        }
+      };
+
+      fetchAnuncio();
+    } else {
+      console.log('Modo de Criação');
+      const storedSelection = localStorage.getItem("tipo_imovel");
+      if (storedSelection) {
+        const parsedSelection: Categoria = JSON.parse(storedSelection);
+        const resolvedIcon = resolveIcon(parsedSelection.icone);
+        setSelectedCategory({
+          ...parsedSelection,
+          icone: resolvedIcon,
+        });
+      }
     }
-  }, []);
+  }, [router.query, isEditMode]);
 
   const handleSelect = (category: Categoria) => {
     const resolvedIcon = resolveIcon(category.icone);
