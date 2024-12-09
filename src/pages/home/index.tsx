@@ -1,5 +1,5 @@
 import { useUserStore } from "@/lib/store/userStore";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/Navbar";
 
 export default function Home() {
     const user = useUserStore((state) => state.user)

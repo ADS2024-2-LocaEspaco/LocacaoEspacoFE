@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 
 import Calendar from "../calendar";
-import Checkbox from "./checkbox";
 
 import SearchIcon from '../../../public/icons/search_icon.svg';
 import CalendarIcon from '../../../public/icons/calendar_icon.svg'
@@ -10,6 +10,7 @@ import DestinyIcon from '../../../public/icons/destiny_icon.svg'
 import PersonIcon from '../../../public/icons/person_icon.svg'
 import PlusIcon from '../../../public/icons/plus_circle_icon.svg'
 import MinusIcon from '../../../public/icons/dash_circle_icon.svg'
+import Checkbox from "./checkbox";
 
 interface Guests {
     adults: number
@@ -19,12 +20,14 @@ interface Guests {
 }
 
 export default function DesktopSearch() {
+    const router = useRouter()
+
     const modalGuestsRef = useRef<HTMLDivElement | null>(null);
     const inputRef = useRef<HTMLDivElement | null>(null);
     const modalCheckInRef = useRef<HTMLDivElement | null>(null);
     const modalCheckOutRef = useRef<HTMLDivElement | null>(null);
 
-    const [local, setLocal] = useState('')
+    const [local, setLocal] = useState<String>('')
     const [checkInDate, setCheckInDate] = useState<Date | null>(null)
     const [checkOutDate, setCheckOutDate] = useState<Date | null>(null)
     const [guests, setGuests] = useState<Guests>({
@@ -34,14 +37,14 @@ export default function DesktopSearch() {
         pets: 0
     })
 
-    const [isOpenInputDestiny, setIsOpenInputDestiny] = useState(false)
-    const [isOpenCheckInCalendar, setIsOpenCheckInCalendar] = useState(false)
-    const [isOpenCheckOutCalendar, setIsOpenCheckOutCalendar] = useState(false)
-    const [isOpenModalGuests, setIsOpenModalGuests] = useState(false)
+    const [isOpenInputDestiny, setIsOpenInputDestiny] = useState<boolean>(false)
+    const [isOpenCheckInCalendar, setIsOpenCheckInCalendar] = useState<boolean>(false)
+    const [isOpenCheckOutCalendar, setIsOpenCheckOutCalendar] = useState<boolean>(false)
+    const [isOpenModalGuests, setIsOpenModalGuests] = useState<boolean>(false)
 
-    const [isCheckedGuests, setIsCheckedGuests] = useState(false)
-    const [isCheckedCheckIn, setIsCheckedCheckIn] = useState(false)
-    const [isCheckedCheckOut, setIsCheckedCheckOut] = useState(false)
+    const [isCheckedGuests, setIsCheckedGuests] = useState<boolean>(false)
+    const [isCheckedCheckIn, setIsCheckedCheckIn] = useState<boolean>(false)
+    const [isCheckedCheckOut, setIsCheckedCheckOut] = useState<boolean>(false)
 
     const updateGuests = (type: keyof Guests, value: number) => {
         setGuests(prev => ({
@@ -50,13 +53,24 @@ export default function DesktopSearch() {
         }));
     };
 
-    const handleSearch = () => {
+    const handleSearch = async () => {
         if (local) {
             if (checkOutDate && checkInDate) {
                 setCheckOutDate(checkOutDate <= checkInDate ? null : checkOutDate)
             }
 
-            console.log(local, checkInDate, checkOutDate, guests)
+            const totalGuests: String = Object.values(guests).reduce((sum, value) => sum + value, 0)
+
+
+            router.push({
+                pathname: '/pesquisa',
+                query: {
+                    local: local.toString(),
+                    checkInDate: checkInDate?.toISOString() || '',
+                    checkOutDate: checkOutDate?.toISOString() || '',
+                    totalGuests: totalGuests?.toString() || '0',
+                }
+            })
         } else {
             alert('Insira um Destino!')
         }
