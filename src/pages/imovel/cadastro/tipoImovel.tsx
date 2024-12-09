@@ -35,7 +35,8 @@ const TipoImovel: React.FC = () => {
   };
 
   useEffect(() => {
-    setIsEditMode(!!anuncioId);
+    const isEditing = !!anuncioId;
+    setIsEditMode(isEditing);
 
     const fetchCategorias = async () => {
       try {
@@ -51,6 +52,20 @@ const TipoImovel: React.FC = () => {
         }));
 
         setCategorias(categoriasWithIcons);
+
+        // Se estiver no modo de edição, seleciona o tipo de imóvel com base no ID
+        if (isEditing && anuncioId) {
+          const selectedCategoria = categoriasWithIcons.find(categoria => categoria.id === Number(anuncioId));
+          if (selectedCategoria) {
+            setSelectedCategory(selectedCategoria);
+
+            // Atualiza o localStorage no modo de edição
+            localStorage.setItem("tipo_imovel", JSON.stringify({
+              ...selectedCategoria,
+              icone: selectedCategoria.icone,
+            }));
+          }
+        }
       } catch (error) {
         console.error('Erro ao buscar tipos de imóveis:', error);
       }
@@ -58,41 +73,7 @@ const TipoImovel: React.FC = () => {
 
     fetchCategorias();
 
-    if (isEditMode && anuncioId) {
-      console.log('Modo de Edição');
-      const fetchAnuncio = async () => {
-        try {
-          const response = await fetch(`http://localhost:3000/anuncio/${anuncioId}`);
-          if (!response.ok) {
-            throw new Error('Erro ao buscar anúncio');
-          }
-          const anuncio = await response.json();
-          const tipoImovelId = anuncio.tipo_imovel_id;
-
-          if (tipoImovelId) {
-            const tipoImovelResponse = await fetch(`http://localhost:3000/get-tipo-imovel/${tipoImovelId}`);
-            if (!tipoImovelResponse.ok) {
-              throw new Error('Erro ao buscar tipo de imóvel');
-            }
-            const tipoImovel: Categoria = await tipoImovelResponse.json();
-
-            const resolvedIcon = resolveIcon(tipoImovel.icone);
-            setSelectedCategory({
-              ...tipoImovel,
-              icone: resolvedIcon,
-            });
-            localStorage.setItem("tipo_imovel", JSON.stringify({
-              ...tipoImovel,
-              icone: tipoImovel.icone,
-            }));
-          }
-        } catch (error) {
-          console.error('Erro ao buscar o anúncio ou tipo de imóvel:', error);
-        }
-      };
-
-      fetchAnuncio();
-    } else {
+    if (!isEditing) {
       console.log('Modo de Criação');
       const storedSelection = localStorage.getItem("tipo_imovel");
       if (storedSelection) {
@@ -104,7 +85,7 @@ const TipoImovel: React.FC = () => {
         });
       }
     }
-  }, [router.query, isEditMode]);
+  }, [router.query, anuncioId]);
 
   const handleSelect = (category: Categoria) => {
     const resolvedIcon = resolveIcon(category.icone);
