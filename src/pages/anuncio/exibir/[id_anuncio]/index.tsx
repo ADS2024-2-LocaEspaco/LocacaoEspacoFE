@@ -32,10 +32,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
    }
 
    const anuncio = await response.json();
-
+   console.log('Anúncio encontrado:', anuncio);
   return { 
     props: {
-      anuncio,
+      anuncio
     },
   };
 
@@ -76,7 +76,7 @@ const ExibirAnuncio: React.FC<Props> = ({ anuncio }) => {
           <Avaliacao anuncioId={anuncio.id} />
         </div>
         <div className="flex flex-col items-center mb-4">
-          {/* <Carrossel imagens={anuncio} /> */}
+       {/*     <Carrossel imagens={anuncio} /> */}
           <IconesAnuncio
             quant_hospedes={anuncio.hospedes}
             quant_banheiros={anuncio.banheiros}
