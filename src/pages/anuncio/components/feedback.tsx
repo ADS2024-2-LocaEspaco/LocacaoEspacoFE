@@ -3,17 +3,21 @@ import { useState, useEffect, useMemo } from 'react';
 import { Star } from 'lucide-react';
 import { useSwipeable } from 'react-swipeable';
 import { getComentarios, GetDadosAvaliacao, getUsuarioAvaliador } from '@/utils/api';
-import { Avaliacao, Comentario } from '@/types/types2';
+import { Avaliacao, AvaliacaoProps, Comentario } from '@/types/types2';
 
 
-export default function ReviewsSection({ anuncioId }: { anuncioId: string }) {
-  const [reviews, setReviews] = useState<Avaliacao[]>([]);
+export default function ReviewsSection({ anuncioId }: { anuncio: any, anuncioId: string }) {
+  const [reviews, setReviews] = useState<AvaliacaoProps[]>([]);
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
   const [usuarios, setUsuarios] = useState<{ [key: number]: string }>({});
   const [mediaNotas, setMediaNotas] = useState<{ [key: string]: number }>({});
   const [datasReservas, setDatasReservas] = useState<any[]>([]);
+  const[anuncio, setAnuncio] = useState<any>();
+
+  console.log('Anúncio no compo ReviewsSection: ', anuncio)
 
   useEffect(() => {
+    setAnuncio(anuncio);
     const fetchComentarios = async () => {
       if (anuncioId) {
         const comentarios = await getComentarios(anuncioId);
@@ -35,6 +39,7 @@ export default function ReviewsSection({ anuncioId }: { anuncioId: string }) {
         setUsuarios(userMap);
       }
     };
+    console.log('Anúncio no compo ReviewsSection: ', anuncio)
 
     const fetchDadosAvaliacao = async () => {
       if (anuncioId) {
@@ -69,7 +74,7 @@ export default function ReviewsSection({ anuncioId }: { anuncioId: string }) {
     }[keyof T];
     
     // Campos de nota na interface Avaliacao
-    const noteFields: NumberKeys<Avaliacao>[] = [
+    const noteFields: NumberKeys<AvaliacaoProps>[] = [
       'nota_limpeza',
       'nota_cordialidade',
       'nota_custo_beneficio',

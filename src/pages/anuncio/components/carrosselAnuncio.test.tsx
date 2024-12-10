@@ -3,19 +3,19 @@ import '@testing-library/jest-dom';
 import Carrossel from './carrosselAnuncio';
 import * as emblaCarouselReact from 'embla-carousel-react'; // Importação para mockar a API
 import Modal from 'react-modal';
-
+import { Fotos } from '@/types/types2';
 // Mock da API do Embla
 jest.mock('embla-carousel-react', () => ({
   __esModule: true,
   default: jest.fn().mockReturnValue([jest.fn(), { scrollPrev: jest.fn(), scrollNext: jest.fn(), reInit: jest.fn(), scrollTo: jest.fn() }]),
 }));
 
-const imagens = [
-  '/images/image1.webp',
-  '/images/image2.webp',
-  '/images/image3.webp',
-  '/images/image4.webp',
-  '/images/image5.webp',
+const imagens: Fotos[] = [
+  { id: 1, url: '/images/image1.webp', anuncio: []  },
+  { id: 2, url: '/images/image2.webp', anuncio: []  },
+  { id: 3, url: '/images/image3.webp', anuncio: [] },
+  { id: 4, url: '/images/image4.webp', anuncio: [] },
+  { id: 5, url: '/images/image5.webp', anuncio: [] },
 ];
 
 describe('Carrossel Component', () => {

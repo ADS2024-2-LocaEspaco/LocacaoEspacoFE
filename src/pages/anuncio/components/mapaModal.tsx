@@ -2,27 +2,30 @@
 
 import React from "react";
 import { MapContainer, TileLayer, Circle } from "react-leaflet";
-import { CircleMarker, LatLngExpression } from "leaflet";
+import { LatLngExpression } from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 interface MapModalProps {
   isOpen: boolean;
   onClose: () => void;
   latLng: LatLngExpression;
-  endereco: {
-    latLng: LatLngExpression;
-    pais: string;
-    cidade: string;
-    uf: string;
-    bairro: string;
-    rua: string;
-  };
+  endereco: Endereco;
+}
+
+interface Endereco {
+  latitude: string;
+  longitude: string;
+  pais: string;
+  cidade: string;
+  estado: string;
+  bairro: string;
+  rua: string;
 }
 
 const MapModal: React.FC<MapModalProps> = ({ isOpen, onClose, latLng, endereco }) => {
   if (!isOpen) return null;
 
-  const { pais, cidade, uf, rua, bairro } = endereco;
+  const { pais, cidade, estado, rua, bairro } = endereco;
 
   const radius = 1000;
 
@@ -39,8 +42,8 @@ const MapModal: React.FC<MapModalProps> = ({ isOpen, onClose, latLng, endereco }
             Localização do Imóvel
           </h2>
           <div className="flex flex-col gap-0">
-          <p className="text-gray-600 m-0 text-lg">{cidade} - {uf}, {pais}</p>
-          <p className="text-gray-600 mb-1 text-sm">{bairro}, {rua}</p>
+            <p className="text-gray-600 m-0 text-lg">{cidade} - {estado}, {pais}</p>
+            <p className="text-gray-600 mb-1 text-sm">{bairro}, {rua}</p>
           </div>
         </div>
         <MapContainer
@@ -53,7 +56,6 @@ const MapModal: React.FC<MapModalProps> = ({ isOpen, onClose, latLng, endereco }
           doubleClickZoom={false}
           boxZoom={false}
           keyboard={false}
-          tap={false}
         >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           <Circle center={latLng} radius={radius} />

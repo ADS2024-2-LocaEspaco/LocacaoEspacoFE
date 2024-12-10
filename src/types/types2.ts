@@ -22,7 +22,7 @@ export type Anuncio = {
   qtd_diaria_min: number;
   qtd_diaria_max: number;
   tempo_antecipado_para_reserva: number;
-  fotos: Fotos;
+  fotos: Fotos[];
   usuario: Usuario;
   tipo_imovel: TipoImovel;
   tipo_espaco: TipoEspaco;
@@ -33,6 +33,7 @@ export type Anuncio = {
   lista_favoritos_personalizada: ListaFavoritosPersonalizada[];
   reserva: Reserva[];
   anuncioComodidades: AnuncioComodidades[];
+  avaliacoes: AvaliacaoProps[];
 };
 
 export type Comentario = {
@@ -87,8 +88,9 @@ export type TipoHospede = {
   anuncio: Anuncio[];
 };
 
-export type Avaliacao = {
+export type AvaliacaoProps = {
   id: number;
+  media_notas: MediaProps;
   id_usuario_avaliador: number;
   id_usuario_avaliado?: number;
   id_anuncio_avaliado?: number;
@@ -96,7 +98,7 @@ export type Avaliacao = {
   nota_exatidao_anuncio?: number;
   nota_custo_beneficio?: number;
   nota_localizacao?: number;
-  comentario: string;
+  comentario?: string;
   nota_seguiu_regras?: number;
   nota_pontualidade?: number;
   nota_cordialidade?: number;
@@ -106,7 +108,47 @@ export type Avaliacao = {
   usuario_usuario_avaliacao_idToavaliacao: Usuario[];
 };
 
-export interface MediaAvaliacaoResponse {
+export type Avaliacao = {
+  id: number;
+  media_notas: MediaProps;
+  id_usuario_avaliador: number;
+  id_usuario_avaliado?: number;
+  id_anuncio_avaliado?: number;
+  nota_limpeza?: number;
+  nota_exatidao_anuncio?: number;
+  nota_custo_beneficio?: number;
+  nota_localizacao?: number;
+  comentario?: string;
+  nota_seguiu_regras?: number;
+  nota_pontualidade?: number;
+  nota_cordialidade?: number;
+  criado_em?: Date;
+  usuario_avaliacao_id_usuario_avaliadoTousuario?: Usuario;
+  usuario_avaliacao_id_usuario_avaliadorTousuario: Usuario;
+  usuario_usuario_avaliacao_idToavaliacao: Usuario[];
+};
+
+export type MediaProps = {
+  nota_limpeza?: number;
+  nota_exatidao_anuncio?: number;
+  nota_custo_beneficio?: number;
+  nota_localizacao?: number;
+  nota_seguiu_regras?: number;
+  nota_pontualidade?: number;
+  nota_cordialidade?: number;
+  media_notas: {
+    nota_limpeza: string;
+    nota_cordialidade: string;
+    nota_custo_beneficio: string;
+    nota_exatidao_anuncio: string;
+    nota_localizacao: string;
+    nota_pontualidade: string;
+    nota_seguiu_regras: string;
+  };
+  datas_reservas: any[];
+  quant_hospedes: any;
+}
+ export interface MediaAvaliacaoResponse {
   media_notas: {
     nota_limpeza: string;
     nota_cordialidade: string;
@@ -126,6 +168,7 @@ export type Endereco = {
   id_usuario?: number;
   id_anuncio?: number;
   cep: string;
+  pais: string;
   estado: string;
   cidade: string;
   bairro: string;
@@ -165,14 +208,14 @@ export type Usuario = {
   avaliacao_id?: number;
   anuncio: Anuncio[];
   notificacao: Notificacao[];
-  avaliacao_avaliacao_id_usuario_avaliadoTousuario: Avaliacao[];
-  avaliacao_avaliacao_id_usuario_avaliadorTousuario: Avaliacao[];
+  avaliacao_avaliacao_id_usuario_avaliadoTousuario: AvaliacaoProps[];
+  avaliacao_avaliacao_id_usuario_avaliadorTousuario: AvaliacaoProps[];
   dados_bancarios: DadosBancarios[];
   endereco: Endereco[];
   favoritos: Favoritos[];
   lista_favoritos_personalizada: ListaFavoritosPersonalizada[];
   reserva: Reserva[];
-  avaliacao_usuario_avaliacao_idToavaliacao?: Avaliacao;
+  avaliacao_usuario_avaliacao_idToavaliacao?: AvaliacaoProps[];
 };
 
 export type AnfitriaoProps = {

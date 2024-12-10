@@ -29,7 +29,7 @@ const ReservaAnuncio = () => {
       try {
         setLoading(true);
         const response = await axios.get<Anuncio>(
-          `http://localhost:3000/anuncio/${id_anuncio}`,
+          `http://localhost:3000/api/anuncio/${id_anuncio}`,
           { headers: { 'Content-Type': 'application/json' } }
         );
 

@@ -22,12 +22,12 @@ export default function SolicitarReserva({ regras }: any) {
   useEffect(() => {
     const { id_anuncio } = router.query;
     if (id_anuncio) {
-      fetch(`http://localhost:3001/anuncio/${id_anuncio}`)
+      fetch(`http://localhost:4000/api/anuncio/${id_anuncio}`)
         .then((res) => res.json())
         .then((data) => {
           setAnuncio(data);
         });
-
+        console.log('Anúncio no solicitarReserva: ', anuncio);
       // Set initial dates from URL parameters
       if (startDate && endDate) {
         setCheckIn(formatDateForDisplay(startDate as string));
