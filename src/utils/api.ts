@@ -14,14 +14,15 @@ export const getAnuncioData: GetServerSideProps = async (context) => {
   const { id_anuncio } = context.query;
   const serverUrl = process.env.SERVER_URL || "http://localhost:4000";
   try {
-    const resAnun = await fetch(`${serverUrl}/anuncio/${id_anuncio}`, {
-      method: "GET",
+    const response = await axios.get<Anuncio>(`${serverUrl}/anuncio/${id_anuncio}`, {
+      headers: { "Content-Type": "application/json" },
     });
 
-    if (!resAnun.ok) {
+    if (response.status !== 200) {
       throw new Error("Erro ao buscar o anúncio");
     }
-    const anuncio = await resAnun.json();
+
+    const anuncio = response.data;
     console.log(`Anúncio encontrado: ${JSON.stringify(anuncio)}`);
 
     return {

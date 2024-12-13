@@ -29,7 +29,7 @@ const ReservaAnuncio = () => {
       try {
         setLoading(true);
         const response = await axios.get<Anuncio>(
-          `http://localhost:3000/api/anuncio/${id_anuncio}`,
+          `http://localhost:4000/anuncio/${id_anuncio}`,
           { headers: { 'Content-Type': 'application/json' } }
         );
 
@@ -87,6 +87,9 @@ const ReservaAnuncio = () => {
       valorTotal: valorTotal,
     });
     localStorage.setItem('reservas', JSON.stringify(reservas));
+
+    // Redirect to the reservation confirmation page
+    router.push(`/anuncio/solicitar/${id_anuncio}`);
   };
 
   if (loading) {
@@ -129,6 +132,7 @@ const ReservaAnuncio = () => {
           <Calendar 
             valorDiaria={anuncio.valor_diaria} 
             anuncioId={anuncio.id} 
+            onDateChange={handleDateChange}
           />
         </div>
         <button

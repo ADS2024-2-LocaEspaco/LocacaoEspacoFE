@@ -57,7 +57,7 @@ export default function ReviewsSection({ anuncioId }: { anuncio: any, anuncioId:
     };
     fetchDadosAvaliacao();
     fetchComentarios();
-  }, [anuncioId]);
+  }, [anuncioId, anuncio]);
 
   const averageRating = useMemo(() => {
     const totalNotas = Object.values(mediaNotas).map(Number);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { GetDadosAvaliacao } from '@/utils/api';
 
@@ -15,16 +15,15 @@ interface ReservaData {
 interface CalendarProps {
   valorDiaria: number;
   anuncioId: string;
-  // onDateChange: (startDate: Date | null, endDate: Date | null) => void;
-
+  onDateChange: (startDate: Date | null, endDate: Date | null) => void;
 }
 
-export default function Calendar({ valorDiaria, anuncioId }: CalendarProps) {
+export default function Calendar({ valorDiaria, anuncioId, onDateChange }: CalendarProps) {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
-  const [reservedDates, setReservedDates] = useState<ReservaData[]>();
+  const [reservedDates, setReservedDates] = useState<ReservaData[]>([]);
   const [daysInMonth, setDaysInMonth] = useState<number[]>([]);
   const [totalValue, setTotalValue] = useState<number>(0);
   const router = useRouter();
@@ -38,15 +37,29 @@ export default function Calendar({ valorDiaria, anuncioId }: CalendarProps) {
 
   useEffect(() => {
     const fetchReservaDates = async () => {
-      try{
+      try {
         const data = await GetDadosAvaliacao(anuncioId);
-        return data;
-      } catch (error){
-        console.log('Erro ao buscar as datas:', error)
+        const apiReservedDates = data?.datas_reservas || [];
+
+        const storedReservations = JSON.parse(localStorage.getItem('reservas') || '[]');
+        const localReservedDates = storedReservations.map((reserva: any) => ({
+          id: 0,
+          id_usuario: 0,
+          id_anuncio: Number(anuncioId),
+          status_reserva: "Reservado",
+          data_inicial: reserva.datas.startDate,
+          data_final: reserva.datas.endDate,
+          criado_em: new Date().toISOString()
+        }));
+
+        setReservedDates([...apiReservedDates, ...localReservedDates]);
+      } catch (error) {
+        console.error('Erro ao buscar datas reservadas:', error);
       }
-    } 
-  fetchReservaDates()
-  },[anuncioId])
+    };
+
+    fetchReservaDates();
+  }, [anuncioId]);
 
   useEffect(() => {
     const date = new Date(selectedYear, selectedMonth, 1);
@@ -61,33 +74,27 @@ export default function Calendar({ valorDiaria, anuncioId }: CalendarProps) {
   useEffect(() => {
     if (startDate && endDate) {
       const diasSelecionados = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
-      setTotalValue((diasSelecionados -1) * valorDiaria);
+      setTotalValue((diasSelecionados - 1) * valorDiaria);
     } else {
       setTotalValue(0);
     }
   }, [startDate, endDate, valorDiaria]);
 
-  useEffect(() => {
-    const storedReservations = JSON.parse(localStorage.getItem('reservas') || '[]');
-    const reservedDates = storedReservations.map((reserva: { datas: { startDate: string; endDate: string } }) => ({
-      startDate: new Date(reserva.datas.startDate),
-      endDate: new Date(reserva.datas.endDate),
-    }));
-    setReservedDates(reservedDates);
-  }, []);
-
-  const handleDayClick = (day: number) => {
+  const handleDayClick = useCallback((day: number) => {
     const clickedDate = new Date(selectedYear, selectedMonth, day);
     if (!startDate || (startDate && endDate)) {
       setStartDate(clickedDate);
       setEndDate(null);
+      onDateChange(clickedDate, null);
     } else if (clickedDate > startDate) {
       setEndDate(clickedDate);
+      onDateChange(startDate, clickedDate);
     } else {
       setEndDate(startDate);
       setStartDate(clickedDate);
+      onDateChange(clickedDate, startDate);
     }
-  };
+  }, [startDate, endDate, selectedMonth, selectedYear, onDateChange]);
 
   const handleMonthChange = (change: number) => {
     let newMonth = selectedMonth + change;
@@ -112,30 +119,11 @@ export default function Calendar({ valorDiaria, anuncioId }: CalendarProps) {
   };
 
   const isDateReserved = (date: Date) => {
-    return reservedDates?.some(reserva =>{
-      const starDate = new Date(reserva.data_inicial);
-      const endDate = new Date(reserva.data_final);
-      console.log( date >= starDate && date <= endDate);
+    return reservedDates.some(reserva => {
+      const start = new Date(reserva.data_inicial);
+      const end = new Date(reserva.data_final);
+      return date >= start && date <= end;
     });
-  };
-
-  const storeReservation = () => {
-    if (startDate && endDate) {
-      const reservas = JSON.parse(localStorage.getItem('reservas') || '[]');
-      reservas.push({
-        datas: {
-          startDate: startDate.toISOString().split('T')[0],
-          endDate: endDate.toISOString().split('T')[0],
-        },
-        valorTotal: totalValue,
-      });
-      localStorage.setItem('reservas', JSON.stringify(reservas));
-
-      router.push({
-        pathname: `/anuncio/solicitar/${anuncioId}`,
-        query: { startDate: startDate.toISOString(), endDate: endDate.toISOString(), totalValue: totalValue.toString() }
-      });
-    }
   };
 
   return (
@@ -196,13 +184,11 @@ export default function Calendar({ valorDiaria, anuncioId }: CalendarProps) {
               <div key={day} className="relative">
                 <button
                   type="button"
-                  className={`
-                    m-px size-10 flex justify-center items-center border border-transparent text-sm rounded-full 
+                  className={`m-px size-10 flex justify-center items-center border border-transparent text-sm rounded-full 
                     hover:border-orange-700 hover:text-neutral-300 disabled:opacity-50 disabled:pointer-events-none 
                     focus:outline-none focus:border-orange-700 focus:text-white
                     ${isSelected(currentDate) ? 'bg-[#FF6F00] text-white' : 'text-neutral-200'}
-                    ${isReserved ? 'cursor-not-allowed opacity-50' : ''}
-                  `}
+                    ${isReserved ? 'cursor-not-allowed opacity-50' : ''}`}
                   onClick={() => handleDayClick(day)}
                   disabled={isReserved}
                 >
@@ -225,14 +211,6 @@ export default function Calendar({ valorDiaria, anuncioId }: CalendarProps) {
             </p>
           </div>
         )}
-      </div>
-      <div className="flex mt-4 mb-2 w-full h-auto items-center justify-center">
-        <button
-          onClick={storeReservation}
-          className="flex text-2xl w-[196px] h-[46px] justify-center items-center bg-[#196FFB] text-white py-2 rounded-3xl hover:bg-[#3B82F6] transition-colors"
-        >
-          Reservar
-        </button>
       </div>
     </div>
   );

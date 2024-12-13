@@ -24,7 +24,7 @@ const MapaModal = dynamic(() => import("../../components/mapaModal"), { ssr: fal
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
   try {
     const { id_anuncio } = context.query;
-    const response = await fetch(`http://localhost:3000/api/anuncio/${id_anuncio}`, {
+    const response = await fetch(`http://localhost:4000/anuncio/${id_anuncio}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
@@ -47,6 +47,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
     return { notFound: true };
   }
 };
+
 
 const ExibirAnuncio: React.FC<Props> = ({ anuncio, imagens, avaliacoes }) => {
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
@@ -80,9 +81,9 @@ const ExibirAnuncio: React.FC<Props> = ({ anuncio, imagens, avaliacoes }) => {
           <h1 className="text-tituloa text-black-300 p-0 font-bold mb-0 mt-1">
             {anuncio.titulo}
           </h1>
-          <Avaliacao 
+          {/* <Avaliacao 
             {...avaliacoes}
-          />
+          /> */}
         </div>
         <div className="flex flex-col items-center mb-4">
           <Carrossel imagens={imagens} />
@@ -102,7 +103,15 @@ const ExibirAnuncio: React.FC<Props> = ({ anuncio, imagens, avaliacoes }) => {
         isOpen={isMapModalOpen}
         onClose={closeMapModal}
         latLng={location || mapCenter}
-        endereco={anuncio.endereco}
+        endereco={{
+          latitude: anuncio.endereco?.[0]?.latitude || '',
+          longitude: anuncio.endereco?.[0]?.longitude || '',
+          pais: anuncio.endereco?.[0]?.pais || '',
+          cidade: anuncio.endereco?.[0]?.cidade || '',
+          estado: anuncio.endereco?.[0]?.estado || '',
+          bairro: anuncio.endereco?.[0]?.bairro || '',
+          rua: anuncio.endereco?.[0]?.rua || ''
+        }}
       /> 
 
       {/* Modal de favoritos */}
