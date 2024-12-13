@@ -1,24 +1,19 @@
 import { NextResponse, NextRequest } from "next/server";
 
-const protectedRoutes = ["/admin", "/ads"];
-//const publicRoutes = ["/", "/home"];
+const protectedRoutes = ["/admin", "/ads"]
 
 export function middleware(req: NextRequest) {
-  const path = req.nextUrl.pathname;
+  const path = req.nextUrl.pathname
 
-  // Validar se é uma rota protegida ou pública
   const isProtectedRoute = protectedRoutes.includes(path);
-  //const isPublicRoute = publicRoutes.includes(path);
 
-  // Verificar se há o cookie "session" 
-  const userCookie = req.cookies.get('session')?.value;
+  const userCookie = req.cookies.get('session');
+  console.log(userCookie)
 
-  // Se o cookie não existir, redirecionar para a página /
   if (isProtectedRoute && !userCookie) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  // Caso contrário, permitir o acesso à rota
   return NextResponse.next();
 }
 

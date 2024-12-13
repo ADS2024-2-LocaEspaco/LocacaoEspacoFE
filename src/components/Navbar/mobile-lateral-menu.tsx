@@ -2,6 +2,8 @@ import Image from "next/image"
 import Link from "next/link"
 
 import Logo from '../../../public/icons/logo.svg';
+import ModalLogin from "../ModalLogin";
+import { useState } from "react";
 
 interface MobileLateralMenuProps {
     closeLateralmenu: () => void
@@ -9,6 +11,8 @@ interface MobileLateralMenuProps {
 
 export default function MobileLateralMenu({ closeLateralmenu }: MobileLateralMenuProps) {
     const user = ''
+
+    const [isOpenModalLogin, setIsOpenModalLogin] = useState<boolean>(false)
 
     return (
         <div className='fixed inset-0 flex font-sans h-screen w-screen min-[1300px]:hidden'>
@@ -24,7 +28,7 @@ export default function MobileLateralMenu({ closeLateralmenu }: MobileLateralMen
 
                     {
                         !user && (
-                            <button className="font-bold text-sm text-gray-400">
+                            <button onClick={() => setIsOpenModalLogin(true)} className="font-bold text-sm text-gray-400">
                                 Entre ou se cadastre
                             </button>
                         )
@@ -51,6 +55,12 @@ export default function MobileLateralMenu({ closeLateralmenu }: MobileLateralMen
             </div>
 
             <div className='w-[40%] bg-white opacity-35 cursor-pointer' onClick={closeLateralmenu} />
+
+            { 
+				isOpenModalLogin && (
+					<ModalLogin closeModal={() => setIsOpenModalLogin(false)} />
+				)
+			}
         </div>
     )
 };
