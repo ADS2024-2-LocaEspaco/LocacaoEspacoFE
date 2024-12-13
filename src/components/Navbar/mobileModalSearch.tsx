@@ -59,7 +59,18 @@ export default function MobileModalSearch({ closeModalSearch }: MobileModalSearc
                 setCheckOutDate(checkOutDate <= checkInDate ? null : checkOutDate)
             }
 
-            console.log(local, checkInDate, checkOutDate, guests)
+            const totalGuests: String = Object.values(guests).reduce((sum, value) => sum + value, 0)
+
+
+            router.push({
+                pathname: '/pesquisa',
+                query: {
+                    local: local.toString(),
+                    checkInDate: checkInDate?.toISOString() || '',
+                    checkOutDate: checkOutDate?.toISOString() || '',
+                    totalGuests: totalGuests?.toString() || '0',
+                }
+            })
         } else {
             alert('Insira um Destino!')
         }
