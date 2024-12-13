@@ -12,6 +12,7 @@ const ReservasPage = () => {
   const { id } = router.query; // Obtém o ID da URL
   const idUsuario = Array.isArray(id) ? id[0] : id || "";
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [calendarKey, setCalendarKey] = useState<number>(0); // Estado para forçar a atualização do calendário
 
   if (!id) {
     return <div>Erro: ID do usuário não foi encontrado na URL.</div>;
@@ -21,6 +22,12 @@ const ReservasPage = () => {
   const handleDateClick = (date: string) => {
     setSelectedDate(date);
     console.log("Data clicada enviada para Gerenciar_reservas:", date);
+  };
+
+  // Função para forçar a atualização do calendário
+  const handleReservaAtualizada = () => {
+    setCalendarKey((prevKey) => prevKey + 1);
+    console.log("Atualizando o calendário após alteração de reserva.");
   };
 
   return (
@@ -36,19 +43,20 @@ const ReservasPage = () => {
         <div className="flex w-3/4 h-auto mx-auto">
           {/* Calendário */}
           <div className="w-3/4 justify-items-center h-auto border-black">
-            <CalendarComponent idUsuario={idUsuario} onDateClick={handleDateClick} />
-            <Gerenciar_reservas selectedDate={selectedDate} idUsuario={idUsuario} />
+            <CalendarComponent key={calendarKey} idUsuario={idUsuario} onDateClick={handleDateClick} />
+            <Gerenciar_reservas
+              selectedDate={selectedDate}
+              idUsuario={idUsuario}
+              onReservaAtualizada={handleReservaAtualizada} // Passa a função de callback
+            />
           </div>
 
           {/* Pesquisa ou Filtros */}
-          <div className="w-1/4 h-auto ml-0">
+          <div className="w-1/4 h-full ml-0">
             <ConfigReserva />
           </div>
         </div>
-        <div className="w-3/4 m-0 p-0">
-        
-
-        </div>
+        <div className="w-3/4 m-0 p-0"></div>
       </div>
       <style jsx>{`
         /* Estilo para tema claro */

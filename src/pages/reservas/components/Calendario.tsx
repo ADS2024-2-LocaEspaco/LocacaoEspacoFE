@@ -24,6 +24,7 @@ interface CalendarEvent {
   end: string;
   extendedProps: {
     status: string;
+    usuario: string;
   };
 }
 
@@ -73,8 +74,6 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ idUsuario, onDate
     console.log("Data selecionada:", formattedDate);
 };
 
-  
-
   const months = [
     "Jan.", "Fev.", "Mar.", "Abr.",
     "Mai.", "Jun.", "Jul.", "Ago.",
@@ -82,72 +81,84 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ idUsuario, onDate
   ];
 
   
-const fetchReservations = async () => {
-  try {
-    const response = await axios.get("http://localhost:4000/reservas/dados", {
-      params: { id_usuario: idUsuario },
-    });
-
-    const { Reservas, Anuncio } = response.data;
-
-    if (!Reservas || !Reservas.reserva || !Anuncio || !Anuncio.anuncio) {
-      addLog("Erro: Dados incompletos retornados da API.");
-      return;
-    }
-
-    const reservas = Reservas.reserva;
-    const anuncios = Array.isArray(Anuncio.anuncio) ? Anuncio.anuncio : [Anuncio.anuncio];
-
-    addLog("Anúncios disponíveis:");
-    anuncios.forEach((anuncio: Anuncio) => addLog(JSON.stringify(anuncio)));
-
-    const mappedEvents = reservas.flatMap((reserva: Reserva) => {
-      // Encontra o anúncio correspondente para cada reserva
-      const anuncioCorrespondente = anuncios.find(
-        (anuncio: Anuncio) => anuncio.id === reserva.id_anuncio
-      );
-
-      // Verifica se um anúncio correspondente foi encontrado
-      const tituloAnuncio = anuncioCorrespondente
-        ? anuncioCorrespondente.titulo
-        : "Sem título";
-
-      addLog(`Título do anúncio para reserva ${reserva.id}: ${tituloAnuncio}`);
-
-      const startDate = new Date(reserva.data_inicial);
-      const endDate = new Date(reserva.data_final);
-
-      const events: CalendarEvent[] = [];
-
-      // Cria eventos para cada dia da reserva
-      for (
-        let date = new Date(startDate);
-        date <= endDate;
-        date.setDate(date.getDate() + 1)
-      ) {
-        events.push({
-          title: `${tituloAnuncio} - ${new Date(reserva.criado_em).toLocaleDateString()}`,
-          start: date.toISOString().split("T")[0],
-          end: date.toISOString().split("T")[0],
-          extendedProps: {
-            status: reserva.status_aceite,
-          },
-        });
+  const fetchReservations = async () => {
+    try {
+      const response = await axios.get("http://localhost:4000/reservas/dados", {
+        params: { id_usuario: idUsuario },
+      });
+  
+      const data = response.data; // Dados retornados pela API
+  
+      if (!Array.isArray(data) || data.length === 0) {
+        addLog("Erro: Nenhum dado de reservas retornado.");
+        return;
       }
+  
+      // Mapeia os eventos a partir da estrutura de dados
+      const mappedEvents = data.flatMap((item: any) => {
+        const { anuncio, reservas } = item;
+  
+        if (!anuncio || !Array.isArray(reservas)) {
+          addLog("Erro: Estrutura de dados inválida.");
+          return [];
+        }
+  
+        return reservas.flatMap((reservaData: any) => {
+          const { reserva, usuario } = reservaData;
+  
+          // Garante que todos os dados necessários estejam disponíveis
+          if (!reserva || !usuario) {
+            addLog(`Erro: Dados incompletos para reserva.`);
+            return [];
+          }
+  
+          const tituloAnuncio = anuncio.titulo || "Sem título";
+          const nomeUsuario = usuario.nome || "Usuário Desconhecido";
+          const startDate = new Date(reserva.data_inicial);
+          const endDate = new Date(reserva.data_final);
+  
+          const events: CalendarEvent[] = [];
 
-      return events;
-    });
-
-    // Atualiza o estado com os eventos mapeados
-    setEvents(mappedEvents);
-  } catch (error) {
-    if (error instanceof Error) {
-      addLog(`Erro ao buscar dados: ${error.message}`);
-    } else {
-      addLog("Erro desconhecido ao buscar dados.");
+          const formatarData = (data: Date): string => {
+            const dia = data.getDate().toString().padStart(2, "0");
+            const mes = (data.getMonth() + 1).toString().padStart(2, "0");
+            const ano = data.getFullYear().toString().slice(-2); // Pega os dois últimos dígitos do ano
+            return `${dia}-${mes}-${ano}`;
+          };
+          const dataReserva = formatarData(new Date(reserva.criado_em));
+  
+          // Cria eventos para cada dia da reserva
+          for (
+            let date = new Date(startDate);
+            date <= endDate;
+            date.setDate(date.getDate() + 1)
+          ) {
+            events.push({
+              title: `${tituloAnuncio} - ${dataReserva}`,
+              start: date.toISOString().split("T")[0],
+              end: date.toISOString().split("T")[0],
+              extendedProps: {
+                status: reserva.status_aceite,
+                usuario: nomeUsuario,
+              },
+            });
+          }
+  
+          return events;
+        });
+      });
+  
+      // Atualiza o estado com os eventos mapeados
+      setEvents(mappedEvents);
+    } catch (error) {
+      if (error instanceof Error) {
+        addLog(`Erro ao buscar dados: ${error.message}`);
+      } else {
+        addLog("Erro desconhecido ao buscar dados.");
+      }
     }
-  }
-};
+  };
+  
  
 
   const handleDatesSet = (dateInfo: any) => {
@@ -193,8 +204,8 @@ const fetchReservations = async () => {
 
   const eventDidMount = (info: any) => {
     const dot = document.createElement("span");
-    dot.style.height = "10px";
-    dot.style.width = "10px";
+    dot.style.height = "8px";
+    dot.style.width = "8px";
     dot.style.borderRadius = "50%";
     dot.style.display = "inline-block";
     dot.style.marginRight = "8px";
@@ -218,16 +229,14 @@ const fetchReservations = async () => {
     if (titleElement) {
       titleElement.prepend(dot);
       titleElement.style.color = "black";
+      
     }
   
     info.el.style.backgroundColor = "transparent";
     info.el.style.border = "none";
   };
   
-
-  //const [anuncios, setAnuncios] = useState<Anuncio[]>([]);
-
-
+  
   useEffect(() => {
     fetchReservations();
   
@@ -361,7 +370,16 @@ const fetchReservations = async () => {
           :global(.fc-event) {
            display: block !important;
           color: black !important;
-         }
+        }
+
+          :global(.fc-event-title) {
+          font-size: 10px !important; /* Ajuste o tamanho para o que você preferir */
+          line-height: 1.2 !important; /* Ajusta o espaçamento vertical */
+          overflow: hidden !important; /* Garante que o texto não extrapole */
+          white-space: nowrap !important; /* Evita quebra de linha */
+          text-overflow: ellipsis !important; /* Adiciona "..." no final do texto se estiver muito longo */
+        }
+
 
         :global(.modal-content) {
           position: absolute;
