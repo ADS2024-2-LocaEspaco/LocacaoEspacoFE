@@ -99,6 +99,28 @@ const Prototipo: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
+      if (selectedImages.length === 0) {
+        alert('Por favor, selecione ao menos uma imagem antes de publicar.');
+        return;
+      }
+
+      const formData = new FormData();
+
+      for (const [index, image] of selectedImages.entries()) {
+        const imageResponse = await fetch(image); // Renomeie a variável aqui
+        const blob = await imageResponse.blob();
+        formData.append('images', blob, `image-${index}.jpg`);
+      }
+
+      const uploadResponse = await fetch('http://localhost:3000/anuncio/imagens', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!uploadResponse.ok) {
+        throw new Error(`Erro ao fazer upload das imagens: ${uploadResponse.statusText}`);
+      }
+
       const tituloEdescricao = JSON.parse(localStorage.getItem('tituloEdescricao') || '{}');
       const acomodacoes = JSON.parse(localStorage.getItem('acomodacoes') || '{}');
       const comodidades = JSON.parse(localStorage.getItem('comodidades') || '[]');
